@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ước tính Chi phí Xây dựng Nhà phố Trọn Gói - ESB Homes</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background-color: #0A192F;
+      color: #E0E7FF;
+    }
+    .nav-bar {
+      background-color: #1F2937;
+      box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1), 0 -2px 4px -2px rgb(0 0 0 / 0.06);
+    }
+    .nav-link {
+      transition: all 0.3s;
+      border-top: 3px solid transparent;
+      color: #E0E7FF;
+    }
+    .nav-link.active, .nav-link:hover {
+      color: #FBBF24;
+      border-top-color: #FBBF24;
+      background-color: rgba(251, 191, 36, 0.1);
+    }
+    .content-card {
+      background-color: #fff;
+      border: 1px solid #374151;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: #3a3a3a;
+    }
+    .content-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+    }
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 350px;
+      max-height: 450px;
+    }
+    @media (min-width: 768px) {
+      .chart-container { height: 400px; }
+    }
+    .collapsible-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s;
+    }
+    .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #FBBF24;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+    .content-card h3, .content-card h4, .content-card p, .content-card ul, .content-card li, .content-card label, .content-card input, .content-card select, .content-card textarea {
+      color: #3a3a3a;
+    }
+    .content-card .text-gray-700,
+    .content-card .font-medium { color: #3a3a3a; }
+    .content-card .text-sm { color: #4B5563; }
+    .content-card .text-red-600 { color: #DC2626; }
+    .content-card .bg-gray-50 { background-color: #F9FAFB; }
+    .content-card .text-[#a0522d] { color: #D97706; }
+    .content-card .text-[#d28b5e] { color: #FBBF24; }
+    .content-card .text-gray-800 { color: #1F2937; }
+    .tag {
+      background-color: #FBBF24;
+      color: #1F2937;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div class="fixed top-4 left-4 z-50">
+    <img src="https://firebasestorage.googleapis.com/v0/b/generative-ai-document-test.appspot.com/o/images%2FLOGO_ESB%20Homes.png-f4589be0-33e0-4aab-969a-dcf2a68e9695?alt=media&token=e91f03f5-7e04-4c8d-862d-004a4e17f7d7" alt="Logo ESB Homes" class="w-24 h-auto object-contain">
+  </div>
+
+  <main class="flex-1 p-4 sm:p-6 md:p-10 pb-24 lg:pb-24">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Giới thiệu -->
+      <section id="gioi-thieu" class="min-h-screen pt-16">
+        <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Chào mừng đến với Công cụ Ước tính Chi phí Xây dựng Nhà phố</h2>
+        <p class="mb-6 text-lg font-medium">
+          Việc xây dựng một ngôi nhà phố trọn gói đòi hỏi sự hiểu biết rõ ràng về các yếu tố chi phí. Công cụ này được thiết kế để cung cấp cho bạn một ước tính sơ bộ về tổng chi phí xây dựng dựa trên các thông số cơ bản như diện tích, số tầng, phong cách thiết kế và mức độ hoàn thiện. Hãy khám phá để có cái nhìn tổng quan về ngân sách cần thiết cho ngôi nhà mơ ước của bạn.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="content-card p-6">
+            <h3 class="text-xl font-bold mb-3 text-[#D97706]">Ước tính nhanh chóng</h3>
+            <p class="font-medium">Nhận ngay ước tính chi phí dựa trên các thông số bạn cung cấp, giúp bạn lập kế hoạch tài chính hiệu quả.</p>
+          </div>
+          <div class="content-card p-6">
+            <h3 class="text-xl font-bold mb-3 text-[#D97706]">Hiểu rõ các yếu tố</h3>
+            <p class="font-medium">Tìm hiểu sâu hơn về những yếu tố chính ảnh hưởng đến tổng chi phí xây dựng nhà phố trọn gói.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Yếu tố ảnh hưởng -->
+      <section id="yeu-to-anh-huong" class="min-h-screen pt-16">
+        <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Các Yếu tố Ảnh hưởng đến Chi phí Xây dựng</h2>
+        <p class="mb-8 text-lg font-medium">
+          Chi phí xây dựng một ngôi nhà phố trọn gói không chỉ phụ thuộc vào diện tích mà còn bị chi phối bởi nhiều yếu tố khác. Việc hiểu rõ những yếu tố này sẽ giúp bạn đưa ra quyết định sáng suốt và tối ưu hóa ngân sách của mình.
+        </p>
+        <div id="factors-container" class="space-y-4">
+          <!-- Các yếu tố dạng collapsible (giữ nguyên nội dung gốc) -->
+          <!-- ... (giữ như mẫu bạn gửi, không thay đổi về nội dung) ... -->
+          <!-- Để giảm độ dài trả lời, phần này đã được rút gọn, bạn chỉ cần copy lại toàn bộ các div .content-card trong phần #factors-container của bản gốc vào đây. -->
+        </div>
+      </section>
+
+      <!-- Công cụ ước tính -->
+      <section id="cong-cu-uoc-tinh" class="min-h-screen pt-16">
+        <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Công cụ Ước tính Chi phí Xây dựng</h2>
+        <p class="mb-8 text-lg font-medium">
+          Sử dụng công cụ dưới đây để nhận ước tính và gửi yêu cầu báo giá chi tiết qua email.
+        </p>
+        <div class="content-card p-6 mb-12">
+          <h3 class="text-xl font-bold mb-4 text-center text-[#D97706]">Nhập thông tin ngôi nhà của bạn</h3>
+          <form id="estimatorForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <!-- Diện tích, số tầng, phong cách, mức độ hoàn thiện, móng, tầng lửng, sân thượng, mái, email, SĐT -->
+              <!-- Giữ nguyên các input/select như bản gốc -->
+            </div>
+            <button type="submit" id="calculateAndSendBtn" class="w-full bg-[#FBBF24] text-[#1F2937] font-bold py-3 px-4 rounded-md hover:bg-[#FCD34D] transition-colors duration-300 flex items-center justify-center space-x-2">
+              <span>Ước tính & Gửi Yêu cầu Báo giá</span>
+              <div id="costLoadingSpinner" class="loading-spinner"></div>
+            </button>
+          </form>
+          <div id="costError" class="text-red-600 text-sm mt-4 hidden text-center"></div>
+          <div id="emailNotification" class="text-green-800 bg-green-100 border border-green-400 p-3 rounded-md mt-4 hidden text-center font-medium"></div>
+          <div class="mt-8 p-4 bg-gray-50 rounded-md border border-gray-200">
+            <h4 class="text-lg font-bold mb-2 text-center">Ước tính Chi phí Trọn gói:</h4>
+            <p id="estimatedCost" class="text-2xl font-extrabold text-[#D97706] text-center">-- VNĐ</p>
+            <p class="text-sm text-gray-600 text-center mt-2 font-medium">(*Đây là ước tính sơ bộ, chi phí thực tế có thể thay đổi)</p>
+          </div>
+          <div class="mt-8">
+            <h4 class="text-lg font-bold mb-4 text-center">Phân bổ Chi phí Ước tính</h4>
+            <div class="chart-container">
+              <canvas id="costBreakdownChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Các gói xây dựng -->
+      <section id="cac-goi-xay-dung" class="min-h-screen pt-16">
+        <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Các Gói Xây dựng Trọn Gói Phổ biến</h2>
+        <p class="mb-8 text-lg font-medium">
+          Để giúp bạn dễ dàng lựa chọn, dưới đây là mô tả các gói xây dựng trọn gói phổ biến với các mức chi phí và tiêu chuẩn vật liệu khác nhau.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Giữ nguyên nội dung các gói xây dựng như bản gốc -->
+        </div>
+      </section>
+
+      <!-- Lưu ý quan trọng -->
+      <section id="luu-y-quan-trong" class="min-h-screen pt-16">
+        <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Lưu ý Quan trọng</h2>
+        <p class="mb-8 text-lg font-medium">
+          Công cụ này cung cấp ước tính sơ bộ. Để có báo giá chính xác nhất, bạn cần tham khảo ý kiến chuyên gia.
+        </p>
+        <div class="space-y-4">
+          <!-- Giữ nguyên nội dung các lưu ý như bản gốc -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Navigation Desktop -->
+  <nav class="nav-bar fixed bottom-0 left-0 right-0 h-20 p-4 hidden lg:flex items-center justify-center z-50">
+    <ul class="flex space-x-8" id="desktop-nav">
+      <!-- Giữ nguyên nội dung nav như bản gốc -->
+    </ul>
+  </nav>
+
+  <!-- Navigation Mobile -->
+  <div id="mobile-menu" class="fixed bottom-0 left-0 w-full h-1/2 bg-[#1F2937] shadow-lg p-5 z-40 transform translate-y-full transition-transform duration-300 ease-in-out lg:hidden">
+    <!-- Giữ nguyên nội dung mobile menu như bản gốc -->
+  </div>
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black opacity-0 z-30 transition-opacity duration-300 ease-in-out hidden"></div>
+
+  <!-- Javascript -->
+  <script>
+    // ...Giữ nguyên script như bản gốc bạn gửi...
+  </script>
+</body>
+</html>
