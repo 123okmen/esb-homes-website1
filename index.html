@@ -10,24 +10,17 @@
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <header id="main-header" class="fixed top-0 left-0 right-0 bg-[#0A192F] shadow-lg z-50 transition-all duration-300 ease-in-out py-4">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex-shrink-0">
-                <img src="esb-homes-logo.png" alt="ESB Homes Logo" class="h-10 md:h-12">
-            </div>
-
-            <nav class="hidden lg:block">
-                <ul class="flex space-x-6" id="desktop-nav-list">
-                    </ul>
-            </nav>
-
-            <button id="hamburger-menu-button" class="lg:hidden p-2 bg-[#FBBF24] text-[#1F2937] rounded-md shadow-md">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+    <div class="fixed top-4 left-4 z-50">
+        <div class="bg-[#0A192F] rounded-md p-1">
+            <img src="esb-homes-logo.png" alt="ESB Homes Logo" class="h-12 md:h-16 max-w-full">
         </div>
-    </header>
+    </div>
+
+    <button id="hamburger-menu-button" class="fixed top-6 right-6 z-[60] p-2 bg-[#FBBF24] text-[#1F2937] rounded-md shadow-lg lg:hidden">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
 
     <div id="side-menu" class="fixed top-0 right-0 h-full w-64 bg-[#1F2937] shadow-lg z-[55] transform translate-x-full transition-transform duration-300 ease-in-out">
         <div class="p-6 h-full flex flex-col">
@@ -55,6 +48,11 @@
     </div>
     <div id="side-menu-overlay" class="fixed inset-0 bg-black opacity-0 z-[50] hidden transition-opacity duration-300 ease-in-out"></div>
 
+
+    <div id="floating-toc-menu" class="fixed right-4 top-1/2 -translate-y-1/2 bg-[#1F2937] p-2 rounded-lg shadow-lg z-50 hidden lg:block">
+        <ul class="space-y-2" id="floating-nav-list">
+            </ul>
+    </div>
 
     <main class="flex-1 p-4 sm:p-6 md:p-10 pb-24 lg:pb-24">
         <div class="pt-20 md:pt-24"> 
@@ -112,83 +110,110 @@
                     <div id="factors-container" class="space-y-4">
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Diện tích và Quy mô</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Diện tích và Quy mô</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n+L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJfn/S/T/F/wBf6f8AJfS+p/P/AB/p/wDH/p/w2/j/ANH/AD/T/wCJfT/x/p/xf8/7/wDS/p/5fT/7P+/8P/L/AE/+b+5/l+n/wAf/J/p/wAH/wB/8f8A0f8Axf8A/9k=" alt="Minh họa diện tích và quy mô xây dựng nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Phong cách Thiết kế</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Phong cách Thiết kế</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wDH/p/w2/j/ANH/AD/T/wCJfT/x/p/xf8/7/wDS/p/5fT/7P+/8P/L/AE/+b+5/l+n/wAf/J/p/wAH/wB/8f8A0f8Axf8A/9k=" alt="Minh họa các phong cách thiết kế nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Mức độ Hoàn thiện và Vật liệu</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Mức độ Hoàn thiện và Vật liệu</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wADH/p/w2/j/wBH/AD/T/wCJfT/x/p/xf8/7/wDS/p/5fT/7P+/8P/L/AE/+b+5/l+n/wAf/J/p/wAH/wB/8f8A0f8Axf8A/9k=" alt="Minh họa mức độ hoàn thiện và vật liệu xây dựng" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Công năng và Tiện ích</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Công năng và Tiện ích</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wADH/p/w2/j/wBH/AD/T/wCJfT/x/p/xf8/7/wDS/p/5fT/7P+/8P/L/AE/+b+5/l+n/wAf/J/p/wAH/wB/8f8A0f8Axf8A/9k=" alt="Minh họa công năng và tiện ích trong nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Vị trí và Điều kiện Thi công</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Vị trí và Điều kiện Thi công</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wB/uV/9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wADH/p/w2/j/wBH/AD/T/wCJfT/x/p/xf8/7/wDS/p/5fT/7P+/8P/L/AE/+b+5/l+n/wAf/J/p/wAH/wB/8f8A0f8Axf8A/9k=" alt="Minh họa vị trí và điều kiện thi công" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Loại Móng</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Loại Móng</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wADH/p/w2/j/wadeh/s/T/AN/8+f8Axf8A/9k=" alt="Minh họa các loại móng nhà" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Tầng Lửng</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Tầng Lửng</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wADH/p/w2/j/wBH/AD/T/wCJfT/x/p/xf8/7/wDS/p/5fT/7P+/8P/L/AE/+b+5/l+n/wAf/J/p/wAH/wB/8f8A0f8Axf8A/9k=" alt="Minh họa thiết kế tầng lửng" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Sân Thượng</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Sân Thượng</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wADH/p/w2/j/wB/g/p/wD0/wAP/AIP+P8A/9k=" alt="Minh họa thiết kế sân thượng" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="content-card overflow-hidden">
                             <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706]">Loại Mái</h3>
+                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Loại Mái</h3>
                                 <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
                             </button>
-                            <div class="collapsible-content">
-                                <p class="p-4 pt-0 font-medium">Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.</p>
+                            <div class="p-4 pt-0">
+                                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMQEhIQDxIVFhUSDw0NEhAQEQ8PEhIWFREWFhUSFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUrLystLS0tLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QALxABAAMAAgECBgICAwEBAAAAAAECEQMEEiExQVEFInGRBhNhkbHB0fAjUsH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAeEQEBAQACAgMBAQAAAAAAAAAAAQIREgMEITFBMv/aAAwDAQACEQMRAD8A9QJb+fG4f0k7Qz92/wBu5X9w+0Y71N4vUq67d4V6tq/H2Y7XnC71V7JjS95d1Jc2qJ+13m3dF39lq5LqS5fH7P2bY9N/k+n+b6Xh+H6/Q9T9R/T6b+n6L7T/AIL+/D/p/s936b/AB/9P8X2T+5/xf8AU/T+W/2f9/8AX/b/AE+L3/o/5f6b/N/3/n/r/h/p+2f7n/L/AF/0+F/R/wBn3T/wDJPn/xf9P/ADfT/F/b+n3D/wDJPn/S/T/F/wBf6f8JfS+p/P/AB/p/wADH/p/w2/j/wBH/AD/T/wCJfT/x/p/xf8/7/wDS/p/5fT/7P+/8P/L/AE/+b+5/l+n/wAf/J/p/wAH/wB/8f8A0f8Axf8A/9k=" alt="Minh họa các loại mái nhà" class="w-full h-auto object-cover rounded-md mb-4">
+                                <div class="collapsible-content">
+                                    <p class="font-medium">Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -408,7 +433,7 @@
                             <ul class="list-disc list-inside space-y-2 font-medium">
                                 <li>Gói cơ bản: 1.800.000 - 2.500.000 VNĐ/m²</li>
                                 <li>Gói tiêu chuẩn: 2.500.000 - 3.500.000 VNĐ/m²</li>
-                                <li>Gói cao cấp: Từ 3.500.000 VNĐ/m² trở lên</li>
+                                <li>Gói cao cấp: From 3.500.000 VNĐ/m² trở lên</li>
                             </ul>
                             <p class="mt-4 font-medium">
                                 *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc rất nhiều vào chủng loại vật liệu và thương hiệu bạn lựa chọn.
