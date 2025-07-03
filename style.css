@@ -1,1 +1,102 @@
-[{"insert":"body {\n    font-family: Arial, sans-serif; /* Changed font to Arial */\n    background-color: #0A192F; /* Dark blue background */\n    color: #E0E7FF; /* Light yellow-ish text */\n}\n\n/* Rule to make all headings uppercase */\nh2, h3, h4 {\n    text-transform: uppercase;\n}\n/* Rule to ensure other text remains in its original case (sentence case) */\np, li, label, .nav-link span, button span, td, input, select, textarea {\n    text-transform: none;\n}\n\n/* Base styles for content cards */\n.content-card {\n    background-color: #ffffff;\n    border: 1px solid #374151; /* Darker border for contrast */\n    border-radius: 0.75rem;\n    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);\n    transition: transform 0.3s ease, box-shadow 0.3s ease;\n    color: #3a3a3a; /* Dark text inside cards */\n}\n.content-card:hover {\n    transform: translateY(-5px);\n    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.08);\n}\n\n/* Chart container responsiveness */\n.chart-container {\n    position: relative;\n    width: 100%;\n    max-width: 700px;\n    margin-left: auto;\n    margin-right: auto;\n    height: 350px;\n    max-height: 450px;\n}\n@media (min-width: 768px) {\n    .chart-container {\n        height: 400px;\n    }\n}\n\n/* Collapsible content animation */\n.collapsible-content {\n    max-height: 0;\n    overflow: hidden;\n    transition: max-height 0.5s ease-in-out;\n}\n\n/* Loading spinner animation */\n.loading-spinner {\n    border: 4px solid #f3f3f3;\n    border-top: 4px solid #FBBF24; /* Golden yellow spinner */\n    border-radius: 50%;\n    width: 30px;\n    height: 30px;\n    animation: spin 1s linear infinite;\n    display: none;\n}\n@keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n\n/* Specific styles for elements within content-card to ensure dark text */\n.content-card p,\n.content-card ul,\n.content-card li,\n.content-card label,\n.content-card input,\n.content-card select,\n.content-card textarea,\n.content-card table {\n    color: #3a3a3a;\n}\n.content-card .text-gray-700 {\n    color: #3a3a3a;\n}\n.content-card .font-medium {\n    color: #3a3a3a;\n}\n.content-card .text-sm {\n    color: #4B5563; /* Slightly lighter gray for small text */\n}\n.content-card .text-red-600 {\n    color: #DC2626; /* Red for errors */\n}\n.content-card .bg-gray-50 {\n    background-color: #F9FAFB; /* Light gray for input backgrounds */\n}\n.content-card .text-[#a0522d] { /* Adjusting accent color for headings inside cards */\n    color: #D97706; /* A darker orange/gold for contrast on white */\n}\n.content-card .text-[#d28b5e] { /* Adjusting accent color for subheadings inside cards */\n    color: #FBBF24; /* Golden yellow for contrast on white */\n}\n.content-card .text-gray-800 {\n    color: #1F2937; /* Dark gray for specific text */\n}\n.tag {\n    background-color: #FBBF24; /* Golden yellow tag background */\n    color: #1F2937; /* Dark text on tag */\n}\n\n/* Table styling */\n.table-auto th, .table-auto td {\n    padding: 0.75rem;\n    border: 1px solid #e5e7eb;\n}\n.table-auto th {\n    background-color: #f9fafb;\n    font-weight: 600;\n    text-align: left;\n}\n.table-auto tr:nth-child(even) {\n    background-color: #f9fafb;\n}\n\n/* Floating Table of Contents specific styles (for large screens) */\n#floating-toc-menu ul li a {\n    display: flex; /* Use flex for icon and text alignment */\n    align-items: center;\n    padding: 0.5rem 0.75rem;\n    border-radius: 0.25rem;\n    color: #E0E7FF; /* Light text */\n    transition: all 0.2s ease-in-out;\n    font-size: 0.875rem; /* text-sm */\n    font-weight: 500; /* font-medium */\n}\n#floating-toc-menu ul li a:hover {\n    background-color: rgba(251, 191, 36, 0.2); /* Subtle yellow highlight on hover */\n    color: #FBBF24; /* Golden yellow */\n}\n#floating-toc-menu ul li a.active-toc-link {\n    background-color: #FBBF24; /* Solid golden yellow when active */\n    color: #1F2937; /* Dark text on active */\n    font-weight: 700;\n}\n#floating-toc-menu ul li svg {\n    margin-right: 0.5rem; /* Space between icon and text */\n    vertical-align: middle; /* Align icon vertically with text */\n    fill: currentColor; /* Inherit color from parent 'a' tag */\n    width: 1rem; /* Ensure icon size for floating menu */\n    height: 1rem; /* Ensure icon size for floating menu */\n}\n\n/* Floating Table of Contents Sub-menu styles */\n#floating-toc-menu ul li ul {\n    margin-left: 0.75rem; /* Indent sub-items */\n    border-left: 1px solid rgba(255, 255, 255, 0.2); /* Optional: a subtle line */\n    padding-left: 0.25rem;\n}\n#floating-toc-menu ul li .sub-toc-link {\n    font-size: 0.75rem; /* Smaller font for sub-items */\n    padding: 0.3rem 0.5rem;\n}\n#floating-toc-menu ul li .sub-toc-link:hover {\n    background-color: rgba(251, 191, 36, 0.08); /* Even lighter hover for sub-items */\n    color: #FBBF24;\n}\n#floating-toc-menu ul li .sub-toc-link.active-toc-link {\n    background-color: rgba(251, 191, 36, 0.2); /* Lighter active for sub-items */\n    color: #FBBF24;\n    font-weight: 600;\n}\n\n/* Side Menu specific styles (for mobile/small screens) */\n#side-menu ul {\n    padding-bottom: 2rem; /* Add padding at the bottom for scrolling */\n}\n#side-menu ul li a {\n    display: flex; /* Use flex for icon and text alignment */\n    align-items: center;\n    padding: 0.85rem 1.25rem; /* Increased padding for better touch targets */\n    border-radius: 0.25rem;\n    color: #E0E7FF;\n    transition: all 0.2s ease;\n    font-size: 1.125rem; /* text-lg */\n    font-weight: 500;\n}\n#side-menu ul li a:hover {\n    background-color: rgba(251, 191, 36, 0.1);\n    color: #FBBF24;\n}\n#side-menu ul li a.active-side-link {\n    background-color: #FBBF24;\n    color: #1F2937;\n    font-weight: 700;\n}\n#side-menu ul li svg {\n    margin-right: 0.75rem; /* Space for icons */\n    fill: currentColor;\n    width: 24px; /* Ensure consistent icon size */\n    height: 24px;\n}\n\n/* Side Menu Sub-menu styles */\n#side-menu ul li ul {\n    padding-left: 1.8rem; /* Increased indent for sub-items */\n    margin-top: 0.5rem;\n    margin-bottom: 0.5rem;\n}\n#side-menu ul li ul li a {\n    padding: 0.6rem 1rem; /* Adjust padding for sub-items */\n    font-size: 1rem; /* Smaller font for sub-items */\n    color: #CBD5E0; /* Slightly lighter text for sub-items */\n}\n#side-menu ul li ul li a:hover {\n    background-color: rgba(251, 191, 36, 0.08); /* Even lighter hover for sub-items */\n    color: #FBBF24;\n}\n#side-menu ul li ul li a.active-side-link {\n    background-color: rgba(251, 191, 36, 0.2); /* Lighter active for sub-items */\n    color: #FBBF24;\n    font-weight: 600;\n}\n\n/* Overlay style for side menu */\n#side-menu-overlay {\n    background-color: rgba(0, 0, 0, 0); /* Start transparent */\n    transition: opacity 0.3s ease-in-out;\n}\n#side-menu-overlay.opacity-50 {\n    opacity: 0.5;\n}\n\n/* Styles for header shrinking on scroll (similar to TrungLuongCons.com) */\n#main-header.header-scrolled {\n    padding-top: 0.5rem;\n    padding-bottom: 0.5rem;\n    /* You can add more changes here, e.g., reduce logo size */\n}\n#main-header.header-scrolled .flex-shrink-0 img {\n    height: 32px; /* Smaller logo when scrolled */\n    transition: height 0.3s ease-in-out;\n}\n"}]
+/* style.css */
+
+/* Custom Fonts (Optional - replace with your preferred font) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #F8F9FA; /* Light background for the whole page */
+    color: #1F2937; /* Dark text for readability */
+}
+
+/* Specific styling for content cards */
+.content-card {
+    background-color: #ffffff;
+    border-radius: 0.75rem; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02); /* Subtle shadow */
+    transition: transform 0.2s ease-in-out;
+}
+
+.content-card:hover {
+    transform: translateY(-3px); /* Slight lift on hover */
+}
+
+/* Styling for collapsed content */
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding-top 0.3s ease-out;
+    padding-top: 0; /* Ensures no padding when collapsed */
+}
+
+.content-card button span {
+    transition: transform 0.3s ease-in-out;
+}
+
+.content-card button.active span {
+    transform: rotate(45deg); /* Rotate '+' to 'x' or '-' */
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #FBBF24; /* ESB Homes Yellow */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin-left: 0.5rem;
+    display: none; /* Hidden by default, shown by JS */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Chart container for responsiveness */
+.chart-container {
+    position: relative;
+    height: 400px; /* Fixed height for chart */
+    width: 100%;
+    max-width: 600px; /* Max width to keep it from being too wide on desktop */
+    margin: 0 auto;
+}
+
+/* Improve table readability */
+table th, table td {
+    padding: 0.75rem 1rem;
+    vertical-align: top;
+    border-bottom: 1px solid #e2e8f0; /* Light border */
+}
+
+table thead th {
+    background-color: #e2e8f0; /* Light grey header */
+    color: #1F2937;
+    font-weight: 600;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #f9fafb; /* Zebrastriping */
+}
+
+table tbody tr:hover {
+    background-color: #f0f4f7; /* Slight hover effect */
+}
+
+/* Footer styling */
+footer {
+    background-color: #0A192F; /* Dark blue from logo */
+    padding: 1.5rem 0;
+    margin-top: auto; /* Push footer to bottom */
+}
+
+/* Ensure smooth scroll works without abrupt jumps */
+html.scroll-smooth {
+    scroll-behavior: smooth;
+}
+
+/* Overlay for side menu */
+#side-menu-overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+}
