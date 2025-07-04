@@ -3,24 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xây dựng Nhà phố Trọn Gói</title>
+    <title>Xây dựng Nhà phố Trọn Gói - ESB Homes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
-</head>
+    </head>
 <body class="flex flex-col min-h-screen">
 
-    <div class="fixed top-4 left-4 z-50">
-        <div class="bg-[#0A192F] rounded-md p-1">
-            <img src="esb-homes-logo.png" alt="ESB Homes Logo" class="h-14 md:h-26 max-w-full">
-        </div>
-    </div>
+    <header id="main-header" class="fixed top-0 left-0 right-0 bg-[#0A192F] shadow-lg z-50 transition-all duration-300 ease-in-out py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex-shrink-0">
+                <img src="esb-homes-logo.png" alt="ESB Homes Logo" class="h-12 transition-all duration-300 ease-in-out">
+            </div>
 
-    <button id="hamburger-menu-button" class="fixed top-6 right-6 z-[60] p-2 bg-[#FBBF24] text-[#1F2937] rounded-md shadow-lg lg:hidden">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-    </button>
+            <nav class="hidden lg:block">
+                <ul class="flex space-x-6" id="desktop-nav-list">
+                    </ul>
+            </nav>
+
+            <button id="hamburger-menu-button" class="lg:hidden p-2 bg-[#FBBF24] text-[#1F2937] rounded-md shadow-md">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
 
     <div id="side-menu" class="fixed top-0 right-0 h-full w-64 bg-[#1F2937] shadow-lg z-[55] transform translate-x-full transition-transform duration-300 ease-in-out">
         <div class="p-6 h-full flex flex-col">
@@ -37,7 +44,7 @@
                 <p class="text-sm text-gray-400 mb-2">Liên hệ ngay:</p>
                 <a href="tel:+84899618286" class="flex items-center justify-center space-x-2 text-[#FBBF24] font-bold text-lg hover:text-[#FCD34D] transition-colors duration-200 mb-2">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.46.57 3.57.11.35.03.74-.25 1.02L6.62 10.79z"></path></svg>
-                    <span>0899618286</span>
+                    <span>0899 618 286</span>
                 </a>
                 <a href="https://zalo.me/0772634611" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center space-x-2 text-[#63e3ff] font-bold text-lg hover:text-[#90f2ff] transition-colors duration-200">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2.5 15c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm2.5-7.5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path></svg>
@@ -49,176 +56,182 @@
     <div id="side-menu-overlay" class="fixed inset-0 bg-black opacity-0 z-[50] hidden transition-opacity duration-300 ease-in-out"></div>
 
 
-    <div id="floating-toc-menu" class="fixed right-4 top-1/2 -translate-y-1/2 bg-[#1F2937] p-2 rounded-lg shadow-lg z-50 hidden lg:block">
-        <ul class="space-y-2" id="floating-nav-list">
-            </ul>
-    </div>
-
-    <main class="flex-1 p-4 sm:p-6 md:p-10 pb-24 lg:pb-24">
-        <div class="pt-20 md:pt-24"> 
-            <div class="max-w-7xl mx-auto">
+    <main class="flex-1">
+        <div class="h-20 md:h-24"></div> 
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pb-24 lg:pb-24">
            
-                <section id="gioi-thieu" class="min-h-screen">
-                    <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Chào mừng đến với công cụ tính Chi phí xây dựng Nhà phố</h2>
-                    <p class="mb-6 text-lg font-medium">
-                        Việc xây dựng một ngôi nhà phố trọn gói đòi hỏi sự hiểu biết rõ ràng về các yếu tố chi phí. Công cụ này được thiết kế để cung cấp cho bạn một ước tính sơ bộ về tổng chi phí xây dựng dựa trên các thông số cơ bản như diện tích, số tầng, phong cách thiết kế và mức độ hoàn thiện. Hãy khám phá để có cái nhìn tổng quan về ngân sách cần thiết cho ngôi nhà mơ ước của bạn.
+            <section id="hero-section" class="relative bg-cover bg-center h-[50vh] md:h-[60vh] flex items-center justify-center text-center rounded-lg shadow-lg" style="background-image: url('images/hero_background.jpg');">
+                <div class="absolute inset-0 bg-black opacity-60 rounded-lg"></div>
+                <div class="relative z-10 text-white p-4">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 animate-fade-in-up">
+                        Ước Tính Chi Phí Xây Dựng Nhà Phố Trọn Gói
+                    </h1>
+                    <p class="text-lg md:text-xl font-medium mb-8 animate-fade-in-up delay-200">
+                        Minh bạch - Uy tín - Chất lượng
                     </p>
+                    <a href="#cong-cu-uoc-tinh" class="inline-block bg-[#FBBF24] text-[#1F2937] font-bold py-3 px-8 rounded-full hover:bg-[#FCD34D] transition-colors duration-300 transform hover:scale-105 animate-fade-in-up delay-400">
+                        Bắt đầu ước tính
+                    </a>
+                </div
+            </section>
 
-                    <div class="mb-8">
-                        <img src="images/welcome_hero.jpg" alt="Ngôi nhà phố hiện đại với thiết kế mở" class="w-full h-auto object-cover rounded-lg shadow-lg">
-                    </div>
+            <section id="gioi-thieu" class="min-h-screen pt-16">
+                <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Chào mừng đến với Công cụ tính Chi phí xây dựng Nhà phố</h2>
+                <p class="mb-6 text-lg font-medium">
+                    Việc xây dựng một ngôi nhà phố trọn gói đòi hỏi sự hiểu biết rõ ràng về các yếu tố chi phí. Công cụ này được thiết kế để cung cấp cho bạn một ước tính sơ bộ về tổng chi phí xây dựng dựa trên các thông số cơ bản như diện tích, số tầng, phong cách thiết kế và mức độ hoàn thiện. Hãy khám phá để có cái nhìn tổng quan về ngân sách cần thiết cho ngôi nhà mơ ước của bạn.
+                </p>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="content-card p-6">
-                            <h3 class="text-xl font-bold mb-3 text-[#D97706]">Ước tính nhanh chóng</h3>
-                            <p class="font-medium">Nhận ngay ước tính chi phí dựa trên các thông số bạn cung cấp, giúp bạn lập kế hoạch tài chính hiệu quả.</p>
-                        </div>
-                        <div class="content-card p-6">
-                            <h3 class="text-xl font-bold mb-3 text-[#D97706]">Hiểu rõ các yếu tố</h3>
-                            <p class="font-medium">Tìm hiểu sâu hơn về những yếu tố chính ảnh hưởng đến tổng chi phí xây dựng nhà phố trọn gói.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="ve-chung-toi" class="min-h-screen pt-16">
-                    <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Về ESB Homes</h2>
-                    <p class="mb-6 text-lg font-medium">
-                        Tại ESB Homes, chúng tôi cam kết mang đến những giải pháp xây dựng nhà phố trọn gói chất lượng cao, bền vững và thông minh. Với kinh nghiệm dày dặn và đội ngũ chuyên gia tận tâm, chúng tôi tự hào là đối tác đáng tin cậy, biến ước mơ về ngôi nhà hoàn hảo của bạn thành hiện thực.
-                    </p>
-                    <div class="content-card p-6 mb-6">
-                        <h3 class="text-xl font-bold mb-3 text-[#D97706]">Slogan: Eco-Smart-Build</h3>
-                        <p class="mb-4 font-medium">
-                            Chúng tôi hướng đến việc xây dựng những công trình không chỉ đẹp về kiến trúc, tối ưu về công năng mà còn thân thiện với môi trường và tích hợp công nghệ thông minh.
-                        </p>
-                        <ul class="list-disc list-inside space-y-2 font-medium">
-                            <li><strong>Eco (Thân thiện môi trường):</strong> Sử dụng vật liệu bền vững, tối ưu hóa năng lượng, giảm thiểu tác động đến môi trường.</li>
-                            <li><strong>Smart (Thông minh):</strong> Ứng dụng công nghệ nhà thông minh, thiết kế tối ưu không gian và tiện ích.</li>
-                            <li><strong>Build (Xây dựng):</strong> Quy trình thi công chuyên nghiệp, đảm bảo chất lượng và tiến độ.</li>
-                        </ul>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="content-card p-6">
+                        <h3 class="text-xl font-bold mb-3 text-[#D97706]">Ước tính nhanh chóng</h3>
+                        <p class="font-medium">Nhận ngay ước tính chi phí dựa trên các thông số bạn cung cấp, giúp bạn lập kế hoạch tài chính hiệu quả.</p>
                     </div>
                     <div class="content-card p-6">
-                        <h3 class="text-xl font-bold mb-3 text-[#D97706]">Địa chỉ Văn phòng</h3>
-                        <p class="font-medium">
-                            14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh
-                        </p>
-                        <p class="mt-2 text-sm text-gray-600 font-medium">
-                            (Vui lòng liên hệ trước khi đến để được đón tiếp tốt nhất.)
-                        </p>
+                        <h3 class="text-xl font-bold mb-3 text-[#D97706]">Hiểu rõ các yếu tố</h3>
+                        <p class="font-medium">Tìm hiểu sâu hơn về những yếu tố chính ảnh hưởng đến tổng chi phí xây dựng nhà phố trọn gói.</p>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <section id="yeu-to-anh-huong" class="min-h-screen pt-16">
-                    <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Các Yếu tố ảnh hưởng đến chi phí xây dựng</h2>
-                    <p class="mb-8 text-lg font-medium">
-                        Chi phí xây dựng một ngôi nhà phố trọn gói không chỉ phụ thuộc vào diện tích mà còn bị chi phối bởi nhiều yếu tố khác. Việc hiểu rõ những yếu tố này sẽ giúp bạn đưa ra quyết định sáng suốt và tối ưu hóa ngân sách của mình.
+            <section id="ve-chung-toi" class="min-h-screen pt-16">
+                <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Về ESB Homes</h2>
+                <p class="mb-6 text-lg font-medium">
+                    Tại ESB Homes, chúng tôi cam kết mang đến những giải pháp xây dựng nhà phố trọn gói chất lượng cao, bền vững và thông minh. Với kinh nghiệm dày dặn và đội ngũ chuyên gia tận tâm, chúng tôi tự hào là đối tác đáng tin cậy, biến ước mơ về ngôi nhà hoàn hảo của bạn thành hiện thực.
+                </p>
+                <div class="content-card p-6 mb-6">
+                    <h3 class="text-xl font-bold mb-3 text-[#D97706]">Slogan: Eco-Smart-Build</h3>
+                    <p class="mb-4 font-medium">
+                        Chúng tôi hướng đến việc xây dựng những công trình không chỉ đẹp về kiến trúc, tối ưu về công năng mà còn thân thiện với môi trường và tích hợp công nghệ thông minh.
                     </p>
-                    <div id="factors-container" class="space-y-4">
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Diện tích và Quy mô</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_area.jpg" alt="Minh họa diện tích và quy mô xây dựng nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.</p>
-                                </div>
+                    <ul class="list-disc list-inside space-y-2 font-medium">
+                        <li><strong>Eco (Thân thiện môi trường):</strong> Sử dụng vật liệu bền vững, tối ưu hóa năng lượng, giảm thiểu tác động đến môi trường.</li>
+                        <li><strong>Smart (Thông minh):</strong> Ứng dụng công nghệ nhà thông minh, thiết kế tối ưu không gian và tiện ích.</li>
+                        <li><strong>Build (Xây dựng):</strong> Quy trình thi công chuyên nghiệp, đảm bảo chất lượng và tiến độ.</li>
+                    </ul>
+                </div>
+                <div class="content-card p-6">
+                    <h3 class="text-xl font-bold mb-3 text-[#D97706]">Địa chỉ Văn phòng</h3>
+                    <p class="font-medium">
+                        14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh
+                    </p>
+                    <p class="mt-2 text-sm text-gray-600 font-medium">
+                        (Vui lòng liên hệ trước khi đến để được đón tiếp tốt nhất.)
+                    </p>
+                </div>
+            </section>
+
+            <section id="yeu-to-anh-huong" class="min-h-screen pt-16">
+                <h2 class="text-3xl font-bold mb-4 text-[#FBBF24]">Các Yếu tố Ảnh hưởng đến Chi phí Xây dựng</h2>
+                <p class="mb-8 text-lg font-medium">
+                    Chi phí xây dựng một ngôi nhà phố trọn gói không chỉ phụ thuộc vào diện tích mà còn bị chi phối bởi nhiều yếu tố khác. Việc hiểu rõ những yếu tố này sẽ giúp bạn đưa ra quyết định sáng suốt và tối ưu hóa ngân sách của mình.
+                </p>
+                <div id="factors-container" class="space-y-4">
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Diện tích và Quy mô</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_area.jpg" alt="Minh họa diện tích và quy mô xây dựng nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Phong cách Thiết kế</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_style.jpg" alt="Minh họa các phong cách thiết kế nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Phong cách Thiết kế</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_style.jpg" alt="Minh họa các phong cách thiết kế nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Mức độ Hoàn thiện và Vật liệu</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_finish.jpg" alt="Minh họa mức độ hoàn thiện và vật liệu xây dựng" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Mức độ Hoàn thiện và Vật liệu</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_finish.jpg" alt="Minh họa mức độ hoàn thiện và vật liệu xây dựng" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Công năng và Tiện ích</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_features.jpg" alt="Minh họa công năng và tiện ích trong nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Công năng và Tiện ích</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_features.jpg" alt="Minh họa công năng và tiện ích trong nhà phố" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Vị trí và Điều kiện Thi công</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_location.jpg" alt="Minh họa vị trí và điều kiện thi công" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Vị trí và Điều kiện Thi công</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_location.jpg" alt="Minh họa vị trí và điều kiện thi công" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Loại Móng</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_foundation.jpg" alt="Minh họa các loại móng nhà" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Loại Móng</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_foundation.jpg" alt="Minh họa các loại móng nhà" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Tầng Lửng</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_mezzanine.jpg" alt="Minh họa thiết kế tầng lửng" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Tầng Lửng</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_mezzanine.jpg" alt="Minh họa thiết kế tầng lửng" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Sân Thượng</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_rooftop.jpg" alt="Minh họa thiết kế sân thượng" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Sân Thượng</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_rooftop.jpg" alt="Minh họa thiết kế sân thượng" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden">
-                            <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-bold text-[#D97706] flex-grow">Loại Mái</h3>
-                                <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
-                            </button>
-                            <div class="p-4 pt-0">
-                                <img src="images/factor_roof_type.jpg" alt="Minh họa các loại mái nhà" class="w-full h-auto object-cover rounded-md mb-4">
-                                <div class="collapsible-content">
-                                    <p class="font-medium">Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.</p>
-                                </div>
+                    </div>
+                    <div class="content-card overflow-hidden">
+                        <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
+                            <h3 class="text-lg font-bold text-[#D97706] flex-grow">Loại Mái</h3>
+                            <span class="transform transition-transform duration-300 text-2xl text-[#FBBF24]">+</span>
+                        </button>
+                        <div class="p-4 pt-0">
+                            <img src="images/factor_roof_type.jpg" alt="Minh họa các loại mái nhà" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="collapsible-content">
+                                <p class="font-medium">Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.</p>
                             </div>
                         </div>
                     </div>
@@ -544,7 +557,7 @@
                             <p class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4">
                                 14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh
                             </p>
-                            <a href="https://www.google.com/maps/place/14A+%C4%90%C6%B0%E1%BB%9Dng+s%E1%BB%91+21,+T%C3%A2n+Quy,+Qu%E1%BA%ADn+7,+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh,+Vietnam/@10.7490693,106.7027582,17z/data=!3m1!4b1!4m6!3m5!1s0x31752f9c314a382b:0xa19a9a3b2b9d2e1c!8m2!3d10.7490693!4d106.7053331!16s%2Fg%2F11b6m29683?entry=ttu" target="_blank" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out">
+                            <a href="https://maps.app.goo.gl/your-company-location" target="_blank" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out">
                                 Xem trên Google Maps
                             </a>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
@@ -552,7 +565,7 @@
                             </p>
                             <div class="mt-6">
                                 <iframe 
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.9926442656376!2d106.7027582!3d10.7490693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f9c314a382b%3A0xa19a9a3b2b9d2e1c!2s14A%20%C4%90%C6%B0%E1%BB%9Dng%20s%E1%BB%91%2021%2C%20T%C3%A2n%20Quy%2C%20Qu%E1%BA%ADn%207%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh%2C%20Vietnam!5e0!3m2!1sen!2sus!4v1678234567890!5m2!1sen!2sus"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.864073041933!2d106.70295147493297!3d10.744111389408666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f9c3f9a7d3f%3A0xf6d7a4b2e8a6c8e!2zMTQyIMSQxrDhu5dngyBT4buRIDIxLCBQaMaw4buduZyBUw6JuIFF1eSwgUXXlbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1719632483842!5m2!1svi!2s"
                                     width="100%"
                                     height="450"
                                     style="border:0;"
@@ -566,86 +579,88 @@
                 </section>
 
             </div>
-        </div> <footer class="bg-[#1F2937] text-[#E0E7FF] py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        </div> 
+        <footer class="bg-[#1F2937] text-[#E0E7FF] py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-        <div class="col-span-1 md:col-span-2 lg:col-span-1">
-            <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Công ty TNHH ESB HOMES</h3>
-            <p class="text-sm leading-relaxed">
-                Xây dựng ESB HOMES là nhà thầu thi công xây dựng, cải tạo sửa chữa hoàn thiện căn hộ, nhà phố, biệt thự, văn phòng chuyên nghiệp.
-            </p>
-        </div>
+                <div class="col-span-1 md:col-span-2 lg:col-span-1">
+                    <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Công ty TNHH ESB HOMES</h3>
+                    <p class="text-sm leading-relaxed">
+                        Xây dựng ESB HOMES là nhà thầu thi công xây dựng, cải tạo sửa chữa hoàn thiện căn hộ, nhà phố, biệt thự, văn phòng chuyên nghiệp.
+                    </p>
+                </div>
 
-        <div>
-            <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Dịch Vụ Của Chúng Tôi</h3>
-            <ul class="space-y-2">
-                <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
-                    <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Sửa Chữa Nhà
-                </a></li>
-                <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
-                    <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Thiết Kế Nhà
-                </a></li>
-                <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
-                    <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Thiết Kế & Thi Công Nội Thất
-                </a></li>
-                <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
-                    <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Xây Dựng Phần Thô
-                </a></li>
-                <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
-                    <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Xây Dựng Trọn Gói
-                </a></li>
-            </ul>
-        </div>
+                <div>
+                    <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Dịch Vụ Của Chúng Tôi</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
+                            <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Sửa Chữa Nhà
+                        </a></li>
+                        <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
+                            <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Thiết Kế Nhà
+                        </a></li>
+                        <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
+                            <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Thiết Kế & Thi Công Nội Thất
+                        </a></li>
+                        <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
+                            <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Xây Dựng Phần Thô
+                        </a></li>
+                        <li><a href="#" class="flex items-center text-sm hover:text-[#FBBF24] transition-colors duration-200">
+                            <span class="w-2 h-2 bg-[#FBBF24] rounded-full mr-2 flex-shrink-0"></span> Xây Dựng Trọn Gói
+                        </a></li>
+                    </ul>
+                </div>
 
-        <div>
-            <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Thông Tin Chi Tiết</h3>
-            <ul class="space-y-3">
-                <li class="flex items-start text-sm">
-                    <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
-                    <span><strong>Tên Viết Tắt:</strong> ESB HOMES</span>
-                </li>
-                <li class="flex items-start text-sm">
-                    <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>
-                    <span><strong>Mã Số Thuế:</strong> 0318940069</span>
-                </li>
-                <li class="flex items-start text-sm">
-                    <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.46.57 3.57.11.35.03.74-.25 1.02L6.62 10.79z"></path></svg>
-                    <span><strong>Số Điện Thoại:</strong> (+84) 0772634611</span>
-                </li>
-                <li class="flex items-start text-sm">
-                    <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
-                    <span><strong>Email:</strong> esb.homes.company@gmail.com</span>
-                </li>
-                <li class="flex items-start text-sm">
-                    <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"></path></svg>
-                    <span><strong>Văn Phòng Đại Diện:</strong> 14A đường số 21,P.Tân Quy, TP.HCM</span>
-                </li>
-            </ul>
-        </div>
+                <div>
+                    <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Thông Tin Chi Tiết</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start text-sm">
+                            <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+                            <span><strong>Tên Viết Tắt:</strong> ESB HOMES</span>
+                        </li>
+                        <li class="flex items-start text-sm">
+                            <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>
+                            <span><strong>Mã Số Thuế:</strong> 0318940069</span>
+                        </li>
+                        <li class="flex items-start text-sm">
+                            <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.46.57 3.57.11.35.03.74-.25 1.02L6.62 10.79z"></path></svg>
+                            <span><strong>Số Điện Thoại:</strong> (+84) 0899618286</span>
+                        </li>
+                        <li class="flex items-start text-sm">
+                            <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+                            <span><strong>Email:</strong> esb.homes.company@gmail.com</span>
+                        </li>
+                        <li class="flex items-start text-sm">
+                            <svg class="w-5 h-5 text-[#FBBF24] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"></path></svg>
+                            <span><strong>Văn Phòng Đại Diện:</strong> 14A đường số 21,P.Tân Quy, TP.HCM</span>
+                        </li>
+                    </ul>
+                </div>
 
-        <div>
-            <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Mạng Xã Hội</h3>
-            <div class="flex space-x-4">
-                <a href="https://www.facebook.com/your-facebook-page" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-300 group">
-                    <svg class="w-6 h-6 text-[#E0E7FF] group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.776-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33V22C17.34 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-                <a href="https://zalo.me/0772634611" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-[#008CFF] rounded-full flex items-center justify-center transition-colors duration-300 group">
-                    <svg class="w-6 h-6 text-[#E0E7FF] group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2.5 15c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm2.5-7.5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path>
-                    </svg>
-                </a>
-                <a href="https://www.youtube.com/your-youtube-channel" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-300 group">
-                    <svg class="w-6 h-6 text-[#E0E7FF] group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M19.812 5.488C20.265 6.4 20.3 8.971 20.3 12c0 3.029-.035 5.6-0.488 6.512C19.37 19.413 18.286 20 17 20H7c-1.286 0-2.37-.587-2.812-1.488C3.7 17.6 3.7 15.029 3.7 12c0-3.029.035-5.6 0.488-6.512C4.63 4.587 5.714 4 7 4h10c1.286 0 2.37.587 2.812 1.488zM15 12L10 9v6l5-3z" clip-rule="evenodd" />
-                    </svg>
-                </a>
+                <div>
+                    <h3 class="text-xl font-bold text-[#FBBF24] mb-4 uppercase">Mạng Xã Hội</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/your-facebook-page" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-300 group">
+                            <svg class="w-6 h-6 text-[#E0E7FF] group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.776-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33V22C17.34 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="https://zalo.me/0772634611" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-[#008CFF] rounded-full flex items-center justify-center transition-colors duration-300 group">
+                            <svg class="w-6 h-6 text-[#E0E7FF] group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2.5 15c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm2.5-7.5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path>
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/your-youtube-channel" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-300 group">
+                            <svg class="w-6 h-6 text-[#E0E7FF] group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M19.812 5.488C20.265 6.4 20.3 8.971 20.3 12c0 3.029-.035 5.6-0.488 6.512C19.37 19.413 18.286 20 17 20H7c-1.286 0-2.37-.587-2.812-1.488C3.7 17.6 3.7 15.029 3.7 12c0-3.029.035-5.6 0.488-6.512C4.63 4.587 5.714 4 7 4h10c1.286 0 2.37.587 2.812 1.488zM15 12L10 9v6l5-3z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-        <div class="text-center pt-16 text-xs text-white">
-            Copyright by ESB HOMES
+            <div class="text-center pt-16 text-xs text-white">
+                Copyright by ESB HOMES
+            </div>
         </footer>
     </main>
 
