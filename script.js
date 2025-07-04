@@ -1,4 +1,4 @@
-window.onload = function() {
+Window.onload = function() {
     // Collapsible content for Influencing Factors
     document.querySelectorAll('#factors-container button').forEach(button => {
         button.addEventListener('click', function() {
@@ -147,12 +147,13 @@ window.onload = function() {
             costError.classList.remove('hidden');
             emailNotification.classList.add('hidden');
             resultsSection.classList.add('hidden');
+            costLoadingSpinner.classList.add('hidden'); // Ensure spinner is hidden on error
             return;
         } else {
             costError.classList.add('hidden');
         }
 
-        costLoadingSpinner.style.display = 'block';
+        [cite_start]costLoadingSpinner.classList.remove('hidden'); // Show spinner [cite: 2]
         resultsSection.classList.add('hidden');
         emailNotification.classList.add('hidden');
 
@@ -284,7 +285,7 @@ window.onload = function() {
             });
 
             resultsSection.classList.remove('hidden');
-            costLoadingSpinner.style.display = 'none';
+            costLoadingSpinner.classList.add('hidden'); [cite_start]// Hide spinner [cite: 2]
 
         }, 800);
     });
