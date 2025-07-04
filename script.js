@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- KHAI BÁO BIẾN --- //
     const form = document.getElementById('estimatorForm');
     const calculateBtn = document.getElementById('calculateBtn');
-    const costLoadingSpinner = document.getElementById('costLoadingSpinner');
     const estimatedCostEl = document.getElementById('estimatedCost');
     const resultsSection = document.getElementById('resultsSection');
     const costErrorEl = document.getElementById('costError');
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const paymentScheduleTableBody = document.getElementById('paymentScheduleTableBody');
 
     const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('#floating-toc-menu a, #side-menu a');
     const floatingNavList = document.getElementById('floating-nav-list');
     const sideNavList = document.getElementById('side-nav-list');
 
@@ -25,49 +23,49 @@ document.addEventListener('DOMContentLoaded', function () {
     let costBreakdownChart = null;
     let lastCalculatedData = null;
 
-    // --- CÁC HẰNG SỐ TÍNH TOÁN --- //
-    const BASE_COST_PER_M2 = {
-        basic: 5000000,    // Cơ bản
-        standard: 6500000, // Trung bình
-        premium: 8500000   // Cao cấp
+    // --- CÁC HẰNG SỐ VÀ TỶ LỆ TÍNH TOÁN --- //
+    // Nhóm tất cả các hệ số vào một object để dễ quản lý và thay đổi.
+    const COST_FACTORS = {
+        BASE_PER_M2: {
+            basic: 5000000,    // Gói cơ bản
+            standard: 6500000, // Gói trung bình
+            premium: 8500000   // Gói cao cấp
+        },
+        STYLE_MULTIPLIER: {
+            modern: 1.0,       // Hiện đại
+            neoclassical: 1.3, // Tân cổ điển
+            minimalist: 0.95   // Tối giản
+        },
+        FOUNDATION_PER_M2: {
+            simple: 250000,    // Móng đơn
+            strip: 450000,     // Móng băng
+            pile: 1000000      // Móng cọc
+        },
+        ROOF_PER_M2: {
+            flat: 150000,      // Mái bằng
+            thai: 400000,      // Mái Thái
+            japanese: 500000   // Mái Nhật
+        },
+        AREA_MULTIPLIER: {
+            MEZZANINE: 1.5, // Chi phí tầng lửng tính bằng 150% diện tích
+            ROOFTOP: 0.5    // Chi phí sân thượng tính bằng 50% diện tích
+        },
+        COST_BREAKDOWN_RATIO: {
+            ROUGH_PART: 0.6,       // Tỷ lệ chi phí phần thô trên chi phí xây dựng cơ bản
+            FINISHING_PART: 0.4,   // Tỷ lệ chi phí hoàn thiện trên chi phí xây dựng cơ bản
+            DESIGN_MANAGEMENT: 0.1 // Tỷ lệ chi phí thiết kế & quản lý trên tổng chi phí xây dựng
+        }
     };
-
-    const STYLE_MULTIPLIER = {
-        modern: 1.0,       // Hiện đại
-        neoclassical: 1.3, // Tân cổ điển
-        minimalist: 0.95   // Tối giản
-    };
-    
-    const FOUNDATION_COST_PER_M2 = {
-        simple: 250000,    // Móng đơn
-        strip: 450000,     // Móng băng
-        pile: 1000000      // Móng cọc
-    };
-
-    const ROOF_COST_PER_M2 = {
-        flat: 150000,      // Mái bằng
-        thai: 400000,      // Mái Thái
-        japanese: 500000   // Mái Nhật
-    };
-
-    const MEZZANINE_MULTIPLIER = 1.5; // Chi phí tầng lửng = 150% diện tích
-    const ROOFTOP_MULTIPLIER = 0.5;   // Chi phí sân thượng = 50% diện tích
 
     // --- KHỞI TẠO --- //
-    
-    // Tạo mục lục động
     createTableOfContents();
-    
-    // Thêm sự kiện cho các thành phần
     addEventListeners();
-
 
     // --- HÀM TẠO MỤC LỤC ĐỘNG --- //
     function createTableOfContents() {
         let navHTML = '';
         sections.forEach(section => {
             const sectionId = section.id;
-            // Lấy tiêu đề từ thẻ h2 hoặc h3 đầu tiên trong section
             const sectionTitle = section.querySelector('h2, h3').textContent.trim();
             if (sectionId && sectionTitle) {
                 navHTML += `<li><a href="#${sectionId}" class="nav-link">${sectionTitle}</a></li>`;
@@ -79,26 +77,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- HÀM THÊM CÁC EVENT LISTENER --- //
     function addEventListeners() {
-        // Sự kiện submit form
         form.addEventListener('submit', handleFormSubmit);
-
-        // Sự kiện click nút gửi email
         sendEmailBtn.addEventListener('click', handleSendEmail);
-
-        // Sự kiện cuộn trang để cập nhật mục lục
         window.addEventListener('scroll', handleScroll);
-
-        // Sự kiện cho các mục có thể thu gọn
         document.querySelectorAll('#factors-container button').forEach(button => {
             button.addEventListener('click', toggleCollapsible);
         });
-
-        // Sự kiện cho menu di động (hamburger)
         hamburgerMenuButton.addEventListener('click', toggleSideMenu);
         closeSideMenuButton.addEventListener('click', toggleSideMenu);
         sideMenuOverlay.addEventListener('click', toggleSideMenu);
-        
-        // Đóng menu khi click vào một link
         document.querySelectorAll('#side-menu a').forEach(link => {
             link.addEventListener('click', toggleSideMenu);
         });
@@ -109,41 +96,25 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         if (calculateBtn.classList.contains('loading')) return;
 
-        // Xóa lỗi và thông báo cũ
         hideError();
         hideNotification();
-        resultsSection.classList.add('hidden');
-        resultsSection.classList.add('opacity-0');
-
-
-        // Hiển thị spinner và vô hiệu hóa nút
+        resultsSection.classList.add('hidden', 'opacity-0');
         setLoadingState(true);
 
-        // Lấy giá trị từ form
         const inputs = getFormInputs();
 
-        // Kiểm tra dữ liệu đầu vào
         if (!validateInputs(inputs)) {
             setLoadingState(false);
             return;
         }
 
-        // Mô phỏng thời gian tính toán
         setTimeout(() => {
-            // Tính toán chi phí
             const calculationResult = calculateCost(inputs);
             lastCalculatedData = { inputs, calculationResult };
-
-            // Hiển thị kết quả
             displayResults(calculationResult);
-
-            // Tắt spinner và kích hoạt lại nút
             setLoadingState(false);
-            
-            // Cuộn đến phần kết quả
-            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        }, 1500); // 1.5 giây
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 1500);
     }
 
     function getFormInputs() {
@@ -173,13 +144,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function setLoadingState(isLoading) {
+        calculateBtn.disabled = isLoading;
         if (isLoading) {
             calculateBtn.classList.add('loading');
-            calculateBtn.disabled = true;
             calculateBtn.querySelector('span').textContent = 'Đang tính toán...';
         } else {
             calculateBtn.classList.remove('loading');
-            calculateBtn.disabled = false;
             calculateBtn.querySelector('span').textContent = 'Ước tính Chi phí';
         }
     }
@@ -189,30 +159,39 @@ document.addEventListener('DOMContentLoaded', function () {
         const { area, floors, style, finish, foundationType, mezzanineOption, rooftopOption, roofType } = inputs;
 
         // 1. Tính tổng diện tích xây dựng (Total Construction Area - TCA)
+        // Diện tích cơ bản = diện tích sàn * số tầng
         let totalArea = area * floors;
+        // Cộng thêm diện tích tầng lửng (nếu có)
         if (mezzanineOption === 'yes') {
-            totalArea += area * MEZZANINE_MULTIPLIER;
+            totalArea += area * COST_FACTORS.AREA_MULTIPLIER.MEZZANINE;
         }
+        // Cộng thêm diện tích sân thượng (nếu có)
         if (rooftopOption === 'yes') {
-            totalArea += area * ROOFTOP_MULTIPLIER;
+            totalArea += area * COST_FACTORS.AREA_MULTIPLIER.ROOFTOP;
         }
 
-        // 2. Chi phí xây dựng cơ bản
-        const baseConstructionCost = totalArea * BASE_COST_PER_M2[finish] * STYLE_MULTIPLIER[style];
+        // 2. Chi phí xây dựng cơ bản (chưa bao gồm móng, mái và quản lý)
+        // Được tính dựa trên tổng diện tích và các hệ số về gói hoàn thiện, phong cách.
+        const baseConstructionCost = totalArea * COST_FACTORS.BASE_PER_M2[finish] * COST_FACTORS.STYLE_MULTIPLIER[style];
 
-        // 3. Chi phí móng
-        const foundationCost = area * FOUNDATION_COST_PER_M2[foundationType];
+        // 3. Chi phí móng (tính trên diện tích sàn trệt)
+        const foundationCost = area * COST_FACTORS.FOUNDATION_PER_M2[foundationType];
 
-        // 4. Chi phí mái
-        const roofCost = area * ROOF_COST_PER_M2[roofType];
+        // 4. Chi phí mái (tính trên diện tích sàn mái)
+        const roofCost = area * COST_FACTORS.ROOF_PER_M2[roofType];
         
-        // 5. Phân bổ chi phí
-        const roughPartCost = baseConstructionCost * 0.6 + foundationCost + roofCost; // Phần thô ~60%
-        const finishingCost = baseConstructionCost * 0.4; // Hoàn thiện ~40%
-        const designAndManagementCost = (roughPartCost + finishingCost) * 0.1; // Thiết kế & quản lý ~10%
+        // 5. Phân bổ chi phí từ chi phí xây dựng cơ bản
+        // Chi phí phần thô = 60% chi phí cơ bản + chi phí móng + chi phí mái
+        const roughPartCost = baseConstructionCost * COST_FACTORS.COST_BREAKDOWN_RATIO.ROUGH_PART + foundationCost + roofCost;
+        // Chi phí hoàn thiện = 40% chi phí cơ bản
+        const finishingCost = baseConstructionCost * COST_FACTORS.COST_BREAKDOWN_RATIO.FINISHING_PART;
         
-        // 6. Tổng chi phí
-        const totalCost = roughPartCost + finishingCost + designAndManagementCost;
+        // 6. Chi phí thiết kế & quản lý (tính 10% trên tổng chi phí thô và hoàn thiện)
+        const subTotal = roughPartCost + finishingCost;
+        const designAndManagementCost = subTotal * COST_FACTORS.COST_BREAKDOWN_RATIO.DESIGN_MANAGEMENT;
+        
+        // 7. Tổng chi phí cuối cùng
+        const totalCost = subTotal + designAndManagementCost;
 
         return {
             totalCost,
@@ -223,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             detailedBreakdown: {
                 'Chi phí móng': foundationCost,
-                'Chi phí kết cấu & xây thô': baseConstructionCost * 0.6,
+                'Chi phí kết cấu & xây thô': baseConstructionCost * COST_FACTORS.COST_BREAKDOWN_RATIO.ROUGH_PART,
                 'Chi phí mái': roofCost,
                 'Chi phí hoàn thiện': finishingCost,
                 'Chi phí thiết kế & quản lý': designAndManagementCost
@@ -245,23 +224,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- HIỂN THỊ KẾT QUẢ --- //
     function displayResults(result) {
-        // Hiển thị tổng chi phí
         estimatedCostEl.textContent = `${formatCurrency(result.totalCost)} VNĐ`;
-        
-        // Cập nhật biểu đồ
         updateChart(result.breakdown);
-        
-        // Cập nhật bảng chi tiết
         updateDetailedBreakdownTable(result.detailedBreakdown);
-
-        // Cập nhật lịch thanh toán
         updatePaymentScheduleTable(result.paymentSchedule);
 
-        // Hiển thị phần kết quả
         resultsSection.classList.remove('hidden');
-        setTimeout(() => {
-            resultsSection.classList.remove('opacity-0');
-        }, 100); // Delay nhỏ để transition hoạt động
+        setTimeout(() => resultsSection.classList.remove('opacity-0'), 100);
     }
 
     function updateChart(breakdownData) {
@@ -280,16 +249,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Phân bổ chi phí',
                     data: data,
-                    backgroundColor: [
-                        'rgba(217, 119, 6, 0.8)',   // --secondary-color
-                        'rgba(251, 191, 36, 0.8)', // --primary-color
-                        'rgba(31, 41, 55, 0.7)'    // --dark-blue
-                    ],
-                    borderColor: [
-                        'rgba(217, 119, 6, 1)',
-                        'rgba(251, 191, 36, 1)',
-                        'rgba(31, 41, 55, 1)'
-                    ],
+                    backgroundColor: [ 'rgba(217, 119, 6, 0.8)', 'rgba(251, 191, 36, 0.8)', 'rgba(31, 41, 55, 0.7)' ],
+                    borderColor: [ 'rgba(217, 119, 6, 1)', 'rgba(251, 191, 36, 1)', 'rgba(31, 41, 55, 1)' ],
                     borderWidth: 1
                 }]
             },
@@ -297,27 +258,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            font: {
-                                size: 14,
-                                family: "'Be Vietnam Pro', sans-serif"
-                            }
-                        }
-                    },
+                    legend: { position: 'top', labels: { font: { size: 14, family: "'Be Vietnam Pro', sans-serif" } } },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed !== null) {
-                                    label += formatCurrency(context.parsed) + ' VNĐ';
-                                }
-                                return label;
-                            }
+                            label: context => `${context.label || ''}: ${formatCurrency(context.parsed)} VNĐ`
                         }
                     }
                 }
@@ -364,7 +308,6 @@ document.addEventListener('DOMContentLoaded', function () {
         paymentScheduleTableBody.innerHTML = tableHTML;
     }
 
-
     // --- XỬ LÝ GỬI EMAIL (MOCKUP) --- //
     function handleSendEmail() {
         if (!lastCalculatedData) {
@@ -373,14 +316,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         sendEmailBtn.disabled = true;
-        sendEmailBtn.textContent = 'Đang gửi...';
+        sendEmailBtn.querySelector('span').textContent = 'Đang gửi...';
 
-        // Đây là nơi bạn sẽ gọi API backend để gửi email
-        // Vì mục đích demo, chúng ta sẽ mô phỏng nó
         setTimeout(() => {
             showNotification(`Yêu cầu báo giá đã được gửi thành công đến <strong>${lastCalculatedData.inputs.email}</strong>. Vui lòng kiểm tra hộp thư của bạn.`, 'success');
             sendEmailBtn.disabled = false;
-            sendEmailBtn.textContent = 'Gửi Yêu cầu Báo giá qua Email';
+            sendEmailBtn.querySelector('span').textContent = 'Gửi Yêu cầu Báo giá qua Email';
         }, 2000);
     }
 
@@ -394,8 +335,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentSectionId = section.id;
             }
         });
-
-        // Cập nhật trạng thái active cho cả hai menu
         updateActiveNavLink(currentSectionId, '#floating-toc-menu a');
         updateActiveNavLink(currentSectionId, '#side-menu a');
     }
@@ -415,20 +354,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const content = button.nextElementSibling.querySelector('.collapsible-content');
         const icon = button.querySelector('span');
         
-        if (content.classList.contains('open')) {
-            content.classList.remove('open');
-            icon.textContent = '+';
-            icon.style.transform = 'rotate(0deg)';
-        } else {
-            // Đóng tất cả các mục khác trước khi mở mục mới
-            document.querySelectorAll('.collapsible-content.open').forEach(openContent => {
-                openContent.classList.remove('open');
-                const openButton = openContent.closest('.content-card').querySelector('button');
-                if(openButton) {
-                    openButton.querySelector('span').textContent = '+';
-                    openButton.querySelector('span').style.transform = 'rotate(0deg)';
-                }
-            });
+        const isOpening = !content.classList.contains('open');
+
+        // Đóng tất cả các mục đang mở
+        document.querySelectorAll('.collapsible-content.open').forEach(openContent => {
+            openContent.classList.remove('open');
+            const openButton = openContent.closest('.content-card').querySelector('button');
+            if(openButton) {
+                openButton.querySelector('span').textContent = '+';
+                openButton.querySelector('span').style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // Mở mục được click (nếu nó đang đóng)
+        if (isOpening) {
             content.classList.add('open');
             icon.textContent = '-';
             icon.style.transform = 'rotate(180deg)';
@@ -439,20 +378,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleSideMenu() {
         const isMenuOpen = sideMenu.classList.contains('translate-x-full');
         if (isMenuOpen) {
-            // Mở menu
             sideMenu.classList.remove('translate-x-full');
             sideMenuOverlay.classList.remove('hidden');
             setTimeout(() => sideMenuOverlay.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden'; // Ngăn cuộn trang nền
+            document.body.style.overflow = 'hidden';
         } else {
-            // Đóng menu
             sideMenu.classList.add('translate-x-full');
             sideMenuOverlay.classList.add('opacity-0');
             setTimeout(() => sideMenuOverlay.classList.add('hidden'), 300);
-            document.body.style.overflow = ''; // Cho phép cuộn lại
+            document.body.style.overflow = '';
         }
     }
-
 
     // --- CÁC HÀM TIỆN ÍCH --- //
     function formatCurrency(number) {
