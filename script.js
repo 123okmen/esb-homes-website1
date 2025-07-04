@@ -2,11 +2,8 @@ window.onload = function() {
     // Collapsible content for Influencing Factors
     document.querySelectorAll('#factors-container button').forEach(button => {
         button.addEventListener('click', function() {
-            // Find the collapsible-content div which is a sibling to the image within the same parent div
-            const parentDiv = this.closest('.content-card').querySelector('.p-4.pt-0');
-            const content = parentDiv.querySelector('.collapsible-content');
+            const content = this.nextElementSibling.querySelector('.collapsible-content'); // Select the actual collapsible content div
             const icon = this.querySelector('span:last-child');
-
             if (content.style.maxHeight) {
                 content.style.maxHeight = null;
                 icon.style.transform = 'rotate(0deg)';
@@ -14,8 +11,7 @@ window.onload = function() {
                 // Close other open items
                 document.querySelectorAll('#factors-container .collapsible-content').forEach(item => {
                     item.style.maxHeight = null;
-                    // Find the button associated with this item to reset its icon
-                    item.closest('.content-card').querySelector('button span:last-child').style.transform = 'rotate(0deg)';
+                    item.closest('.content-card').querySelector('button span:last-child').style.transform = 'rotate(0deg)'; // Adjust to find the correct button's icon
                 });
                 content.style.maxHeight = content.scrollHeight + "px";
                 icon.style.transform = 'rotate(45deg)';
