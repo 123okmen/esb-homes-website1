@@ -1,484 +1,510 @@
-Window.onload = function() {
-    // Collapsible content for Influencing Factors
-    document.querySelectorAll('#factors-container button').forEach(button => {
-        button.addEventListener('click', function() {
-            const content = this.nextElementSibling.querySelector('.collapsible-content'); // Select the actual collapsible content div
-            const icon = this.querySelector('span:last-child');
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                // Close other open items
-                document.querySelectorAll('#factors-container .collapsible-content').forEach(item => {
-                    item.style.maxHeight = null;
-                    item.closest('.content-card').querySelector('button span:last-child').style.transform = 'rotate(0deg)'; // Adjust to find the correct button's icon
-                });
-                content.style.maxHeight = content.scrollHeight + "px";
-                icon.style.transform = 'rotate(45deg)';
+// script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Dynamic Navigation Generation
+    const sections = document.querySelectorAll('main section[id]');
+    const sideNavList = document.getElementById('side-nav-list');
+    const floatingNavList = document.getElementById('floating-nav-list');
+
+    sections.forEach(section => {
+        const id = section.id;
+        const titleElement = section.querySelector('h2');
+        if (titleElement) {
+            const title = titleElement.textContent;
+
+            // Side Menu
+            const listItemSide = document.createElement('li');
+            const anchorSide = document.createElement('a');
+            anchorSide.href = `#${id}`;
+            anchorSide.textContent = title;
+            anchorSide.className = 'block py-2 px-4 rounded-md text-[#E0E7FF] hover:bg-[#FBBF24] hover:text-[#1F2937] transition-colors duration-200 text-lg font-medium';
+            listItemSide.appendChild(anchorSide);
+            sideNavList.appendChild(listItemSide);
+
+            // Floating TOC Menu (only for desktop, hidden on small screens)
+            const listItemFloat = document.createElement('li');
+            const anchorFloat = document.createElement('a');
+            anchorFloat.href = `#${id}`;
+            anchorFloat.textContent = title.replace('Chào mừng đến với Công cụ Ước tính Chi phí Xây dựng Nhà phố', 'Giới thiệu')
+                                         .replace('Các Yếu tố Ảnh hưởng đến Chi phí Xây dựng', 'Yếu tố chi phí')
+                                         .replace('Công cụ Ước tính Chi phí Xây dựng Trọn Gói', 'Ước tính Trọn Gói')
+                                         .replace('Báo Giá Thiết Kế Kiến Trúc', 'Thiết kế KT')
+                                         .replace('Báo Giá Xây Dựng Phần Thô', 'XD Phần Thô')
+                                         .replace('Báo Giá Xây Dựng Phần Hoàn Thiện', 'XD Hoàn Thiện')
+                                         .replace('Các Gói Xây dựng Trọn Gói Phổ biến', 'Các gói XD')
+                                         .replace('Lưu ý Quan trọng', 'Lưu ý')
+                                         .replace('Liên Hệ Với Chúng Tôi', 'Liên hệ'); // Shorten for floating menu
+            anchorFloat.className = 'block py-1 px-2 rounded-md text-[#E0E7FF] hover:bg-[#FBBF24] hover:text-[#1F2937] transition-colors duration-200 text-sm';
+            listItemFloat.appendChild(anchorFloat);
+            floatingNavList.appendChild(listItemFloat);
+        }
+    });
+
+    // Smooth scrolling for all internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            document.querySelector(targetId).scrollIntoView({
+                behavior: 'smooth'
+            });
+            // Close side menu after clicking a link
+            if (sideMenu.classList.contains('translate-x-0')) {
+                sideMenu.classList.remove('translate-x-0');
+                sideMenu.classList.add('translate-x-full');
+                sideMenuOverlay.classList.add('hidden');
+                sideMenuOverlay.classList.remove('opacity-50');
             }
         });
     });
 
-    // Cost Estimation Logic
+    // Active link highlighting for floating TOC (Optional, more advanced)
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.3 // Adjust as needed
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const id = entry.target.getAttribute('id');
+            const floatingLink = document.querySelector(`#floating-nav-list a[href="#${id}"]`);
+            if (floatingLink) {
+                if (entry.isIntersecting) {
+                    floatingLink.classList.add('bg-[#FBBF24]', 'text-[#1F2937]');
+                    floatingLink.classList.remove('text-[#E0E7FF]', 'hover:bg-[#FBBF24]', 'hover:text-[#1F2937]');
+                } else {
+                    floatingLink.classList.remove('bg-[#FBBF24]', 'text-[#1F2937]');
+                    floatingLink.classList.add('text-[#E0E7FF]', 'hover:bg-[#FBBF24]', 'hover:text-[#1F2937]');
+                }
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    // 2. Hamburger Menu Functionality
+    const hamburgerBtn = document.getElementById('hamburger-menu-button');
+    const closeMenuBtn = document.getElementById('close-side-menu');
+    const sideMenu = document.getElementById('side-menu');
+    const sideMenuOverlay = document.getElementById('side-menu-overlay');
+
+    hamburgerBtn.addEventListener('click', () => {
+        sideMenu.classList.remove('translate-x-full');
+        sideMenu.classList.add('translate-x-0');
+        sideMenuOverlay.classList.remove('hidden');
+        setTimeout(() => sideMenuOverlay.classList.add('opacity-50'), 10);
+    });
+
+    closeMenuBtn.addEventListener('click', () => {
+        sideMenu.classList.remove('translate-x-0');
+        sideMenu.classList.add('translate-x-full');
+        sideMenuOverlay.classList.remove('opacity-50');
+        setTimeout(() => sideMenuOverlay.classList.add('hidden'), 300);
+    });
+
+    sideMenuOverlay.addEventListener('click', () => {
+        closeMenuBtn.click();
+    });
+
+    // 3. Collapsible Section Functionality
+    document.querySelectorAll('#factors-container > .content-card button').forEach(button => {
+        button.addEventListener('click', () => {
+            const contentCard = button.closest('.content-card');
+            const collapsibleContent = contentCard.querySelector('.collapsible-content');
+            const icon = button.querySelector('span');
+
+            if (collapsibleContent.style.maxHeight && collapsibleContent.style.maxHeight !== '0px') {
+                collapsibleContent.style.maxHeight = null;
+                collapsibleContent.style.paddingTop = '0';
+                icon.textContent = '+';
+                icon.classList.remove('rotate-45');
+            } else {
+                collapsibleContent.style.maxHeight = collapsibleContent.scrollHeight + 32 + 'px'; // Add extra space for padding
+                collapsibleContent.style.paddingTop = '1rem';
+                icon.textContent = '-';
+                icon.classList.add('rotate-45');
+            }
+        });
+
+        // Initialize all collapsible contents as closed
+        const collapsibleContent = button.closest('.content-card').querySelector('.collapsible-content');
+        collapsibleContent.style.maxHeight = '0';
+        collapsibleContent.style.overflow = 'hidden';
+        collapsibleContent.style.transition = 'max-height 0.3s ease-out, padding-top 0.3s ease-out';
+        collapsibleContent.style.paddingTop = '0';
+    });
+
+
+    // 4. Cost Estimator Logic
     const estimatorForm = document.getElementById('estimatorForm');
     const areaInput = document.getElementById('area');
     const floorsInput = document.getElementById('floors');
     const styleSelect = document.getElementById('style');
     const finishSelect = document.getElementById('finish');
-    const foundationTypeSelect = document.getElementById('foundation_type');
-    const mezzanineOptionSelect = document.getElementById('mezzanine_option');
-    const rooftopOptionSelect = document.getElementById('rooftop_option');
+    const foundationSelect = document.getElementById('foundation_type');
+    const mezzanineSelect = document.getElementById('mezzanine_option');
+    const rooftopSelect = document.getElementById('rooftop_option');
     const roofTypeSelect = document.getElementById('roof_type');
     const emailInput = document.getElementById('email');
-
-    const resultsSection = document.getElementById('resultsSection');
-    const estimatedCostDisplay = document.getElementById('estimatedCost');
+    const calculateBtn = document.getElementById('calculateBtn');
     const costLoadingSpinner = document.getElementById('costLoadingSpinner');
     const costError = document.getElementById('costError');
-    const emailNotification = document.getElementById('emailNotification');
+    const estimatedCostDisplay = document.getElementById('estimatedCost');
+    const resultsSection = document.getElementById('resultsSection');
     const detailedBreakdownTableBody = document.getElementById('detailedBreakdownTableBody');
     const paymentScheduleTableBody = document.getElementById('paymentScheduleTableBody');
     const sendEmailBtn = document.getElementById('sendEmailBtn');
-    const ctxCostBreakdown = document.getElementById('costBreakdownChart').getContext('2d');
+    const emailNotification = document.getElementById('emailNotification');
 
-    let lastQuoteData = null;
+    let costChart; // To hold the Chart.js instance
 
-    let costBreakdownChart = new Chart(ctxCostBreakdown, {
-        type: 'bar',
-        data: {
-            labels: ['Phần thô', 'Hoàn thiện', 'M&E', 'Thiết kế & Giấy phép', 'Dự phòng'],
-            datasets: [{
-                label: 'Phân bổ Chi phí',
-                data: [0, 0, 0, 0, 0],
-                backgroundColor: [
-                    'rgba(251, 191, 36, 0.7)', /* Golden Yellow */
-                    'rgba(245, 158, 11, 0.7)',  /* Orange-Yellow */
-                    'rgba(217, 119, 6, 0.7)',   /* Darker Orange */
-                    'rgba(180, 83, 9, 0.7)',    /* Brownish Orange */
-                    'rgba(124, 45, 6, 0.7)'     /* Darkest Orange */
-                ],
-                borderColor: [
-                    'rgb(251, 191, 36)',
-                    'rgb(245, 158, 11)',
-                    'rgb(217, 119, 6)',
-                    'rgb(180, 83, 9)',
-                    'rgb(124, 45, 6)'
-                ],
-                borderWidth: 1
-            }]
+    // Define base rates and factors (REALISTIC EXAMPLES - ADJUST THESE VALUES CAREFULLY)
+    // These rates are per square meter of construction area
+    const rates = {
+        finish: {
+            basic: 5200000,   // VNĐ/m² for basic finish
+            standard: 6500000, // VNĐ/m² for standard finish
+            premium: 8000000  // VNĐ/m² for premium finish
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Tỷ lệ (%)',
-                        color: '#3a3a3a'
-                    },
-                    ticks: {
-                        color: '#3a3a3a'
-                    },
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    }
-                },
-                x: {
-                    ticks: {
-                        callback: function(value, index, values) {
-                            const label = this.getLabelForValue(value);
-                            if (label.length > 16) {
-                                return label.split(' ').reduce((acc, word) => {
-                                    if (acc[acc.length - 1].length + word.length + 1 > 16) {
-                                        acc.push(word);
-                                    } else {
-                                        acc[acc.length - 1] += (acc[acc.length - 1] ? ' ' : '') + word;
-                                    }
-                                    return acc;
-                                }, ['']);
-                            }
-                            return label;
-                        },
-                        color: '#3a3a3a'
-                    },
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed.y !== null) {
-                                label += context.parsed.y + '%';
-                            }
-                            return label;
-                        }
-                    }
-                },
-                title: {
-                    display: true,
-                    text: 'PHÂN BỔ CHI PHÍ ƯỚC TÍNH (TỶ LỆ PHẦN TRĂM)',
-                    font: { size: 16, family: 'Arial', color: '#3a3a3a' }
-                }
-            }
-        }
-    });
+        style: {
+            modern: 1.0,      // Modern is base
+            minimalist: 1.03, // Minimalist might require more precise finishing
+            neoclassical: 1.15 // Neoclassical has complex details, higher cost
+        },
+        // Factors for areas that are not full floors but add cost (e.g., foundation, roof, mezzanine, rooftop)
+        // These are coefficients applied to the *main floor area* or treated as separate area costs
+        foundation_coefficient: { // % of ground floor area equivalent for foundation cost calculation
+            simple: 0.3,  // 30% of ground floor area
+            strip: 0.4,   // 40%
+            pile: 0.55    // 55% for complex pile foundation
+        },
+        mezzanine_coefficient: 0.7, // 70% of its actual area cost (as it's partial structure)
+        rooftop_coefficient: 0.5,   // 50% of its actual area cost (partially covered, finishing)
+        roof_coefficient: { // % of roof coverage area equivalent for roof cost calculation
+            flat: 0.3,    // Flat roof, basic finish: 30% of covered area
+            thai: 0.45,   // Thai roof, complex structure: 45%
+            japanese: 0.4  // Japanese roof: 40%
+        },
+        basement_coefficient: 1.5, // If you add basement, it's very expensive (150% of a floor area)
+        // You might need a design cost per m2, or it's implicitly included in the total m2 rate
+        design_rate_per_sqm: 150000 // VNĐ/m² for design, separate from construction
+    };
 
-    estimatorForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+    // Cost breakdown percentages (example, these should sum to 100 for the main construction)
+    // These are for the construction itself, excluding separate design/foundation calculations
+    const constructionBreakdownPercentages = {
+        'Phần Thô (Vật tư & Nhân công)': 0.60,
+        'Hoàn thiện (Vật tư & Nhân công)': 0.40,
+    };
+
+    // Define Payment Schedule
+    const paymentSchedule = [
+        { phase: 'Đợt 1', description: 'Tạm ứng thiết kế & Ký hợp đồng thi công (10% GT HĐ)', percentage: 0.10 },
+        { phase: 'Đợt 2', description: 'Hoàn thành móng & sàn trệt (20% GT HĐ)', percentage: 0.20 },
+        { phase: 'Đợt 3', description: 'Hoàn thành sàn lầu 1, lầu 2, ... mái (25% GT HĐ)', percentage: 0.25 },
+        { phase: 'Đợt 4', description: 'Xây tường, đi điện nước âm, tô trát (20% GT HĐ)', percentage: 0.20 },
+        { phase: 'Đợt 5', description: 'Ốp lát, sơn bả, lắp đặt thiết bị (15% GT HĐ)', percentage: 0.15 },
+        { phase: 'Đợt 6', description: 'Bàn giao công trình, nghiệm thu, thanh lý (10% GT HĐ)', percentage: 0.10 }
+    ];
+
+    estimatorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        costError.classList.add('hidden');
+        emailNotification.classList.add('hidden');
+        resultsSection.classList.add('hidden');
+        costLoadingSpinner.style.display = 'block';
+        calculateBtn.disabled = true;
 
         const area = parseFloat(areaInput.value);
         const floors = parseInt(floorsInput.value);
+        const style = styleSelect.value;
+        const finish = finishSelect.value;
+        const foundationType = foundationSelect.value;
+        const mezzanineOption = mezzanineSelect.value;
+        const rooftopOption = rooftopSelect.value;
+        const roofType = roofTypeSelect.value;
         const email = emailInput.value;
 
-        if (isNaN(area) || area <= 0 || isNaN(floors) || floors <= 0) {
-            costError.textContent = 'Vui lòng nhập diện tích và số tầng hợp lệ.';
+        if (isNaN(area) || area < 20 || area > 500 || isNaN(floors) || floors < 1 || floors > 7 || !email || !email.includes('@')) {
+            costError.textContent = 'Vui lòng nhập đầy đủ và chính xác thông tin diện tích (20-500m²), số tầng (1-7) và email hợp lệ.';
             costError.classList.remove('hidden');
-            emailNotification.classList.add('hidden');
-            resultsSection.classList.add('hidden');
-            costLoadingSpinner.classList.add('hidden'); // Ensure spinner is hidden on error
+            costLoadingSpinner.style.display = 'none';
+            calculateBtn.disabled = false;
             return;
-        } else {
-            costError.classList.add('hidden');
         }
 
-        costLoadingSpinner.classList.remove('hidden'); // Show spinner
-        resultsSection.classList.add('hidden');
-        emailNotification.classList.add('hidden');
+        // --- Core Calculation Logic ---
+        let totalEstimatedCost = 0;
+        let effectiveConstructionArea = 0; // Diện tích xây dựng thực tế tính tiền
+        let baseCostPerSqm = rates.finish[finish]; // Đơn giá vật tư hoàn thiện/m2
 
+        // Ground floor + Upper floors
+        effectiveConstructionArea += area * floors;
+
+        // Foundation cost (calculated as a percentage of ground floor area cost)
+        const foundationAreaEquivalent = area * rates.foundation_coefficient[foundationType];
+        const foundationCost = foundationAreaEquivalent * baseCostPerSqm;
+        effectiveConstructionArea += foundationAreaEquivalent; // Add to effective area for total calculation
+
+        // Mezzanine cost (if applicable)
+        if (mezzanineOption === 'yes') {
+            // Assume mezzanine area is typically 50-70% of a floor, for simplicity let's use 0.5 * area
+            const mezzanineActualArea = area * 0.5; // Example: Mezzanine is half the ground floor area
+            const mezzanineCost = mezzanineActualArea * baseCostPerSqm * rates.mezzanine_coefficient;
+            effectiveConstructionArea += mezzanineActualArea * rates.mezzanine_coefficient; // Add weighted area
+        }
+
+        // Rooftop cost (if applicable)
+        if (rooftopOption === 'yes') {
+            // Assume rooftop area is typically 50% of area for calculation
+            const rooftopActualArea = area * 0.5;
+            const rooftopCost = rooftopActualArea * baseCostPerSqm * rates.rooftop_coefficient;
+            effectiveConstructionArea += rooftopActualArea * rates.rooftop_coefficient; // Add weighted area
+        }
+
+        // Roof cost (applied to the main area it covers)
+        const roofAreaEquivalent = area * rates.roof_coefficient[roofType];
+        const roofCost = roofAreaEquivalent * baseCostPerSqm;
+        effectiveConstructionArea += roofAreaEquivalent; // Add to effective area
+
+        // Total Construction Cost (includes foundation, floors, roof, mezzanine, rooftop)
+        let totalConstructionBase = effectiveConstructionArea * baseCostPerSqm;
+
+        // Apply style factor to the main construction part
+        totalConstructionBase *= rates.style[style];
+
+        // Add design cost separately (usually based on actual floor area, not effective area with coefficients)
+        const designCost = area * floors * rates.design_rate_per_sqm;
+
+        // Final total estimated cost
+        totalEstimatedCost = totalConstructionBase + designCost;
+
+        // Simulate API call or complex calculation
         setTimeout(() => {
-            const style = styleSelect.value;
-            const finish = finishSelect.value;
-            const foundationType = foundationTypeSelect.value;
-            const mezzanineOption = mezzanineOptionSelect.value;
-            const rooftopOption = rooftopOptionSelect.value;
-            const roofType = roofTypeSelect.value;
-
-            let baseCostPerSqM = 5000000;
-
-            if (style === 'neoclassical') baseCostPerSqM *= 1.2;
-            else if (style === 'minimalist') baseCostPerSqM *= 0.95;
-
-            if (finish === 'standard') baseCostPerSqM *= 1.15;
-            else if (finish === 'premium') baseCostPerSqM *= 1.35;
-
-            let floorFactor = 1;
-            if (floors === 2) floorFactor = 1.05;
-            else if (floors === 3) floorFactor = 1.1;
-            else if (floors === 4) floorFactor = 1.15;
-            else if (floors > 4) floorFactor = 1.2;
-
-            let foundationFactor = 1;
-            if (foundationType === 'strip') foundationFactor = 1.05;
-            else if (foundationType === 'pile') foundationFactor = 1.10;
-            
-            let mezzanineFactor = (mezzanineOption === 'yes') ? 1.03 : 1;
-            
-            let rooftopFactor = (rooftopOption === 'yes') ? 1.02 : 1;
-
-            let roofFactor = 1;
-            if (roofType === 'thai') roofFactor = 1.05;
-            else if (roofType === 'japanese') roofFactor = 1.07;
-            
-            const totalArea = area * floors;
-            const totalEstimatedCost = totalArea * baseCostPerSqM * floorFactor * foundationFactor * mezzanineFactor * rooftopFactor * roofFactor;
-
-            lastQuoteData = {
-                area,
-                floors,
-                style: styleSelect.options[styleSelect.selectedIndex].text,
-                finish: finishSelect.options[finishSelect.selectedIndex].text,
-                foundationType: foundationTypeSelect.options[foundationTypeSelect.selectedIndex].text,
-                mezzanineOption: mezzanineOptionSelect.options[mezzanineOptionSelect.selectedIndex].text,
-                rooftopOption: rooftopOptionSelect.options[rooftopOptionSelect.selectedIndex].text,
-                roofType: roofTypeSelect.options[roofTypeSelect.selectedIndex].text,
-                email,
-                totalEstimatedCost
-            };
-
             estimatedCostDisplay.textContent = `${totalEstimatedCost.toLocaleString('vi-VN')} VNĐ`;
-            
-            const breakdownPercentages = {
-                'basic':    { rough: 40, finishing: 30, me: 15, design: 10, contingency: 5 },
-                'standard': { rough: 35, finishing: 35, me: 15, design: 10, contingency: 5 },
-                'premium':  { rough: 30, finishing: 40, me: 15, design: 10, contingency: 5 }
-            };
-            const currentBreakdownPercents = breakdownPercentages[finish];
-            
-            costBreakdownChart.data.datasets[0].data = Object.values(currentBreakdownPercents);
-            costBreakdownChart.update();
+            resultsSection.classList.remove('hidden');
 
-            const detailedItems = {
-                'Phần thô': {
-                    'Móng, kết cấu': 0.60 * currentBreakdownPercents.rough,
-                    'Xây tô, chống thấm': 0.40 * currentBreakdownPercents.rough
-                },
-                'Hoàn thiện': {
-                    'Ốp lát (sàn, tường)': 0.30 * currentBreakdownPercents.finishing,
-                    'Sơn nước, trần thạch cao': 0.25 * currentBreakdownPercents.finishing,
-                    'Cửa, lan can, cầu thang': 0.25 * currentBreakdownPercents.finishing,
-                    'Thiết bị vệ sinh': 0.20 * currentBreakdownPercents.finishing
-                },
-                'Hệ thống M&E': {
-                    'Hệ thống điện': 0.50 * currentBreakdownPercents.me,
-                    'Hệ thống cấp thoát nước': 0.50 * currentBreakdownPercents.me
-                },
-                'Chi phí khác': {
-                    'Thiết kế & Giấy phép': currentBreakdownPercents.design,
-                    'Dự phòng': currentBreakdownPercents.contingency
-                }
-            };
+            // --- Update Chart ---
+            const chartLabels = ['Phần Thô & Hoàn thiện', 'Móng', 'Mái', 'Thiết kế & Giám sát', 'Chi phí khác (dự phòng)'];
+            const chartValues = [];
 
-            detailedBreakdownTableBody.innerHTML = '';
-            for (const mainCategory in detailedItems) {
-                let firstRow = true;
-                const subItems = detailedItems[mainCategory];
-                const rowSpan = Object.keys(subItems).length;
-                for (const subItem in subItems) {
-                    const cost = totalEstimatedCost * (subItems[subItem] / 100);
-                    const row = document.createElement('tr');
-                    let mainCategoryCell = '';
-                    if (firstRow) {
-                        mainCategoryCell = `<td rowspan="${rowSpan}" class="align-top font-semibold">${mainCategory}</td>`;
-                        firstRow = false;
-                    }
-                    row.innerHTML = `
-                        ${mainCategoryCell}
-                        <td>${subItem}</td>
-                        <td class="text-right">${cost.toLocaleString('vi-VN')}</td>
-                    `;
-                    detailedBreakdownTableBody.appendChild(row);
-                }
+            // Proportion of main construction (excluding design, specific foundation/roof calc)
+            const mainConstructionCost = totalConstructionBase - foundationCost - roofCost;
+            chartValues.push(mainConstructionCost);
+            chartValues.push(foundationCost);
+            chartValues.push(roofCost);
+            chartValues.push(designCost);
+            
+            // Add a contingency fund (e.g., 5% of total cost)
+            const contingencyCost = totalEstimatedCost * 0.05; // 5% buffer
+            chartValues.push(contingencyCost);
+            totalEstimatedCost += contingencyCost; // Add to total for display
+
+            estimatedCostDisplay.textContent = `${totalEstimatedCost.toLocaleString('vi-VN')} VNĐ`; // Update total with contingency
+
+
+            if (costChart) {
+                costChart.destroy();
             }
-
-            const paymentStages = [
-                { stage: 1, description: 'Tạm ứng ngay khi ký hợp đồng', percentage: 15 },
-                { stage: 2, description: 'Sau khi hoàn thành phần móng', percentage: 20 },
-                { stage: 3, description: 'Sau khi hoàn thành kết cấu khung bê tông', percentage: 20 },
-                { stage: 4, description: 'Sau khi hoàn thành xây tô, đi hệ thống M&E', percentage: 20 },
-                { stage: 5, description: 'Hoàn thiện, trước khi bàn giao nhà', percentage: 23 },
-                { stage: 6, description: 'Bảo hành công trình (sau khi bàn giao)', percentage: 2 }
-            ];
-
-            paymentScheduleTableBody.innerHTML = '';
-            paymentStages.forEach(item => {
-                const amount = totalEstimatedCost * (item.percentage / 100);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="text-center">${item.stage}</td>
-                    <td>${item.description}</td>
-                    <td class="text-right">${item.percentage}%</td>
-                    <td class="text-right font-semibold">${amount.toLocaleString('vi-VN')}</td>
-                `;
-                paymentScheduleTableBody.appendChild(row);
+            const ctx = document.getElementById('costBreakdownChart').getContext('2d');
+            costChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: chartValues,
+                        backgroundColor: [
+                            'rgba(251, 191, 36, 0.8)', // Main Construction
+                            'rgba(217, 119, 6, 0.8)',  // Foundation
+                            'rgba(31, 41, 55, 0.8)',   // Roof
+                            'rgba(100, 116, 139, 0.8)', // Design
+                            'rgba(59, 130, 246, 0.8)' // Contingency
+                        ],
+                        borderColor: [
+                            'rgba(251, 191, 36, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(31, 41, 55, 1)',
+                            'rgba(100, 116, 139, 1)',
+                            'rgba(59, 130, 246, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#1F2937'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed.toLocaleString('vi-VN') + ' VNĐ';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
             });
 
-            resultsSection.classList.remove('hidden');
-            costLoadingSpinner.classList.add('hidden'); // Hide spinner
+            // --- Update Detailed Breakdown Table ---
+            detailedBreakdownTableBody.innerHTML = '';
+            const detailedItems = [
+                { main: 'Chi phí thi công', detail: 'Phần thô (kết cấu, tường, sàn)', cost: mainConstructionCost * constructionBreakdownPercentages['Phần Thô (Vật tư & Nhân công)'] },
+                { main: 'Chi phí thi công', detail: 'Phần hoàn thiện (ốp lát, sơn, cửa, thiết bị vệ sinh)', cost: mainConstructionCost * constructionBreakdownPercentages['Hoàn thiện (Vật tư & Nhân công)'] },
+                { main: 'Chi phí thi công', detail: `Móng (${foundationType === 'simple' ? 'Đơn' : foundationType === 'strip' ? 'Băng' : 'Cọc'})`, cost: foundationCost },
+                { main: 'Chi phí thi công', detail: `Mái (${roofType === 'flat' ? 'Bằng' : roofType === 'thai' ? 'Thái' : 'Nhật'})`, cost: roofCost },
+            ];
 
-        }, 800);
+            if (mezzanineOption === 'yes') {
+                detailedItems.splice(2, 0, { main: 'Chi phí thi công', detail: 'Tầng lửng', cost: area * 0.5 * baseCostPerSqm * rates.mezzanine_coefficient });
+            }
+            if (rooftopOption === 'yes') {
+                detailedItems.splice(detailedItems.length - 1, 0, { main: 'Chi phí thi công', detail: 'Sân thượng', cost: area * 0.5 * baseCostPerSqm * rates.rooftop_coefficient });
+            }
+
+            detailedItems.push(
+                { main: 'Chi phí khác', detail: 'Thiết kế kiến trúc và Giám sát', cost: designCost },
+                { main: 'Chi phí khác', detail: 'Chi phí dự phòng (5%)', cost: contingencyCost },
+                { main: 'Tổng chi phí ước tính', detail: '', cost: totalEstimatedCost }
+            );
+
+            detailedItems.forEach(item => {
+                const row = detailedBreakdownTableBody.insertRow();
+                row.className = 'border-b border-gray-200';
+                row.innerHTML = `
+                    <td class="px-4 py-2">${item.main}</td>
+                    <td class="px-4 py-2">${item.detail}</td>
+                    <td class="px-4 py-2 text-right">${item.cost.toLocaleString('vi-VN')} VNĐ</td>
+                `;
+                 if (item.main.includes('Tổng chi phí ước tính')) {
+                    row.classList.add('font-bold', 'bg-gray-100', 'text-[#D97706]');
+                }
+            });
+
+            // --- Update Payment Schedule Table ---
+            paymentScheduleTableBody.innerHTML = '';
+            paymentSchedule.forEach(item => {
+                const row = paymentScheduleTableBody.insertRow();
+                row.className = 'border-b border-gray-200';
+                row.innerHTML = `
+                    <td class="px-4 py-2">${item.phase}</td>
+                    <td class="px-4 py-2">${item.description}</td>
+                    <td class="px-4 py-2 text-right">${(item.percentage * 100).toFixed(0)}%</td>
+                    <td class="px-4 py-2 text-right">${(totalEstimatedCost * item.percentage).toLocaleString('vi-VN')} VNĐ</td>
+                `;
+            });
+
+            costLoadingSpinner.style.display = 'none';
+            calculateBtn.disabled = false;
+            sendEmailBtn.disabled = false; // Enable send email button after calculation
+        }, 1000); // Simulate 1 second calculation
     });
 
+    // 5. Email Sending Functionality (Requires a Backend)
     sendEmailBtn.addEventListener('click', () => {
-        if (!lastQuoteData) {
-            alert('Lỗi: Không có dữ liệu báo giá. Vui lòng thực hiện ước tính trước.');
+        const email = emailInput.value;
+
+        if (!email || !email.includes('@')) {
+            emailNotification.textContent = 'Vui lòng nhập email hợp lệ để gửi báo giá.';
+            emailNotification.classList.remove('hidden', 'bg-green-100', 'border-green-400', 'text-green-800');
+            emailNotification.classList.add('bg-red-100', 'border-red-400', 'text-red-800');
             return;
         }
 
-        emailNotification.textContent = 'Đang chuẩn bị mở trình gửi email của bạn...';
-        emailNotification.classList.remove('hidden');
+        // Gather all details from the form and calculated results
+        const quoteDetails = {
+            area: areaInput.value,
+            floors: floorsInput.value,
+            style: styleSelect.value,
+            finish: finishSelect.value,
+            foundationType: foundationSelect.value,
+            mezzanineOption: mezzanineSelect.value,
+            rooftopOption: rooftopSelect.value,
+            roofType: roofTypeSelect.value,
+            clientEmail: email,
+            estimatedCost: estimatedCostDisplay.textContent,
+            detailedBreakdown: [], // You'd loop through detailedItems to build this
+            paymentSchedule: []    // You'd loop through paymentSchedule to build this
+        };
 
-        const { email, area, floors, style, finish, foundationType, mezzanineOption, rooftopOption, roofType, totalEstimatedCost } = lastQuoteData;
-
-        const recipient = 'esb.homes.company@gmail.com';
-        const subject = `Yêu cầu Báo giá Xây dựng - ${email}`;
-        const body = `
-Chào ESB Homes,
-
-Tôi muốn yêu cầu báo giá chi tiết dựa trên các thông tin sau:
-
---- CHI TIẾT DỰ ÁN ---
-- Email liên hệ: ${email}
-- Diện tích sàn: ${area} m²
-- Số tầng: ${floors}
-- Phong cách: ${style}
-- Mức độ hoàn thiện: ${finish}
-- Loại móng: ${foundationType}
-- Có tầng lửng: ${mezzanineOption}
-- Có sân thượng: ${rooftopOption}
-- Loại mái: ${roofType}
-
---- CHI PHÍ ƯỚC TÍNH SƠ BỘ ---
-- Tổng chi phí: ${totalEstimatedCost.toLocaleString('vi-VN')} VNĐ
-
-Vui lòng liên hệ lại với tôi qua email trên để tư vấn thêm.
-Cảm ơn.
-        `.trim().replace(/^\s+/gm, '');
-
-        const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        window.location.href = mailtoLink;
-
-        setTimeout(() => {
-            emailNotification.classList.add('hidden');
-        }, 3000);
-    });
-
-    // --- Header Navigation & Side Menu Logic ---
-    const mainHeader = document.getElementById('main-header'); // Giữ lại khai báo này
-    const hamburgerBtn = document.getElementById('hamburger-menu-button');
-    const closeSideMenuBtn = document.getElementById('close-side-menu');
-    const sideMenu = document.getElementById('side-menu');
-    const sideMenuOverlay = document.getElementById('side-menu-overlay');
-    const desktopNavList = document.getElementById('desktop-nav-list');
-    const sideNavList = document.getElementById('side-nav-list');
-
-    // Section definitions for both menus
-    const menuSections = [
-        { id: 'gioi-thieu', text: 'Giới thiệu', icon: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>' },
-        { id: 've-chung-toi', text: 'Về chúng tôi', icon: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>' },
-        { id: 'yeu-to-anh-huong', text: 'Yếu tố ảnh hưởng', icon: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' },
-        { 
-            id: 'bao-gia', text: 'Báo giá', icon: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"></path></svg>',
-            subItems: [
-                { id: 'bao-gia-xd-tron-goi', text: 'XD Trọn Gói' },
-                { id: 'bao-gia-thiet-ke-kien-truc', text: 'Thiết Kế KT' },
-                { id: 'bao-gia-xd-phan-tho', text: 'XD Phần Thô' },
-                { id: 'bao-gia-xd-phan-hoan-thien', text: 'XD Hoàn Thiện' }
-            ]
-        },
-        { id: 'cac-goi-xay-dung', text: 'Gói xây dựng', icon: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>' },
-        { id: 'luu-y-quan-trong', text: 'Lưu ý quan trọng', icon: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg>' },
-        { id: 'lien-he', text: 'Liên hệ', icon: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>' }
-    ];
-
-    // Function to generate menu items for a given list element
-    const generateMenuItems = (menuListElement, isSideMenu = false) => {
-        menuListElement.innerHTML = ''; // Clear existing items
-        menuSections.forEach(section => {
-            const listItem = document.createElement('li');
-            
-            // Determine the base class for the main link based on where it's being generated
-            const mainLinkClass = isSideMenu ? '' : 'nav-link'; // 'nav-link' for desktop header, no extra class for side menu (uses side-menu ul li a)
-
-            if (section.subItems) {
-                // Main item with sub-menu
-                listItem.innerHTML = `
-                    <a href="#${section.id}" class="flex items-center ${mainLinkClass}">
-                        ${isSideMenu ? (section.icon || '') : ''}<span>${section.text}</span>
-                    </a>
-                    <ul class="pl-4 mt-1 space-y-1 ${isSideMenu ? 'text-base' : 'text-sm'}">
-                        ${section.subItems.map(subItem => `
-                            <li><a href="#${subItem.id}" class="block p-1 rounded-md ${isSideMenu ? 'sub-side-link' : 'sub-nav-link'}">${subItem.text}</a></li>
-                        `).join('')}
-                    </ul>
-                `;
-            } else {
-                // Regular item
-                listItem.innerHTML = `<a href="#${section.id}" class="flex items-center ${mainLinkClass}">${isSideMenu ? (section.icon || '') : ''}<span>${section.text}</span></a>`;
-            }
-            menuListElement.appendChild(listItem);
-        });
-    };
-
-    // Populate both menus on load
-    generateMenuItems(desktopNavList, false); // Populate desktop header nav
-    generateMenuItems(sideNavList, true); // Populate side menu
-
-    const allSections = document.querySelectorAll('section'); // All observable sections for IntersectionObserver
-    const allDesktopNavLinks = document.querySelectorAll('#desktop-nav-list a');
-    const allSideMenuLinks = document.querySelectorAll('#side-nav-list a');
-
-    const toggleSideMenu = () => {
-        sideMenu.classList.toggle('translate-x-full');
-        sideMenuOverlay.classList.toggle('hidden');
-        sideMenuOverlay.classList.toggle('opacity-0');
-        sideMenuOverlay.classList.toggle('opacity-50');
-        document.body.classList.toggle('overflow-hidden'); // Prevent body scroll when menu is open
-    };
-
-    hamburgerBtn.addEventListener('click', toggleSideMenu);
-    closeSideMenuBtn.addEventListener('click', toggleSideMenu);
-    sideMenuOverlay.addEventListener('click', toggleSideMenu);
-
-    // Close side menu when a link inside it is clicked
-    allSideMenuLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default hash jump
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-            }
-            toggleSideMenu(); // Close the side menu after clicking a link
-        });
-    });
-
-    // Handle smooth scrolling for floating TOC links (already exists, but ensure it works)
-    // Note: The floating TOC is for large screens only, but the listener is harmless.
-    document.querySelectorAll('#floating-nav-list a').forEach(link => { // Re-selecting for clarity
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-
-
-    // Intersection Observer to highlight active section in both menus
-    const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const id = entry.target.getAttribute('id');
-
-                // Update desktop navigation links
-                allDesktopNavLinks.forEach(link => {
-                    link.classList.remove('active-nav-link'); // Correct class for desktop
-                    if (link.getAttribute('href') === `#${id}`) {
-                        link.classList.add('active-nav-link');
-                    } else if (id.startsWith('bao-gia-') && link.getAttribute('href') === '#bao-gia') {
-                        link.classList.add('active-nav-link'); // Highlight main 'Báo giá' if sub-section is active
-                    }
-                });
-
-                // Update side menu links
-                allSideMenuLinks.forEach(link => {
-                    link.classList.remove('active-side-link'); // Correct class for side menu
-                    if (link.getAttribute('href') === `#${id}`) {
-                        link.classList.add('active-side-link');
-                    } else if (id.startsWith('bao-gia-') && link.getAttribute('href') === '#bao-gia') {
-                        link.classList.add('active-side-link'); // Highlight main 'Báo giá' if sub-section is active
-                    }
+        // Populate detailed breakdown for email
+        document.querySelectorAll('#detailedBreakdownTableBody tr').forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length === 3) {
+                quoteDetails.detailedBreakdown.push({
+                    main: cells[0].textContent,
+                    detail: cells[1].textContent,
+                    cost: cells[2].textContent
                 });
             }
         });
-    }, { rootMargin: '-30% 0px -70% 0px' }); // Adjust rootMargin for active state accuracy
 
-    allSections.forEach(section => {
-        sectionObserver.observe(section);
+        // Populate payment schedule for email
+        document.querySelectorAll('#paymentScheduleTableBody tr').forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length === 4) {
+                quoteDetails.paymentSchedule.push({
+                    phase: cells[0].textContent,
+                    description: cells[1].textContent,
+                    percentage: cells[2].textContent,
+                    payment: cells[3].textContent
+                });
+            }
+        });
+
+
+        sendEmailBtn.disabled = true;
+        costLoadingSpinner.style.display = 'block';
+
+        // *** IMPORTANT: This fetch request requires a backend server to handle the email sending. ***
+        // Example endpoint: '/api/send-quote'
+        // On your server, you would use a library like Nodemailer (Node.js) or smtplib (Python)
+        // to send an email using an actual email service (e.g., SendGrid, Mailgun, or your own SMTP).
+        fetch('/api/send-quote', { // REPLACE with your actual backend API endpoint
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(quoteDetails),
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If the server responded with an error, try to read the error message
+                return response.json().then(err => { throw new Error(err.message || 'Lỗi không xác định từ server.'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            emailNotification.textContent = 'Yêu cầu báo giá đã được gửi đến email của bạn! Vui lòng kiểm tra hộp thư đến hoặc thư mục spam.';
+            emailNotification.classList.remove('hidden', 'bg-red-100', 'border-red-400', 'text-red-800');
+            emailNotification.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
+            setTimeout(() => emailNotification.classList.add('hidden'), 8000); // Keep message longer
+        })
+        .catch((error) => {
+            console.error('Error sending email:', error);
+            emailNotification.textContent = `Đã xảy ra lỗi khi gửi yêu cầu báo giá: ${error.message}. Vui lòng thử lại sau hoặc liên hệ trực tiếp.`;
+            emailNotification.classList.remove('hidden', 'bg-green-100', 'border-green-400', 'text-green-800');
+            emailNotification.classList.add('bg-red-100', 'border-red-400', 'text-red-800');
+        })
+        .finally(() => {
+            costLoadingSpinner.style.display = 'none';
+            sendEmailBtn.disabled = false;
+        });
     });
 
-    // Optional: Shrink header on scroll (similar to TrungLuongCons.com)
-    // Removed redundant 'const mainHeader' declaration here.
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) { // Adjust scroll threshold as needed
-            mainHeader.classList.add('header-scrolled');
-        } else {
-            mainHeader.classList.remove('header-scrolled');
-        }
-    });
-};
+});
