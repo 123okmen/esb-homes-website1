@@ -1,4 +1,4 @@
-Document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     // --- KHAI BÁO BIẾN --- //
     const form = document.getElementById('estimatorForm');
     const calculateBtn = document.getElementById('calculateBtn');
@@ -25,44 +25,43 @@ Document.addEventListener('DOMContentLoaded', function () {
     const closeSideMenuButton = document.getElementById('close-side-menu');
     
     const emailInput = document.getElementById('email'); 
-    const phoneInput = document.getElementById('phone'); // Thêm biến cho input số điện thoại
-    const phoneErrorEl = document.getElementById('phoneError'); // Thêm biến cho lỗi số điện thoại
+    const phoneInput = document.getElementById('phone'); // THÊM: Khai báo biến cho input số điện thoại
 
     let costBreakdownChart = null;
     let lastCalculatedData = null; 
     let currentEstimatedCost = 0; 
     let customerEmail = ''; 
-    let customerPhone = ''; // Thêm biến để lưu số điện thoại
+    let customerPhone = ''; // THÊM: Khai báo biến để lưu số điện thoại khách hàng
 
     // --- CÁC HẰNG SỐ VÀ TỶ LỆ TÍNH TOÁN --- //
     const COST_FACTORS = {
         BASE_PER_M2: {
-            basic: 5000000,    
+            basic: 5000000,     
             standard: 6500000, 
             premium: 8500000   
         },
         STYLE_MULTIPLIER: {
-            modern: 1.0,       
+            modern: 1.0,        
             neoclassical: 1.3, 
             minimalist: 0.95   
         },
         FOUNDATION_PERCENTAGES: { 
             simple: 0.40, 
-            strip: 0.60,  
-            pile: 0.50    
+            strip: 0.60,   
+            pile: 0.50     
         },
         ROOF_PER_M2: {
-            flat: 150000,      
-            thai: 400000,      
+            flat: 150000,       
+            thai: 400000,       
             japanese: 500000   
         },
         AREA_MULTIPLIER: {
             MEZZANINE: 0.5, 
-            ROOFTOP: 0.3    
+            ROOFTOP: 0.3     
         },
         COST_BREAKDOWN_RATIO: {
-            ROUGH_PART: 0.6,       
-            FINISHING_PART: 0.4,   
+            ROUGH_PART: 0.6,        
+            FINISHING_PART: 0.4,    
             DESIGN_MANAGEMENT_PERCENTAGE: 0.1 
         }
     };
@@ -122,13 +121,12 @@ Document.addEventListener('DOMContentLoaded', function () {
 
         hideError();
         hideNotification();
-        hidePhoneError(); // Ẩn lỗi số điện thoại
         resultsSection.classList.add('hidden', 'opacity-0'); 
         setLoadingState(true);
 
         const inputs = getFormInputs();
         customerEmail = inputs.email; 
-        customerPhone = inputs.phone; // Lấy số điện thoại từ input
+        customerPhone = inputs.phone; // THÊM: Lưu số điện thoại khách hàng
 
         if (!validateInputs(inputs)) {
             setLoadingState(false);
@@ -149,7 +147,7 @@ Document.addEventListener('DOMContentLoaded', function () {
             sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
             downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Kích hoạt nút tải PDF
 
-            await handleDownloadPdf(); // Đã bỏ comment dòng này để tự động tải PDF
+            // await handleDownloadPdf(); // Tắt tự động tải PDF, giờ người dùng tự bấm nút
             
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
 
@@ -167,38 +165,26 @@ Document.addEventListener('DOMContentLoaded', function () {
             rooftopOption: document.getElementById('rooftop_option').value,
             roofType: document.getElementById('roof_type').value,
             email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone').value.trim() // Lấy giá trị số điện thoại
+            phone: document.getElementById('phone').value.trim() // THÊM: Lấy giá trị số điện thoại
         };
     }
 
     function validateInputs(inputs) {
-        let isValid = true;
         if (isNaN(inputs.area) || inputs.area <= 0 || isNaN(inputs.floors) || inputs.floors <= 0) {
             showError('Vui lòng nhập diện tích và số tầng hợp lệ.'); 
-            isValid = false;
-        } else {
-            hideError();
+            return false;
         }
-
-        // Kiểm tra email
         if (!inputs.email || !/^\S+@\S+\.\S+$/.test(inputs.email)) {
             showError('Vui lòng nhập một địa chỉ email hợp lệ.'); 
-            isValid = false;
-        } else {
-            if (isValid) hideError(); // Chỉ ẩn nếu không có lỗi khác
+            return false;
         }
-
-        // Validate phone number (simple check for now: not empty and contains only digits, adjust regex as needed)
-        // Regex này kiểm tra số điện thoại có thể bắt đầu bằng 0, và có 7-15 chữ số. 
-        // Bạn có thể tùy chỉnh regex cho phù hợp với định dạng số điện thoại mong muốn ở Việt Nam.
-        if (!inputs.phone || !/^[0-9]{7,15}$/.test(inputs.phone)) {
-            showPhoneError('Vui lòng nhập một số điện thoại hợp lệ (chỉ gồm số, 7-15 chữ số).');
-            isValid = false;
-        } else {
-            if (isValid) hidePhoneError(); // Chỉ ẩn nếu không có lỗi khác
+        // THÊM: Xác thực số điện thoại
+        const phonePattern = /^[0-9]{10,11}$/; 
+        if (!inputs.phone || !phonePattern.test(inputs.phone)) {
+            showError('Vui lòng nhập số điện thoại hợp lệ (10 hoặc 11 chữ số).');
+            return false;
         }
-
-        return isValid;
+        return true;
     }
 
     function setLoadingState(isLoading) {
@@ -371,7 +357,7 @@ Document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateMailtoLink() {
-        if (!lastCalculatedData || currentEstimatedCost === 0 || !customerEmail || !customerPhone) { // Kiểm tra cả số điện thoại
+        if (!lastCalculatedData || currentEstimatedCost === 0 || !customerEmail || !customerPhone) { // CẬP NHẬT: Thêm kiểm tra customerPhone
             sendEmailLink.setAttribute('href', '#');
             sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
             return;
@@ -394,7 +380,7 @@ Document.addEventListener('DOMContentLoaded', function () {
             `Kính gửi ESB Homes,\n\n` + 
             `Tôi tên là [Vui lòng điền tên của bạn],\n` + 
             `Email: ${inputs.email}\n` + 
-            `Số điện thoại: ${inputs.phone}\n\n` + // Thêm số điện thoại vào nội dung email
+            `Số điện thoại: ${inputs.phone}\n\n` + // CẬP NHẬT: Thêm số điện thoại vào body email
             `Tôi muốn yêu cầu báo giá chi tiết cho dự án xây dựng nhà phố với các thông tin sau:\n\n` + 
             `- Diện tích sàn xây dựng: ${inputs.area} m²\n` + 
             `- Số tầng: ${inputs.floors}\n` + 
@@ -465,8 +451,8 @@ Document.addEventListener('DOMContentLoaded', function () {
         doc.text(removeAccents("Thong tin lien he:"), margin, y); 
         y += lineHeight; 
         doc.text(removeAccents(`Email: ${lastCalculatedData.inputs.email || 'Chua cung cap'}`), margin, y); 
-        y += lineHeight; // Di chuyển xuống một dòng
-        doc.text(removeAccents(`So dien thoai: ${lastCalculatedData.inputs.phone || 'Chua cung cap'}`), margin, y); // Thêm số điện thoại vào PDF
+        y += lineHeight; // THÊM: Khoảng cách giữa Email và SĐT
+        doc.text(removeAccents(`So dien thoai: ${lastCalculatedData.inputs.phone || 'Chua cung cap'}`), margin, y); // THÊM: Thêm số điện thoại vào PDF
         y += lineHeight * 2; 
 
         // Bảng Chi tiết Hạng mục (Ước tính)
@@ -476,9 +462,9 @@ Document.addEventListener('DOMContentLoaded', function () {
 
         const detailedData = lastCalculatedData.calculationResult.detailedBreakdown; 
         const mainCategoriesForPdf = { 
-            'Phan Tho': ['Chi phi mong', 'Chi phi ket cau & xay tho', 'Chi phi mai'], // Đã bỏ dấu
-            'Hoan Thien': ['Chi phi hoan thien'], // Đã bỏ dấu
-            'Chi phi khac': ['Chi phi thiet ke & quan ly'] // Đã bỏ dấu
+            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
+            'Hoàn Thiện': ['Chi phí hoàn thiện'], 
+            'Chi phí khác': ['Chi phí thiết kế & quản lý'] 
         };
 
         const detailedTableHeaders = [[removeAccents('Hang muc chinh'), removeAccents('Hang muc chi tiet'), removeAccents('Chi phi (VND)')]]; 
@@ -600,7 +586,7 @@ Document.addEventListener('DOMContentLoaded', function () {
         y += lineHeight * 2;
 
 
-        // Thong tin lien he de bao gia chinh xac
+        // Thông tin liên hệ để báo giá chính xác
         doc.setFontSize(14); 
         doc.text(removeAccents("De nhan bao gia chinh xac nhat va tu van chi tiet hon,"), margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight + 5; 
@@ -643,7 +629,7 @@ Document.addEventListener('DOMContentLoaded', function () {
     }
     
     function updateActiveNavLink(activeId, selector) {
-         document.querySelectorAll(selector).forEach(link => {
+        document.querySelectorAll(selector).forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href') === `#${activeId}`) {
                 link.classList.add('active');
@@ -706,9 +692,7 @@ Document.addEventListener('DOMContentLoaded', function () {
         return new Intl.NumberFormat('vi-VN').format(Math.round(number));
     }
 
-    // Cập nhật hàm showError để chỉ hiển thị một loại lỗi mỗi lần
     function showError(message) {
-        hidePhoneError(); // Đảm bảo ẩn lỗi điện thoại khi hiển thị lỗi khác
         costErrorEl.textContent = message;
         costErrorEl.classList.remove('hidden');
     }
@@ -717,25 +701,13 @@ Document.addEventListener('DOMContentLoaded', function () {
         costErrorEl.classList.add('hidden');
     }
 
-    // Hàm mới để hiển thị lỗi số điện thoại
-    function showPhoneError(message) {
-        hideError(); // Đảm bảo ẩn lỗi chung khi hiển thị lỗi điện thoại
-        phoneErrorEl.textContent = message;
-        phoneErrorEl.classList.remove('hidden');
-    }
-
-    // Hàm mới để ẩn lỗi số điện thoại
-    function hidePhoneError() {
-        phoneErrorEl.classList.add('hidden');
-    }
-
     function showNotification(message, type = 'success') {
         emailNotificationEl.innerHTML = message;
         emailNotificationEl.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-blue-100', 'text-blue-800');
         if (type === 'success') {
-             emailNotificationEl.classList.add('bg-green-100', 'text-green-800');
+            emailNotificationEl.classList.add('bg-green-100', 'text-green-800');
         } else {
-             emailNotificationEl.classList.add('bg-blue-100', 'text-blue-800');
+            emailNotificationEl.classList.add('bg-blue-100', 'text-blue-800');
         }
     }
 
