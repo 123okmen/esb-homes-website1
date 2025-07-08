@@ -25,13 +25,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeSideMenuButton = document.getElementById('close-side-menu');
     
     const emailInput = document.getElementById('email'); 
-    const phoneInput = document.getElementById('phone'); // THÊM: Khai báo biến cho input số điện thoại
+    const phoneInput = document.getElementById('phone'); 
 
     let costBreakdownChart = null;
     let lastCalculatedData = null; 
     let currentEstimatedCost = 0; 
     let customerEmail = ''; 
-    let customerPhone = ''; // THÊM: Khai báo biến để lưu số điện thoại khách hàng
+    let customerPhone = ''; 
 
     // --- CÁC HẰNG SỐ VÀ TỶ LỆ TÍNH TOÁN --- //
     const COST_FACTORS = {
@@ -46,29 +46,31 @@ document.addEventListener('DOMContentLoaded', function () {
             minimalist: 0.95   
         },
         FOUNDATION_PERCENTAGES: { 
-            simple: 0.40, 
+            simple: 0.40, // Tỷ lệ chi phí móng so với tổng chi phí xây dựng thô
             strip: 0.60,   
             pile: 0.50     
         },
+        // CẬP NHẬT: Đơn giá MÁI bao gồm cả vật liệu và nhân công (trung bình của khoảng giá)
         ROOF_PER_M2: {
-            flat: 150000,       
-            thai: 400000,       
-            japanese: 500000   
+            flat: (1400000 + 1950000) / 2 + (100000 + 150000) / 2, // Vật liệu (1.675.000) + Nhân công (125.000) = 1.800.000
+            thai: (350000 + 450000) / 2 + (150000 + 200000) / 2, // Vật liệu (400.000) + Nhân công (175.000) = 575.000
+            japanese: (650000 + 1000000) / 2 + (150000 + 200000) / 2 // Vật liệu (825.000) + Nhân công (175.000) = 1.000.000
         },
         AREA_MULTIPLIER: {
-            MEZZANINE: 0.5, 
-            ROOFTOP: 0.3     
+            MEZZANINE: 0.5, // Diện tích tầng lửng tính 50% diện tích sàn
+            ROOFTOP: 0.3    // Diện tích sân thượng tính 30% diện tích sàn
         },
         COST_BREAKDOWN_RATIO: {
-            ROUGH_PART: 0.6,        
-            FINISHING_PART: 0.4,    
-            DESIGN_MANAGEMENT_PERCENTAGE: 0.1 
+            ROUGH_PART: 0.6,        // Tỷ lệ phần thô so với tổng chi phí xây dựng (không bao gồm móng, mái)
+            FINISHING_PART: 0.4,    // Tỷ lệ phần hoàn thiện so với tổng chi phí xây dựng (không bao gồm móng, mái)
+            DESIGN_MANAGEMENT_PERCENTAGE: 0.1 // Tỷ lệ chi phí thiết kế và quản lý so với tổng (thô + hoàn thiện + móng + mái)
         }
     };
 
     // --- KHỞI TẠO --- //
     createTableOfContents();
     addEventListeners();
+    // Initially disable PDF download and email link until a calculation is made
     downloadPdfBtn.disabled = true;
     downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
     sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
@@ -94,14 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 navHTML += `<li><a href="#${sectionId}" class="nav-link block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">${sectionTitle}</a></li>`;
             }
         });
-        sideNavList.innerHTML = navHTML; 
+        floatingNavList.innerHTML = navHTML; // Also populate floating nav
+        sideNavList.innerHTML = navHTML; // Populate side nav
     }
 
     // --- HÀM THÊM CÁC EVENT LISTENER --- //
     function addEventListeners() {
         form.addEventListener('submit', handleFormSubmit);
         sendEmailLink.addEventListener('click', handleSendEmailLink); 
-        downloadPdfBtn.addEventListener('click', handleDownloadPdf); // Thêm event listener cho nút tải PDF
+        downloadPdfBtn.addEventListener('click', handleDownloadPdf); 
         window.addEventListener('scroll', handleScroll);
         document.querySelectorAll('#factors-container button').forEach(button => {
             button.addEventListener('click', toggleCollapsible);
@@ -121,12 +124,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         hideError();
         hideNotification();
+        // Hide results immediately before new calculation
         resultsSection.classList.add('hidden', 'opacity-0'); 
         setLoadingState(true);
 
         const inputs = getFormInputs();
         customerEmail = inputs.email; 
-        customerPhone = inputs.phone; // THÊM: Lưu số điện thoại khách hàng
+        customerPhone = inputs.phone; 
 
         if (!validateInputs(inputs)) {
             setLoadingState(false);
@@ -144,11 +148,14 @@ document.addEventListener('DOMContentLoaded', function () {
             updateMailtoLink(); 
             
             setLoadingState(false);
+            // Enable PDF download and email link after successful calculation
             sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
-            downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Kích hoạt nút tải PDF
+            downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
 
-            // await handleDownloadPdf(); // Tắt tự động tải PDF, giờ người dùng tự bấm nút
+            // Automatically trigger PDF download after calculation
+            await handleDownloadPdf(); 
             
+            // Scroll to results section after calculation and PDF trigger
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
 
         }, 1500); 
@@ -165,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
             rooftopOption: document.getElementById('rooftop_option').value,
             roofType: document.getElementById('roof_type').value,
             email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone').value.trim() // THÊM: Lấy giá trị số điện thoại
+            phone: document.getElementById('phone').value.trim() 
         };
     }
 
@@ -178,7 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
             showError('Vui lòng nhập một địa chỉ email hợp lệ.'); 
             return false;
         }
-        // THÊM: Xác thực số điện thoại
         const phonePattern = /^[0-9]{10,11}$/; 
         if (!inputs.phone || !phonePattern.test(inputs.phone)) {
             showError('Vui lòng nhập số điện thoại hợp lệ (10 hoặc 11 chữ số).');
@@ -221,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const foundationCost = coreBuildingCost * COST_FACTORS.FOUNDATION_PERCENTAGES[foundationType];
 
+        // CẬP NHẬT: Chi phí mái được lấy trực tiếp từ ROOF_PER_M2 đã được tính tổng vật liệu + nhân công
         const roofCost = area * COST_FACTORS.ROOF_PER_M2[roofType];
         
         const roughPartCore = coreBuildingCost * COST_FACTORS.COST_BREAKDOWN_RATIO.ROUGH_PART;
@@ -349,7 +356,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- XỬ LÝ GỬI EMAIL (Mailto Link) --- //
     function handleSendEmailLink(event) {
-        if (sendEmailLink.getAttribute('href') === '#') {
+        // Prevent default navigation if the link is disabled
+        if (sendEmailLink.classList.contains('disabled:opacity-50')) {
             event.preventDefault(); 
             showError("Vui lòng ước tính chi phí trước khi gửi email."); 
             return;
@@ -357,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateMailtoLink() {
-        if (!lastCalculatedData || currentEstimatedCost === 0 || !customerEmail || !customerPhone) { // CẬP NHẬT: Thêm kiểm tra customerPhone
+        if (!lastCalculatedData || currentEstimatedCost === 0 || !customerEmail || !customerPhone) { 
             sendEmailLink.setAttribute('href', '#');
             sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
             return;
@@ -380,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `Kính gửi ESB Homes,\n\n` + 
             `Tôi tên là [Vui lòng điền tên của bạn],\n` + 
             `Email: ${inputs.email}\n` + 
-            `Số điện thoại: ${inputs.phone}\n\n` + // CẬP NHẬT: Thêm số điện thoại vào body email
+            `Số điện thoại: ${inputs.phone}\n\n` + 
             `Tôi muốn yêu cầu báo giá chi tiết cho dự án xây dựng nhà phố với các thông tin sau:\n\n` + 
             `- Diện tích sàn xây dựng: ${inputs.area} m²\n` + 
             `- Số tầng: ${inputs.floors}\n` + 
@@ -407,15 +415,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return; 
         }
 
+        // Disable button and show spinner during PDF generation
         pdfLoadingSpinner.classList.remove('hidden'); 
         downloadPdfBtn.disabled = true; 
         downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
 
         const { jsPDF } = window.jspdf; 
         const doc = new jsPDF('p', 'pt', 'a4'); 
-
-        // jsPDF mặc định không hỗ trợ font tiếng Việt có dấu.
-        // Các văn bản đã được chuyển sang không dấu ở dưới để tránh lỗi font.
 
         const margin = 40; 
         let y = margin; 
@@ -451,8 +457,8 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.text(removeAccents("Thong tin lien he:"), margin, y); 
         y += lineHeight; 
         doc.text(removeAccents(`Email: ${lastCalculatedData.inputs.email || 'Chua cung cap'}`), margin, y); 
-        y += lineHeight; // THÊM: Khoảng cách giữa Email và SĐT
-        doc.text(removeAccents(`So dien thoai: ${lastCalculatedData.inputs.phone || 'Chua cung cap'}`), margin, y); // THÊM: Thêm số điện thoại vào PDF
+        y += lineHeight; 
+        doc.text(removeAccents(`So dien thoai: ${lastCalculatedData.inputs.phone || 'Chua cung cap'}`), margin, y); 
         y += lineHeight * 2; 
 
         // Bảng Chi tiết Hạng mục (Ước tính)
@@ -502,15 +508,15 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             bodyStyles: {
                 textColor: '#1F2937', 
-                valign: 'middle' // Căn giữa theo chiều dọc
+                valign: 'middle' 
             },
             columnStyles: {
                 0: { cellWidth: 100 }, 
                 1: { cellWidth: 180 }, 
-                2: { cellWidth: 120, halign: 'right' } // Căn phải cho cột chi phí
+                2: { cellWidth: 120, halign: 'right' } 
             },
             didDrawPage: function(data) {
-                // Có thể thêm số trang hoặc footer tại đây
+                // You can add page numbers or footers here
             }
         });
 
@@ -559,16 +565,15 @@ document.addEventListener('DOMContentLoaded', function () {
             columnStyles: {
                 0: { cellWidth: 60 },
                 1: { cellWidth: 220 },
-                2: { cellWidth: 60, halign: 'right' }, // Căn phải cho cột tỷ lệ
-                3: { cellWidth: 120, halign: 'right' } // Căn phải cho cột số tiền
+                2: { cellWidth: 60, halign: 'right' }, 
+                3: { cellWidth: 120, halign: 'right' } 
             },
             didDrawPage: function(data) {
-                // Có thể thêm số trang hoặc footer tại đây
+                // You can add page numbers or footers here
             }
         });
 
         y = doc.autoTable.previous.finalY + 20;
-
 
         // Tổng chi phí ước tính
         doc.setFontSize(16); 
@@ -580,13 +585,13 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.setTextColor(0); 
         y += lineHeight * 2; 
         
-        // Dòng liên hệ mới
+        // Contact line
         doc.setFontSize(12);
         doc.text(removeAccents("Vui long lien he qua hotline va Zalo cua cong ty de biet them chi tiet."), margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight * 2;
 
 
-        // Thông tin liên hệ để báo giá chính xác
+        // Contact info for accurate quote
         doc.setFontSize(14); 
         doc.text(removeAccents("De nhan bao gia chinh xac nhat va tu van chi tiet hon,"), margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight + 5; 
@@ -606,18 +611,19 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.setFontSize(10); 
         doc.text(removeAccents("(*Bao gia nay chi mang tinh chat tham khao. Chi phi thuc te co the thay doi tuy thuoc vao yeu cau cu the.)"), margin, y, { maxWidth: pageWidth - 2 * margin }); 
 
-        // Tắt spinner và kích hoạt nút lại
+        // Reset button and hide spinner
         pdfLoadingSpinner.classList.add('hidden'); 
         downloadPdfBtn.disabled = false; 
         downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
 
-        // Lưu file PDF
+        // Save the PDF file
         doc.save(removeAccents(`bao-gia-esbhomes-uoc-tinh-${lastCalculatedData.inputs.area}m2-${lastCalculatedData.inputs.floors}tang.pdf`)); 
     } 
 
     // --- XỬ LÝ THANH ĐIỀU HƯỚNG VÀ CUỘN --- //
     function handleScroll() {
         let currentSectionId = '';
+        // Adjust the offset for active link highlighting. 0.3 means 30% from the top of the viewport.
         const scrollPosition = window.scrollY + window.innerHeight * 0.3; 
 
         sections.forEach(section => {
@@ -640,17 +646,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- XỬ LÝ CÁC MỤC CÓ THỂ THU GỌN --- //
     function toggleCollapsible(event) {
         const button = event.currentTarget;
+        // The content to collapse/expand is inside the div immediately after the button
         const content = button.nextElementSibling.querySelector('.collapsible-content');
         const icon = button.querySelector('span');
         
         const isOpening = !content.classList.contains('open');
 
-        // Đóng tất cả các mục đang mở
+        // Close all currently open collapsible items
         document.querySelectorAll('.collapsible-content.open').forEach(openContent => {
             openContent.classList.remove('open');
-            openContent.style.maxHeight = null; 
-            openContent.style.paddingTop = '0'; 
-            openContent.style.paddingBottom = '0'; 
+            openContent.style.maxHeight = null; // Reset max-height
+            openContent.style.paddingTop = '0'; // Reset padding
+            openContent.style.paddingBottom = '0'; // Reset padding
             const openButton = openContent.closest('.content-card').querySelector('button');
             if(openButton) {
                 const openIcon = openButton.querySelector('span');
@@ -659,14 +666,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Mở mục được click (nếu nó đang đóng)
+        // Open the clicked item (if it was closed)
         if (isOpening) {
             content.classList.add('open');
+            // Set max-height to scrollHeight to allow smooth transition
             content.style.maxHeight = content.scrollHeight + 'px';
-            icon.textContent = '-';
-            icon.style.transform = 'rotate(180deg)';
-            content.style.paddingTop = '1.25rem'; 
-            content.style.paddingBottom = '1.25rem';
+            icon.textContent = '-'; // Change icon to minus
+            icon.style.transform = 'rotate(180deg)'; // Rotate icon
+            content.style.paddingTop = '1.25rem'; // Re-apply padding after open
+            content.style.paddingBottom = '1.25rem'; // Re-apply padding after open
         }
     }
 
@@ -676,15 +684,15 @@ document.addEventListener('DOMContentLoaded', function () {
         sideMenu.classList.add('translate-x-0');
         sideMenuOverlay.classList.remove('hidden');
         setTimeout(() => sideMenuOverlay.classList.add('opacity-50'), 10);
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling body when menu is open
     }
 
     function closeSideMenu() { 
         sideMenu.classList.remove('translate-x-0');
         sideMenu.classList.add('translate-x-full');
         sideMenuOverlay.classList.remove('opacity-50');
-        setTimeout(() => sideMenuOverlay.classList.add('hidden'), 300);
-        document.body.style.overflow = '';
+        setTimeout(() => sideMenuOverlay.classList.add('hidden'), 300); // Delay hiding overlay to match transition
+        document.body.style.overflow = ''; // Restore body scrolling
     }
 
     // --- CÁC HÀM TIỆN ÍCH --- //
