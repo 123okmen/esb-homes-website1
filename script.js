@@ -538,7 +538,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Lưu file PDF
         doc.save(`bao-gia-esbhomes-uoc-tinh-${lastCalculatedData.inputs.area}m2-${lastCalculatedData.inputs.floors}tang.pdf`);
-    }
 
     // --- XỬ LÝ THANH ĐIỀU HƯỚNG VÀ CUỘN --- //
     function handleScroll() {
