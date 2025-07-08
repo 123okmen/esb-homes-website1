@@ -378,11 +378,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- XỬ LÝ TẢI PDF --- //
     async function handleDownloadPdf() {
-        if (!lastCalculatedData || currentEstimatedCost === 0) {
-            alert('Vui lòng ước tính chi phí trước khi tải báo giá PDF.');
-            return;
-        }
+    console.log("Nút PDF đã được bấm!"); // Thêm dòng này
+    console.log("lastCalculatedData:", lastCalculatedData); // Thêm dòng này
+    console.log("currentEstimatedCost:", currentEstimatedCost); // Thêm dòng này
 
+    if (!lastCalculatedData || currentEstimatedCost === 0) {
+        alert('Vui lòng ước tính chi phí trước khi tải báo giá PDF.');
+        return;
+    }
+    // ... phần còn lại của hàm ...
+}
+   
         pdfLoadingSpinner.classList.remove('hidden');
         downloadPdfBtn.disabled = true;
         downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
