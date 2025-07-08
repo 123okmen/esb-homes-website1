@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('estimatorForm');
     const calculateBtn = document.getElementById('calculateBtn');
     const estimatedCostEl = document.getElementById('estimatedCost');
-    const resultsSection = document = document.getElementById('resultsSection');
+    const resultsSection = document.getElementById('resultsSection');
     const costErrorEl = document.getElementById('costError');
     const emailNotificationEl = document.getElementById('emailNotification');
     
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateChart(breakdownData) {
         const ctx = document.getElementById('costBreakdownChart').getContext('2d');
-        const labels = Object.keys(breakdownData); // Lấy nhãn có dấu
+        const labels = Object.keys(breakdownData); 
         const data = Object.values(breakdownData);
 
         if (costBreakdownChart) {
@@ -352,11 +352,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const companyEmail = 'esb.homes.company@gmail.com';
-        const subject = encodeURIComponent('Yêu cầu báo giá xây dựng nhà phố trọn gói từ website'); // Giữ nguyên có dấu
+        const subject = encodeURIComponent('Yêu cầu báo giá xây dựng nhà phố trọn gói từ website'); 
 
         const inputs = lastCalculatedData.inputs;
 
-        // Lấy text hiển thị từ dropdown trong HTML (giữ nguyên có dấu)
         const styleText = document.getElementById('style').options[document.getElementById('style').selectedIndex].text;
         const finishText = document.getElementById('finish').options[document.getElementById('finish').selectedIndex].text;
         const foundationTypeText = document.getElementById('foundation_type').options[document.getElementById('foundation_type').selectedIndex].text;
@@ -448,12 +447,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const detailedData = lastCalculatedData.calculationResult.detailedBreakdown; 
         const mainCategoriesForPdf = { 
-            'Phần thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
-            'Hoàn thiện': ['Chi phí hoàn thiện'], 
+            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
+            'Hoàn Thiện': ['Chi phí hoàn thiện'], 
             'Chi phí khác': ['Chi phí thiết kế & quản lý'] 
         };
 
-        const detailedTableHeaders = [['Hang muc chinh', 'Hang muc chi tiet', 'Chi phi (VND)']]; 
+        const detailedTableHeaders = [[removeAccents('Hang muc chinh'), removeAccents('Hang muc chi tiet'), removeAccents('Chi phi (VND)')]]; 
         const detailedTableBody = [];
 
         for (const mainCategoryKey in mainCategoriesForPdf) { 
@@ -478,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 fontSize: 10, 
                 cellPadding: 5, 
                 lineColor: '#e0e0e0', 
-                lineWidth: 0.5 
+                lineWidth: 0.5
             },
             headStyles: {
                 fillColor: '#FBBF24', 
@@ -488,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             bodyStyles: {
                 textColor: '#1F2937', 
-                valign: 'top' 
+                valign: 'middle' // Căn giữa theo chiều dọc
             },
             columnStyles: {
                 0: { cellWidth: 100 }, 
@@ -508,7 +507,7 @@ document.addEventListener('DOMContentLoaded', function () {
         y += lineHeight + 10; 
 
         const paymentScheduleData = lastCalculatedData.calculationResult.paymentSchedule;
-        const paymentTableHeaders = [['Dot', 'Noi dung', 'Ty le', 'So tien (VND)']];
+        const paymentTableHeaders = [[removeAccents('Dot'), removeAccents('Noi dung'), removeAccents('Ty le'), removeAccents('So tien (VND)')]];
         const paymentTableBody = [];
 
         paymentScheduleData.forEach(item => {
@@ -545,8 +544,8 @@ document.addEventListener('DOMContentLoaded', function () {
             columnStyles: {
                 0: { cellWidth: 60 },
                 1: { cellWidth: 220 },
-                2: { cellWidth: 60, halign: 'right' },
-                3: { cellWidth: 120, halign: 'right' }
+                2: { cellWidth: 60, halign: 'right' }, // Căn phải cho cột tỷ lệ
+                3: { cellWidth: 120, halign: 'right' } // Căn phải cho cột số tiền
             },
             didDrawPage: function(data) {
                 // Có thể thêm số trang hoặc footer tại đây
