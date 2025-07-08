@@ -418,3 +418,64 @@ document.addEventListener('DOMContentLoaded', function () {
         emailNotificationEl.classList.add('hidden');
     }
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburgerMenuButton = document.getElementById('hamburger-menu-button');
+    const sideMenu = document.getElementById('side-menu');
+    const closeSideMenuButton = document.getElementById('close-side-menu');
+    const sideMenuOverlay = document.getElementById('side-menu-overlay');
+    const sideNavList = document.getElementById('side-nav-list'); // Lấy danh sách menu
+
+    // Function để mở side menu
+    function openSideMenu() {
+        sideMenu.classList.remove('translate-x-full');
+        sideMenu.classList.add('translate-x-0');
+        sideMenuOverlay.classList.remove('hidden');
+        setTimeout(() => sideMenuOverlay.classList.add('opacity-50'), 10);
+        document.body.style.overflow = 'hidden'; // Ngăn cuộn trang chính
+    }
+
+    // Function để đóng side menu
+    function closeSideMenu() {
+        sideMenu.classList.remove('translate-x-0');
+        sideMenu.classList.add('translate-x-full');
+        sideMenuOverlay.classList.remove('opacity-50');
+        setTimeout(() => sideMenuOverlay.classList.add('hidden'), 300); // 300ms = transition duration
+        document.body.style.overflow = ''; // Cho phép cuộn trang chính
+    }
+
+    // Event listeners
+    hamburgerMenuButton.addEventListener('click', openSideMenu);
+    closeSideMenuButton.addEventListener('click', closeSideMenu);
+    sideMenuOverlay.addEventListener('click', closeSideMenu);
+
+    // Đóng side menu khi nhấp vào một liên kết trong menu
+    sideNavList.addEventListener('click', (event) => {
+        if (event.target.tagName === 'A' && event.target.closest('ul') === sideNavList) {
+            closeSideMenu();
+        }
+    });
+
+    // Code cho Collapsible Factors (yếu tố ảnh hưởng) - Đảm bảo rằng nó vẫn hoạt động
+    const factorButtons = document.querySelectorAll('#factors-container button');
+    factorButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const contentCard = button.closest('.content-card');
+            const collapsibleContent = contentCard.querySelector('.collapsible-content');
+            const icon = button.querySelector('span');
+
+            if (collapsibleContent.style.maxHeight) {
+                collapsibleContent.style.maxHeight = null;
+                collapsibleContent.style.paddingTop = '0';
+                collapsibleContent.style.paddingBottom = '0';
+                icon.textContent = '+';
+            } else {
+                collapsibleContent.style.maxHeight = collapsibleContent.scrollHeight + 'px';
+                collapsibleContent.style.paddingTop = '1rem'; // p-4 = 1rem
+                collapsibleContent.style.paddingBottom = '1.25rem'; // p-5 = 1.25rem (adjust if needed)
+                icon.textContent = '-';
+            }
+        });
+    });
+
+    // ... (Giữ nguyên các script khác của bạn như tính toán chi phí, biểu đồ, v.v.)
+});
