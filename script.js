@@ -479,3 +479,179 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ... (Giữ nguyên các script khác của bạn như tính toán chi phí, biểu đồ, v.v.)
 });
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (Giữ nguyên các đoạn mã hiện có của bạn cho hamburger menu, collapsible sections, và tính toán chi phí) ...
+
+    const calculateBtn = document.getElementById('calculateBtn');
+    const estimatorForm = document.getElementById('estimatorForm');
+    const estimatedCostElement = document.getElementById('estimatedCost');
+    const resultsSection = document.getElementById('resultsSection');
+    const emailInput = document.getElementById('email'); // Lấy trường email của khách hàng
+
+    // Lấy các element mới cho việc gửi email
+    const sendEmailLink = document.getElementById('sendEmailLink'); // Liên kết mới
+    const emailLoadingSpinner = document.getElementById('emailLoadingSpinner'); // Spinner mới (nếu có)
+
+    // Function để định dạng số tiền VND
+    function formatCurrencyVND(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    // Biến để lưu trữ chi phí ước tính và email khách hàng sau khi tính toán
+    let currentEstimatedCost = 0;
+    let customerEmail = '';
+
+    estimatorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const area = parseFloat(document.getElementById('area').value);
+        const floors = parseInt(document.getElementById('floors').value);
+        const style = document.getElementById('style').value;
+        const finish = document.getElementById('finish').value;
+        const foundationType = document.getElementById('foundation_type').value;
+        const mezzanineOption = document.getElementById('mezzanine_option').value;
+        const rooftopOption = document.getElementById('rooftop_option').value;
+        const roofType = document.getElementById('roof_type').value;
+        customerEmail = emailInput.value; // Cập nhật email khách hàng
+
+        if (isNaN(area) || isNaN(floors) || area <= 0 || floors <= 0) {
+            document.getElementById('costError').textContent = 'Vui lòng nhập diện tích và số tầng hợp lệ.';
+            document.getElementById('costError').classList.remove('hidden');
+            resultsSection.classList.add('hidden', 'opacity-0');
+            return;
+        } else {
+            document.getElementById('costError').classList.add('hidden');
+        }
+
+        // Hiện spinner tính toán
+        document.getElementById('costLoadingSpinner').classList.remove('hidden');
+        calculateBtn.disabled = true;
+        sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Vô hiệu hóa link gửi email
+
+        // Mô phỏng quá trình tính toán (có thể thay thế bằng AJAX call thực tế nếu cần)
+        setTimeout(() => {
+            let baseCostPerSqMeter = 0; // Giá cơ bản mỗi m2
+
+            // Ví dụ về giá ước tính dựa trên mức độ hoàn thiện
+            switch (finish) {
+                case 'basic':
+                    baseCostPerSqMeter = 5000000; // VNĐ/m2
+                    break;
+                case 'standard':
+                    baseCostPerSqMeter = 6500000; // VNĐ/m2
+                    break;
+                case 'premium':
+                    baseCostPerSqMeter = 8000000; // VNĐ/m2
+                    break;
+            }
+
+            // Điều chỉnh theo số tầng (ví dụ: tầng càng cao chi phí móng/kết cấu/vận chuyển tăng)
+            baseCostPerSqMeter += (floors - 1) * 200000; // Cộng thêm 200k/m2 cho mỗi tầng sau tầng 1
+
+            // Điều chỉnh theo phong cách
+            if (style === 'neoclassical') baseCostPerSqMeter *= 1.15; // Tăng 15% cho tân cổ điển
+            else if (style === 'minimalist') baseCostPerSqMeter *= 0.95; // Giảm 5% cho tối giản
+
+            // Điều chỉnh theo loại móng
+            if (foundationType === 'strip') baseCostPerSqMeter += 300000;
+            else if (foundationType === 'pile') baseCostPerSqMeter += 700000;
+
+            // Điều chỉnh cho tầng lửng (ví dụ: +50% diện tích lửng vào tổng diện tích tính tiền)
+            let effectiveArea = area;
+            if (mezzanineOption === 'yes') {
+                effectiveArea += area * 0.5; // Giả sử tầng lửng tính 50% diện tích
+            }
+
+            // Điều chỉnh cho sân thượng (ví dụ: thêm chi phí cố định hoặc theo %)
+            if (rooftopOption === 'yes') {
+                baseCostPerSqMeter += 100000; // Thêm 100k/m2 cho sân thượng
+            }
+
+            // Điều chỉnh theo loại mái
+            if (roofType === 'thai' || roofType === 'japanese') {
+                baseCostPerSqMeter += 200000; // Thêm 200k/m2 cho mái dốc
+            }
+
+            currentEstimatedCost = effectiveArea * baseCostPerSqMeter;
+
+            // Làm tròn đến hàng nghìn (ví dụ)
+            currentEstimatedCost = Math.round(currentEstimatedCost / 1000) * 1000;
+
+            estimatedCostElement.textContent = formatCurrencyVND(currentEstimatedCost);
+            resultsSection.classList.remove('hidden');
+            resultsSection.classList.add('opacity-100'); // Hiển thị kết quả với hiệu ứng fade
+            
+            // Cập nhật link mailto sau khi tính toán xong
+            updateMailtoLink();
+
+            document.getElementById('costLoadingSpinner').classList.add('hidden');
+            calculateBtn.disabled = false;
+            sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Kích hoạt lại link gửi email
+
+            // Tự động cuộn xuống phần kết quả
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        }, 1500); // Giả lập độ trễ 1.5 giây
+    });
+
+    // Hàm tạo và cập nhật liên kết mailto
+    function updateMailtoLink() {
+        if (currentEstimatedCost === 0 || !customerEmail) {
+            sendEmailLink.setAttribute('href', '#');
+            sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
+            return;
+        }
+
+        const companyEmail = 'esb.homes.company@gmail.com'; // Email của công ty
+        const subject = encodeURIComponent('Yêu cầu báo giá xây dựng nhà phố trọn gói');
+
+        // Lấy thông tin chi tiết từ form
+        const area = parseFloat(document.getElementById('area').value);
+        const floors = parseInt(document.getElementById('floors').value);
+        const styleText = document.getElementById('style').options[document.getElementById('style').selectedIndex].text;
+        const finishText = document.getElementById('finish').options[document.getElementById('finish').selectedIndex].text;
+        const foundationTypeText = document.getElementById('foundation_type').options[document.getElementById('foundation_type').selectedIndex].text;
+        const mezzanineOptionText = document.getElementById('mezzanine_option').options[document.getElementById('mezzanine_option').selectedIndex].text;
+        const rooftopOptionText = document.getElementById('rooftop_option').options[document.getElementById('rooftop_option').selectedIndex].text;
+        const roofTypeText = document.getElementById('roof_type').options[document.getElementById('roof_type').selectedIndex].text;
+
+        const body = encodeURIComponent(
+            `Kính gửi ESB Homes,\n\n` +
+            `Tôi tên là [Tên của bạn/Khách hàng],\n` +
+            `Email: ${customerEmail}\n\n` +
+            `Tôi muốn yêu cầu báo giá chi tiết cho dự án xây dựng nhà phố với các thông tin sau:\n\n` +
+            `- Diện tích sàn xây dựng: ${area} m²\n` +
+            `- Số tầng: ${floors}\n` +
+            `- Phong cách thiết kế: ${styleText}\n` +
+            `- Mức độ hoàn thiện: ${finishText}\n` +
+            `- Loại móng: ${foundationTypeText}\n` +
+            `- Có tầng lửng: ${mezzanineOptionText}\n` +
+            `- Có sân thượng: ${rooftopOptionText}\n` +
+            `- Loại mái: ${roofTypeText}\n\n` +
+            `Chi phí ước tính sơ bộ theo công cụ của quý công ty là: ${formatCurrencyVND(currentEstimatedCost)}\n\n` +
+            `Rất mong nhận được sự tư vấn và báo giá chính xác từ quý công ty.\n\n` +
+            `Xin chân thành cảm ơn!`
+        );
+
+        const mailtoLink = `mailto:${companyEmail}?subject=${subject}&body=${body}`;
+        sendEmailLink.setAttribute('href', mailtoLink);
+        sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Kích hoạt lại liên kết
+    }
+
+    // Đảm bảo cập nhật link ngay khi trang tải nếu có giá trị sẵn (mặc dù ban đầu là 0)
+    updateMailtoLink();
+
+    // Event listener cho nút Gửi Yêu cầu Báo giá qua Email
+    // Vì đã chuyển thành <a> tag với href, không cần event listener riêng cho nó nữa
+    // Trừ khi bạn muốn thêm một hiệu ứng hoặc hành động khác trước khi mở mailto.
+    // Nếu bạn muốn hiển thị spinner khi bấm nút gửi mail (mặc dù mailto thường không có loading)
+    // sendEmailLink.addEventListener('click', () => {
+    //     // Chỉ hiển thị spinner nếu link không bị disabled (tức là đã có giá trị)
+    //     if (!sendEmailLink.classList.contains('disabled:opacity-50')) {
+    //         emailLoadingSpinner.classList.remove('hidden');
+    //         // Trong thực tế, bạn không thể biết khi nào email client mở hoặc gửi xong
+    //         // Nên spinner sẽ cần bị ẩn đi sau một thời gian ngắn hoặc khi người dùng quay lại trình duyệt
+    //         // Ví dụ: setTimeout(() => emailLoadingSpinner.classList.add('hidden'), 2000);
+    //     }
+    // });
+});
