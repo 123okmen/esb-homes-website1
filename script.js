@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     const sendEmailLink = document.getElementById('sendEmailLink'); 
     
-    // Giữ các biến cho nút và spinner PDF, dù nút đã ẩn trong HTML
     const downloadPdfBtn = document.getElementById('downloadPdfBtn'); 
     const pdfLoadingSpinner = document.getElementById('pdfLoadingSpinner');
 
@@ -17,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const paymentScheduleTableBody = document.getElementById('paymentScheduleTableBody');
 
     const sections = document.querySelectorAll('section[id]');
-    // floatingNavList và sideNavList sẽ được tạo động
     const floatingNavList = document.getElementById('floating-nav-list');
     const sideNavList = document.getElementById('side-nav-list'); 
 
@@ -29,9 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('email'); 
 
     let costBreakdownChart = null;
-    let lastCalculatedData = null; // Lưu trữ toàn bộ kết quả tính toán
-    let currentEstimatedCost = 0; // Lưu trữ tổng chi phí ước tính
-    let customerEmail = ''; // Lưu trữ email của khách hàng
+    let lastCalculatedData = null; 
+    let currentEstimatedCost = 0; 
+    let customerEmail = ''; 
 
     // --- CÁC HẰNG SỐ VÀ TỶ LỆ TÍNH TOÁN --- //
     const COST_FACTORS = {
@@ -45,10 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
             neoclassical: 1.3, 
             minimalist: 0.95   
         },
-        FOUNDATION_PER_M2: {
-            simple: 250000,    
-            strip: 450000,     
-            pile: 1000000      
+        FOUNDATION_PERCENTAGES: { // Hệ số phần trăm mới cho chi phí móng
+            simple: 0.40, // 40% của coreBuildingCost
+            strip: 0.60,  // 60% của coreBuildingCost
+            pile: 0.50    // 50% của coreBuildingCost
         },
         ROOF_PER_M2: {
             flat: 150000,      
@@ -56,20 +54,19 @@ document.addEventListener('DOMContentLoaded', function () {
             japanese: 500000   
         },
         AREA_MULTIPLIER: {
-            MEZZANINE: 0.5, // Tầng lửng tính 50% diện tích sàn trệt
-            ROOFTOP: 0.3    // Sân thượng tính 30% diện tích sàn trệt
+            MEZZANINE: 0.5, 
+            ROOFTOP: 0.3    
         },
         COST_BREAKDOWN_RATIO: {
-            ROUGH_PART: 0.6,       // Tỷ lệ chi phí phần thô trên tổng chi phí xây dựng cơ bản (chưa bao gồm móng, mái)
-            FINISHING_PART: 0.4,   // Tỷ lệ chi phí hoàn thiện trên tổng chi phí xây dựng cơ bản (chưa bao gồm móng, mái)
-            DESIGN_MANAGEMENT_PERCENTAGE: 0.1 // Tỷ lệ chi phí thiết kế & quản lý trên tổng chi phí xây dựng thực tế (thô + hoàn thiện + móng + mái)
+            ROUGH_PART: 0.6,       
+            FINISHING_PART: 0.4,   
+            DESIGN_MANAGEMENT_PERCENTAGE: 0.1 
         }
     };
 
     // --- KHỞI TẠO --- //
     createTableOfContents();
     addEventListeners();
-    // Vô hiệu hóa nút PDF và Email khi tải trang ban đầu (chỉ tác động nếu nút hiển thị)
     downloadPdfBtn.disabled = true;
     downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
     sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
@@ -86,8 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 navHTML += `<li><a href="#${sectionId}" class="nav-link block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">${sectionTitle}</a></li>`;
             }
         });
-        // Floating menu chỉ hiện trên desktop, cần một ul riêng nếu muốn có
-        // floatingNavList.innerHTML = navHTML; // Nếu bạn muốn floatingNavList có nội dung tương tự
         sideNavList.innerHTML = navHTML; 
     }
 
@@ -95,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function addEventListeners() {
         form.addEventListener('submit', handleFormSubmit);
         sendEmailLink.addEventListener('click', handleSendEmailLink); 
-        // downloadPdfBtn.addEventListener('click', handleDownloadPdf); // Bỏ comment này nếu bạn muốn giữ nút riêng
         window.addEventListener('scroll', handleScroll);
         document.querySelectorAll('#factors-container button').forEach(button => {
             button.addEventListener('click', toggleCollapsible);
@@ -103,14 +97,13 @@ document.addEventListener('DOMContentLoaded', function () {
         hamburgerMenuButton.addEventListener('click', openSideMenu); 
         closeSideMenuButton.addEventListener('click', closeSideMenu); 
         sideMenuOverlay.addEventListener('click', closeSideMenu); 
-        // Đóng side menu khi nhấp vào một liên kết trong menu
         document.querySelectorAll('#side-menu a.nav-link').forEach(link => { 
             link.addEventListener('click', closeSideMenu); 
         });
     }
 
     // --- XỬ LÝ FORM --- //
-    async function handleFormSubmit(e) { // Đặt hàm là async
+    async function handleFormSubmit(e) { 
         e.preventDefault();
         if (calculateBtn.classList.contains('loading')) return;
 
@@ -129,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        setTimeout(async () => { // Thêm async ở đây để sử dụng await bên trong
+        setTimeout(async () => { 
             const calculationResult = calculateCost(inputs);
             currentEstimatedCost = calculationResult.totalCost; 
             lastCalculatedData = { inputs, calculationResult }; 
@@ -139,10 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
             
             setLoadingState(false);
             sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
-            // downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Không cần nếu nút bị ẩn và tự động tải
 
-            // Tự động tải PDF sau khi tính toán xong
-            await handleDownloadPdf(); // Sử dụng await để đảm bảo PDF được tạo xong
+            await handleDownloadPdf(); 
             
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
 
@@ -195,56 +186,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let totalCalculatedArea = area; 
         
-        // Mỗi tầng trên tầng 1 sẽ tính bằng 100% diện tích sàn
         totalCalculatedArea += area * (floors - 1); 
 
-        // Nếu có tầng lửng, thêm diện tích tính theo tỷ lệ
         if (mezzanineOption === 'yes') {
             totalCalculatedArea += area * COST_FACTORS.AREA_MULTIPLIER.MEZZANINE;
         }
         
-        // Nếu có sân thượng, thêm diện tích tính theo tỷ lệ
         if (rooftopOption === 'yes') {
             totalCalculatedArea += area * COST_FACTORS.AREA_MULTIPLIER.ROOFTOP;
         }
 
-        // Chi phí cơ bản mỗi m2 điều chỉnh theo mức độ hoàn thiện và phong cách
-        let costPerM2 = COST_FACTORS.BASE_PER_M2[finish] * COST_FACTORS.STYLE_MULTIPLIER[style];
+        const coreBuildingCost = totalCalculatedArea * COST_FACTORS.BASE_PER_M2[finish] * COST_FACTORS.STYLE_MULTIPLIER[style];
 
-        // Chi phí móng (chỉ tính trên diện tích sàn trệt)
-        const foundationCost = area * COST_FACTORS.FOUNDATION_PER_M2[foundationType];
+        const foundationCost = coreBuildingCost * COST_FACTORS.FOUNDATION_PERCENTAGES[foundationType];
 
-        // Chi phí mái (chỉ tính trên diện tích sàn trệt cho phần mái)
         const roofCost = area * COST_FACTORS.ROOF_PER_M2[roofType];
         
-        // Tổng chi phí xây dựng (chưa bao gồm thiết kế và quản lý)
-        const constructionBaseCostTotal = (totalCalculatedArea * costPerM2);
-
-        // Phân bổ chi phí phần thô và hoàn thiện từ constructionBaseCostTotal
-        const roughPartOnlyCost = constructionBaseCostTotal * COST_FACTORS.COST_BREAKDOWN_RATIO.ROUGH_PART;
-        const finishingCost = constructionBaseCostTotal * COST_FACTORS.COST_BREAKDOWN_RATIO.FINISHING_PART;
+        const roughPartCore = coreBuildingCost * COST_FACTORS.COST_BREAKDOWN_RATIO.ROUGH_PART;
+        const finishingPartCore = coreBuildingCost * COST_FACTORS.COST_BREAKDOWN_RATIO.FINISHING_PART;
         
-        // Tổng chi phí (thô + hoàn thiện + móng + mái)
-        const subTotalBeforeDesign = roughPartOnlyCost + finishingCost + foundationCost + roofCost;
+        const subTotalBeforeDesign = roughPartCore + finishingPartCore + foundationCost + roofCost;
 
-        // Chi phí thiết kế và quản lý dự án (tính trên tổng subTotalBeforeDesign)
         const designAndManagementCost = subTotalBeforeDesign * COST_FACTORS.COST_BREAKDOWN_RATIO.DESIGN_MANAGEMENT_PERCENTAGE;
         
-        // Tổng chi phí cuối cùng
         const totalCost = subTotalBeforeDesign + designAndManagementCost;
 
         return {
             totalCost: Math.round(totalCost / 1000) * 1000, 
             breakdown: { 
-                'Phần thô (Kết cấu, Móng, Mái)': roughPartOnlyCost + foundationCost + roofCost, // Tổng hợp chi phí thô thực tế
-                'Hoàn thiện (Sơn, Gạch, TBVS...)': finishingCost,
+                'Phần thô (Kết cấu, Móng, Mái)': roughPartCore + foundationCost + roofCost, 
+                'Hoàn thiện (Sơn, Gạch, TBVS...)': finishingPartCore,
                 'Thiết kế & Quản lý dự án': designAndManagementCost
             },
-            detailedBreakdown: { 
+            detailedBreakdown: { // Khóa tiếng Việt để khớp với bảng chi tiết trên trang và trong PDF
                 'Chi phí móng': foundationCost,
-                'Chi phí kết cấu & xây thô': roughPartOnlyCost, 
+                'Chi phí kết cấu & xây thô': roughPartCore, 
                 'Chi phí mái': roofCost,
-                'Chi phí hoàn thiện': finishingCost,
+                'Chi phí hoàn thiện': finishingPartCore,
                 'Chi phí thiết kế & quản lý': designAndManagementCost
             },
             paymentSchedule: generatePaymentSchedule(totalCost)
@@ -287,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Phân bổ chi phí',
+                    label: 'Phân bổ chi phí', 
                     data: data,
                     backgroundColor: [ 'rgba(217, 119, 6, 0.8)', 'rgba(251, 191, 36, 0.8)', 'rgba(31, 41, 55, 0.7)' ],
                     borderColor: [ 'rgba(217, 119, 6, 1)', 'rgba(251, 191, 36, 1)', 'rgba(31, 41, 55, 1)' ],
@@ -311,17 +289,16 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function updateDetailedBreakdownTable(detailedData) {
         let tableHTML = '';
-        // Các key này PHẢI khớp chính xác với các key trong detailedBreakdown được trả về từ calculateCost
         const mainCategories = {
-            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'],
-            'Hoàn Thiện': ['Chi phí hoàn thiện'],
-            'Chi phí khác': ['Chi phí thiết kế & quản lý']
+            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], // Khóa tiếng Việt
+            'Hoàn Thiện': ['Chi phí hoàn thiện'], // Khóa tiếng Việt
+            'Chi phí khác': ['Chi phí thiết kế & quản lý'] // Khóa tiếng Việt
         };
 
-        for (const mainCategoryKey in mainCategories) {
+        for (const mainCategoryKey in mainCategories) { 
             const subItemKeys = mainCategories[mainCategoryKey];
-            subItemKeys.forEach((itemKey, index) => {
-                const cost = detailedData[itemKey] || 0; // Sử dụng itemKey để truy cập dữ liệu
+            subItemKeys.forEach((itemKey, index) => { 
+                const cost = detailedData[itemKey] || 0; 
                 tableHTML += `
                     <tr class="border-t border-gray-200">
                         ${index === 0 ? `<td class="px-5 py-4 font-medium text-gray-800 align-top" rowspan="${subItemKeys.length}">${mainCategoryKey}</td>` : ''}
@@ -353,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleSendEmailLink(event) {
         if (sendEmailLink.getAttribute('href') === '#') {
             event.preventDefault(); 
-            showError("Vui lòng thực hiện tính toán trước khi gửi email.");
+            showError("Vui lòng ước tính chi phí trước khi gửi email."); 
             return;
         }
     }
@@ -370,22 +347,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const inputs = lastCalculatedData.inputs;
 
+        // Lấy text hiển thị từ dropdown trong HTML
+        const styleText = document.getElementById('style').options[document.getElementById('style').selectedIndex].text;
+        const finishText = document.getElementById('finish').options[document.getElementById('finish').selectedIndex].text;
+        const foundationTypeText = document.getElementById('foundation_type').options[document.getElementById('foundation_type').selectedIndex].text;
+        const mezzanineOptionText = document.getElementById('mezzanine_option').options[document.getElementById('mezzanine_option').selectedIndex].text;
+        const rooftopOptionText = document.getElementById('rooftop_option').options[document.getElementById('rooftop_option').selectedIndex].text;
+        const roofTypeText = document.getElementById('roof_type').options[document.getElementById('roof_type').selectedIndex].text;
+
+
         const body = encodeURIComponent(
-            `Kính gửi ESB Homes,\n\n` +
-            `Tôi tên là [Vui lòng điền tên của bạn],\n` +
-            `Email: ${inputs.email}\n\n` +
-            `Tôi muốn yêu cầu báo giá chi tiết cho dự án xây dựng nhà phố với các thông tin sau:\n\n` +
-            `- Diện tích sàn xây dựng: ${inputs.area} m²\n` +
-            `- Số tầng: ${inputs.floors}\n` +
-            `- Phong cách thiết kế: ${document.getElementById('style').options[document.getElementById('style').selectedIndex].text}\n` +
-            `- Mức độ hoàn thiện: ${document.getElementById('finish').options[document.getElementById('finish').selectedIndex].text}\n` +
-            `- Loại móng: ${document.getElementById('foundation_type').options[document.getElementById('foundation_type').selectedIndex].text}\n` +
-            `- Có tầng lửng: ${document.getElementById('mezzanine_option').options[document.getElementById('mezzanine_option').selectedIndex].text}\n` +
-            `- Có sân thượng: ${document.getElementById('rooftop_option').options[document.getElementById('rooftop_option').selectedIndex].text}\n` +
-            `- Loại mái: ${document.getElementById('roof_type').options[document.getElementById('roof_type').selectedIndex].text}\n\n` +
-            `Chi phí ước tính sơ bộ theo công cụ của quý công ty là: ${formatCurrency(currentEstimatedCost)} VNĐ\n\n` +
-            `Tôi rất mong nhận được sự tư vấn và báo giá chính xác từ quý công ty.\n\n` +
-            `Xin chân thành cảm ơn!`
+            `Kính gửi ESB Homes,\n\n` + 
+            `Tôi tên là [Vui lòng điền tên của bạn],\n` + 
+            `Email: ${inputs.email}\n\n` + 
+            `Tôi muốn yêu cầu báo giá chi tiết cho dự án xây dựng nhà phố với các thông tin sau:\n\n` + 
+            `- Diện tích sàn xây dựng: ${inputs.area} m²\n` + 
+            `- Số tầng: ${inputs.floors}\n` + 
+            `- Phong cách thiết kế: ${styleText} (đã chọn)\n` + 
+            `- Mức độ hoàn thiện: ${finishText} (đã chọn)\n` + 
+            `- Loại móng: ${foundationTypeText} (đã chọn)\n` + 
+            `- Có tầng lửng: ${mezzanineOptionText} (đã chọn)\n` + 
+            `- Có sân thượng: ${rooftopOptionText} (đã chọn)\n` + 
+            `- Loại mái: ${roofTypeText} (đã chọn)\n\n` + 
+            `Chi phí ước tính sơ bộ theo công cụ của quý công ty là: ${formatCurrency(currentEstimatedCost)} VNĐ\n\n` + 
+            `Tôi rất mong nhận được sự tư vấn và báo giá chính xác từ quý công ty.\n\n` + 
+            `Xin chân thành cảm ơn!` 
         );
 
         const mailtoLink = `mailto:${companyEmail}?subject=${subject}&body=${body}`;
@@ -395,16 +381,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- XỬ LÝ TẢI PDF --- //
     async function handleDownloadPdf() {
-        // console.log("Nút PDF đã được bấm!"); // Giữ các console.log này để debug nếu cần
-        // console.log("lastCalculatedData:", lastCalculatedData); 
-        // console.log("currentEstimatedCost:", currentEstimatedCost); 
-
         if (!lastCalculatedData || currentEstimatedCost === 0) {
             alert('Vui lòng ước tính chi phí trước khi tải báo giá PDF.'); 
             return; 
         }
 
-        // Kích hoạt spinner và vô hiệu hóa nút trong quá trình tải PDF
         pdfLoadingSpinner.classList.remove('hidden'); 
         downloadPdfBtn.disabled = true; 
         downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
@@ -412,11 +393,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const { jsPDF } = window.jspdf; 
         const doc = new jsPDF('p', 'pt', 'a4'); 
 
-        // Lưu ý: Để hỗ trợ tiếng Việt đầy đủ (có dấu) trong PDF, bạn cần nhúng một font TTF hỗ trợ tiếng Việt.
-        // Đây là bước phức tạp và cần thêm file font. Để đơn giản, các ký tự có dấu sẽ bị bỏ qua hoặc hiển thị không chính xác.
-        // Ví dụ (đã comment):
-        // doc.addFont('path/to/your/vietnamese-font.ttf', 'VietnameseFont', 'normal');
-        // doc.setFont('VietnameseFont'); 
+        // --- HƯỚNG DẪN NHÚNG FONT TIẾNG VIỆT (VÍ DỤ FONT ARRIAL) ---
+        // BƯỚC 1: CHUYỂN ĐỔI FONT .TTF SANG BASE64
+        //   - Truy cập trang web như: https://www.base64-font-converter.com/ hoặc https://transfonter.org/
+        //   - Tải lên file font Arial.ttf (hoặc một font tiếng Việt khác như Open Sans, Noto Sans)
+        //   - Chọn định dạng đầu ra là Base64 CSS (hoặc Base64 Data URI)
+        //   - Sao chép chuỗi Base64 dài (phần data:application/x-font-ttf;charset=utf-8;base64,...)
+        //
+        // BƯỚC 2: THÊM FONT VÀO JSPDF
+        //   - Dán chuỗi Base64 đã sao chép vào biến fontBase64.
+        //   - Gọi doc.addFont() để đăng ký font.
+        //   - Gọi doc.setFont() để sử dụng font.
+        //
+        // Ví dụ:
+        /*
+        const fontBase64 = "data:application/x-font-ttf;charset=utf-8;base64,AAEAAA... (chuỗi Base64 của font Arial.ttf)"; // THAY THẾ BẰNG CHUỖI CỦA BẠN
+        doc.addFileToVFS('Arial.ttf', fontBase64.split(',')[1]); // Lấy phần Base64 sau "data:..."
+        doc.addFont('Arial.ttf', 'Arial', 'normal');
+        doc.setFont('Arial'); // Đặt font Arial làm font mặc định cho text
+        */
+        // Nếu không thực hiện bước này, các ký tự tiếng Việt có dấu sẽ hiển thị không đúng.
+        // --- KẾT THÚC HƯỚNG DẪN NHÚNG FONT ---
 
         const margin = 40; 
         let y = margin; 
@@ -432,41 +429,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Tiêu đề báo giá
         doc.setFontSize(18); 
-        doc.text("BAO GIA XAY DUNG NHA PHO (UOC TINH SO BO)", pageWidth / 2, y, { align: 'center' }); 
+        doc.text("BÁO GIÁ XÂY DỰNG NHÀ PHỐ (ƯỚC TÍNH SƠ BỘ)", pageWidth / 2, y, { align: 'center' }); 
         y += 25; 
         doc.setFontSize(10); 
-        doc.text(`Ngay lap: ${new Date().toLocaleDateString('vi-VN')}`, pageWidth - margin, y, { align: 'right' }); 
+        doc.text(`Ngày lập: ${new Date().toLocaleDateString('vi-VN')}`, pageWidth - margin, y, { align: 'right' }); 
         y += 20; 
 
         // Thông tin công ty
         doc.setFontSize(12); 
-        doc.text("Cong ty ESB Homes", margin, y); 
+        doc.text("Công ty ESB Homes", margin, y); 
         y += lineHeight; 
-        doc.text("Dia chi: 14A Duong so 21, Phuong Tan Quy, Quan 7, TP. Ho Chi Minh", margin, y); 
+        doc.text("Địa chỉ: 14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh", margin, y); 
         y += lineHeight; 
         doc.text("Hotline: 0899618286", margin, y); 
         y += lineHeight * 2; 
 
         // Thông tin khách hàng (từ email đã nhập)
         doc.setFontSize(12); 
-        doc.text("Thong tin lien he:", margin, y); 
+        doc.text("Thông tin liên hệ:", margin, y); 
         y += lineHeight; 
-        doc.text(`Email: ${lastCalculatedData.inputs.email || 'Chua cap nhat'}`, margin, y); 
+        doc.text(`Email: ${lastCalculatedData.inputs.email || 'Chưa cung cấp'}`, margin, y); 
         y += lineHeight * 2; 
 
         // Bảng Chi tiết Hạng mục (Ước tính)
         doc.setFontSize(14); 
-        doc.text("BANG CHI TIET HANG MUC (UOC TINH)", margin, y); 
+        doc.text("BẢNG CHI TIẾT HẠNG MỤC (ƯỚC TÍNH)", margin, y); 
         y += lineHeight + 10; 
 
-        const headers = [['Hang muc chinh', 'Hang muc chi tiet', 'Chi phi (VND)']]; 
+        const headers = [['Hạng mục chính', 'Hạng mục chi tiết', 'Chi phí (VNĐ)']]; 
         const data = []; 
 
         const detailedData = lastCalculatedData.calculationResult.detailedBreakdown; 
-        const mainCategoriesForPdf = { // Đổi tên biến để tránh trùng với hàm updateDetailedBreakdownTable
-            'Phan Tho': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
-            'Hoan Thien': ['Chi phí hoàn thiện'], 
-            'Chi phi khac': ['Chi phí thiết kế & quản lý'] 
+        const mainCategoriesForPdf = { 
+            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
+            'Hoàn Thiện': ['Chi phí hoàn thiện'], 
+            'Chi phí khác': ['Chi phí thiết kế & quản lý'] 
         };
 
         for (const mainCategoryKey in mainCategoriesForPdf) { 
@@ -476,7 +473,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.push([
                     index === 0 ? mainCategoryKey : '', 
                     itemKey, 
-                    `${formatCurrency(cost)} VND` 
+                    `${formatCurrency(cost)} VNĐ` 
                 ]);
             });
         }
@@ -487,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function () {
             body: data, 
             theme: 'grid', 
             styles: {
-                font: 'helvetica', 
+                font: 'Arial', // SỬ DỤNG FONT "Arial" đã nhúng
                 fontSize: 10, 
                 cellPadding: 5, 
                 lineColor: '#e0e0e0', 
@@ -518,19 +515,19 @@ document.addEventListener('DOMContentLoaded', function () {
         // Tổng chi phí ước tính (lặp lại cho rõ)
         doc.setFontSize(16); 
         doc.setTextColor('#D97706'); 
-        doc.text("TONG CHI PHI UOC TINH SO BO:", margin, y); 
+        doc.text("TỔNG CHI PHÍ ƯỚC TÍNH SƠ BỘ:", margin, y); 
         y += lineHeight + 5; 
         doc.setFontSize(20); 
-        doc.text(formatCurrency(currentEstimatedCost) + " VND", margin, y); 
+        doc.text(formatCurrency(currentEstimatedCost) + " VNĐ", margin, y); 
         doc.setTextColor(0); 
         y += lineHeight * 2; 
 
         // Thông tin liên hệ để báo giá chính xác
         doc.setFontSize(14); 
-        doc.text("De nhan bao gia chinh xac nhat va tu van chi tiet hon,", margin, y, { maxWidth: pageWidth - 2 * margin }); 
+        doc.text("Để nhận báo giá chính xác nhất và tư vấn chi tiết hơn,", margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight + 5; 
         doc.setFontSize(12); 
-        doc.text("vui long lien he ESB Homes qua:", margin, y, { maxWidth: pageWidth - 2 * margin }); 
+        doc.text("vui lòng liên hệ ESB Homes qua:", margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight * 2; 
         doc.setFontSize(14); 
         doc.setTextColor('#FBBF24'); 
@@ -543,7 +540,7 @@ document.addEventListener('DOMContentLoaded', function () {
         y += lineHeight * 2; 
         
         doc.setFontSize(10); 
-        doc.text("(*Bao gia nay chi mang tinh chat tham khao. Chi phi thuc te co the thay doi tuy thuoc vao yeu cau cu the.)", margin, y, { maxWidth: pageWidth - 2 * margin }); 
+        doc.text("(*Báo giá này chỉ mang tính chất tham khảo. Chi phí thực tế có thể thay đổi tùy thuộc vào yêu cầu cụ thể.)", margin, y, { maxWidth: pageWidth - 2 * margin }); 
 
         // Tắt spinner và kích hoạt nút lại
         pdfLoadingSpinner.classList.add('hidden'); 
@@ -564,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentSectionId = section.id;
             }
         });
-        updateActiveNavLink(currentSectionId, '.nav-link'); // Sử dụng class .nav-link chung cho cả side menu và floating menu
+        updateActiveNavLink(currentSectionId, '.nav-link'); 
     }
     
     function updateActiveNavLink(activeId, selector) {
