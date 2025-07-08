@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('estimatorForm');
     const calculateBtn = document.getElementById('calculateBtn');
     const estimatedCostEl = document.getElementById('estimatedCost');
-    const resultsSection = document.getElementById('resultsSection');
+    const resultsSection = document = document.getElementById('resultsSection');
     const costErrorEl = document.getElementById('costError');
     const emailNotificationEl = document.getElementById('emailNotification');
     
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const sectionId = section.id;
             const sectionTitleEl = section.querySelector('h2, h3');
             if (sectionId && sectionTitleEl) {
-                const sectionTitle = sectionTitleEl.textContent.trim(); // Giữ nguyên có dấu
+                const sectionTitle = sectionTitleEl.textContent.trim(); 
                 navHTML += `<li><a href="#${sectionId}" class="nav-link block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">${sectionTitle}</a></li>`;
             }
         });
@@ -165,11 +165,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validateInputs(inputs) {
         if (isNaN(inputs.area) || inputs.area <= 0 || isNaN(inputs.floors) || inputs.floors <= 0) {
-            showError('Vui lòng nhập diện tích và số tầng hợp lệ.'); // Giữ nguyên có dấu
+            showError('Vui lòng nhập diện tích và số tầng hợp lệ.'); 
             return false;
         }
         if (!inputs.email || !/^\S+@\S+\.\S+$/.test(inputs.email)) {
-             showError('Vui lòng nhập một địa chỉ email hợp lệ.'); // Giữ nguyên có dấu
+             showError('Vui lòng nhập một địa chỉ email hợp lệ.'); 
             return false;
         }
         return true;
@@ -180,11 +180,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const costLoadingSpinner = document.getElementById('costLoadingSpinner'); 
         if (isLoading) {
             calculateBtn.classList.add('loading');
-            calculateBtn.querySelector('span').textContent = 'Đang tính toán...'; // Giữ nguyên có dấu
+            calculateBtn.querySelector('span').textContent = 'Đang tính toán...'; 
             costLoadingSpinner.classList.remove('hidden');
         } else {
             calculateBtn.classList.remove('loading');
-            calculateBtn.querySelector('span').textContent = 'Ước tính Chi phí'; // Giữ nguyên có dấu
+            calculateBtn.querySelector('span').textContent = 'Ước tính Chi phí'; 
             costLoadingSpinner.classList.add('hidden');
         }
     }
@@ -218,21 +218,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const designAndManagementCost = subTotalBeforeDesign * COST_FACTORS.COST_BREAKDOWN_RATIO.DESIGN_MANAGEMENT_PERCENTAGE;
         
-        const totalCost = Math.round(subTotalBeforeDesign + designAndManagementCost / 1000) * 1000; // Làm tròn tổng cuối cùng
+        const totalCost = subTotalBeforeDesign + designAndManagementCost;
 
         return {
             totalCost: Math.round(totalCost / 1000) * 1000, 
             breakdown: { 
-                'Phần thô (Kết cấu, Móng, Mái)': roughPartCore + foundationCost + roofCost, // Giữ nguyên có dấu
-                'Hoàn thiện (Sơn, Gạch, TBVS...)': finishingPartCore, // Giữ nguyên có dấu
-                'Thiết kế & Quản lý dự án': designAndManagementCost // Giữ nguyên có dấu
+                'Phần thô (Kết cấu, Móng, Mái)': roughPartCore + foundationCost + roofCost, 
+                'Hoàn thiện (Sơn, Gạch, TBVS...)': finishingPartCore,
+                'Thiết kế & Quản lý dự án': designAndManagementCost
             },
             detailedBreakdown: { 
-                'Chi phí móng': foundationCost, // Giữ nguyên có dấu
-                'Chi phí kết cấu & xây thô': roughPartCore, // Giữ nguyên có dấu
-                'Chi phí mái': roofCost, // Giữ nguyên có dấu
-                'Chi phí hoàn thiện': finishingPartCore, // Giữ nguyên có dấu
-                'Chi phí thiết kế & quản lý': designAndManagementCost // Giữ nguyên có dấu
+                'Chi phí móng': foundationCost,
+                'Chi phí kết cấu & xây thô': roughPartCore, 
+                'Chi phí mái': roofCost,
+                'Chi phí hoàn thiện': finishingPartCore,
+                'Chi phí thiết kế & quản lý': designAndManagementCost
             },
             paymentSchedule: generatePaymentSchedule(totalCost)
         };
@@ -240,12 +240,12 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function generatePaymentSchedule(totalCost) {
         return [
-            { phase: 'Đợt 1', task: 'Ký hợp đồng, tạm ứng', rate: 0.10, amount: totalCost * 0.10 }, // Giữ nguyên có dấu
-            { phase: 'Đợt 2', task: 'Hoàn thành phần móng', rate: 0.20, amount: totalCost * 0.20 }, // Giữ nguyên có dấu
-            { phase: 'Đợt 3', task: 'Hoàn thành khung bê tông cốt thép', rate: 0.30, amount: totalCost * 0.30 }, // Giữ nguyên có dấu
-            { phase: 'Đợt 4', task: 'Hoàn thành phần xây tô, ốp lát', rate: 0.20, amount: totalCost * 0.20 }, // Giữ nguyên có dấu
-            { phase: 'Đợt 5', task: 'Hoàn thiện sơn nước, lắp đặt thiết bị', rate: 0.15, amount: totalCost * 0.15 }, // Giữ nguyên có dấu
-            { phase: 'Đợt 6', task: 'Nghiệm thu, bàn giao công trình', rate: 0.05, amount: totalCost * 0.05 } // Giữ nguyên có dấu
+            { phase: 'Đợt 1', task: 'Ký hợp đồng, tạm ứng', rate: 0.10, amount: totalCost * 0.10 }, 
+            { phase: 'Đợt 2', task: 'Hoàn thành phần móng', rate: 0.20, amount: totalCost * 0.20 }, 
+            { phase: 'Đợt 3', task: 'Hoàn thành khung bê tông cốt thép', rate: 0.30, amount: totalCost * 0.30 }, 
+            { phase: 'Đợt 4', task: 'Hoàn thành phần xây tô, ốp lát', rate: 0.20, amount: totalCost * 0.20 }, 
+            { phase: 'Đợt 5', task: 'Hoàn thiện sơn nước, lắp đặt thiết bị', rate: 0.15, amount: totalCost * 0.15 }, 
+            { phase: 'Đợt 6', task: 'Nghiệm thu, bàn giao công trình', rate: 0.05, amount: totalCost * 0.05 } 
         ];
     }
 
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Phân bổ chi phí', // Giữ nguyên có dấu
+                    label: 'Phân bổ chi phí', 
                     data: data,
                     backgroundColor: [ 'rgba(217, 119, 6, 0.8)', 'rgba(251, 191, 36, 0.8)', 'rgba(31, 41, 55, 0.7)' ],
                     borderColor: [ 'rgba(217, 119, 6, 1)', 'rgba(251, 191, 36, 1)', 'rgba(31, 41, 55, 1)' ],
@@ -299,9 +299,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateDetailedBreakdownTable(detailedData) {
         let tableHTML = '';
         const mainCategories = {
-            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], // Giữ nguyên có dấu
-            'Hoàn Thiện': ['Chi phí hoàn thiện'], // Giữ nguyên có dấu
-            'Chi phí khác': ['Chi phí thiết kế & quản lý'] // Giữ nguyên có dấu
+            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
+            'Hoàn Thiện': ['Chi phí hoàn thiện'], 
+            'Chi phí khác': ['Chi phí thiết kế & quản lý'] 
         };
 
         for (const mainCategoryKey in mainCategories) { 
@@ -402,11 +402,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const { jsPDF } = window.jspdf; 
         const doc = new jsPDF('p', 'pt', 'a4'); 
 
-        // --- GHI CHÚ QUAN TRỌNG VỀ FONT TIẾNG VIỆT ---
         // jsPDF mặc định không hỗ trợ font tiếng Việt có dấu.
         // Các văn bản đã được chuyển sang không dấu ở dưới để tránh lỗi font.
-        // --- KẾT THÚC GHI CHÚ FONT ---
-
 
         const margin = 40; 
         let y = margin; 
@@ -444,37 +441,119 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.text(removeAccents(`Email: ${lastCalculatedData.inputs.email || 'Chua cung cap'}`), margin, y); 
         y += lineHeight * 2; 
 
-        // Bảng Chi tiết Hạng mục (Ước tính) - CHỤP LÀM HÌNH ẢNH
+        // Bảng Chi tiết Hạng mục (Ước tính)
         doc.setFontSize(14); 
         doc.text(removeAccents("BANG CHI TIET HANG MUC (UOC TINH)"), margin, y); 
         y += lineHeight + 10; 
 
-        const detailedBreakdownSectionToCapture = document.getElementById('detailedBreakdownSection');
+        const detailedData = lastCalculatedData.calculationResult.detailedBreakdown; 
+        const mainCategoriesForPdf = { 
+            'Phần thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
+            'Hoàn thiện': ['Chi phí hoàn thiện'], 
+            'Chi phí khác': ['Chi phí thiết kế & quản lý'] 
+        };
 
-        try {
-            const canvas = await html2canvas(detailedBreakdownSectionToCapture, {
-                scale: 2, 
-                useCORS: true, 
-                ignoreElements: (element) => {
-                    return element.classList.contains('loading-spinner'); 
-                }
+        const detailedTableHeaders = [['Hang muc chinh', 'Hang muc chi tiet', 'Chi phi (VND)']]; 
+        const detailedTableBody = [];
+
+        for (const mainCategoryKey in mainCategoriesForPdf) { 
+            const subItemKeys = mainCategoriesForPdf[mainCategoryKey];
+            subItemKeys.forEach((itemKey, index) => { 
+                const cost = detailedData[itemKey] || 0; 
+                detailedTableBody.push([
+                    index === 0 ? removeAccents(mainCategoryKey) : '', 
+                    removeAccents(itemKey), 
+                    `${formatCurrency(cost)} VNĐ` 
+                ]);
             });
-
-            const imgData = canvas.toDataURL('image/png');
-            const imgWidth = doc.internal.pageSize.getWidth() - 2 * margin; 
-            const imgHeight = (canvas.height * imgWidth) / canvas.width; 
-
-            if (y + imgHeight > doc.internal.pageSize.getHeight() - margin) {
-                doc.addPage();
-                y = margin;
+        }
+        
+        doc.autoTable({
+            startY: y, 
+            head: detailedTableHeaders, 
+            body: detailedTableBody, 
+            theme: 'grid', 
+            styles: {
+                font: 'helvetica', 
+                fontSize: 10, 
+                cellPadding: 5, 
+                lineColor: '#e0e0e0', 
+                lineWidth: 0.5 
+            },
+            headStyles: {
+                fillColor: '#FBBF24', 
+                textColor: '#1F2937', 
+                fontStyle: 'bold', 
+                halign: 'center' 
+            },
+            bodyStyles: {
+                textColor: '#1F2937', 
+                valign: 'top' 
+            },
+            columnStyles: {
+                0: { cellWidth: 100 }, 
+                1: { cellWidth: 180 }, 
+                2: { cellWidth: 120, halign: 'right' } 
+            },
+            didDrawPage: function(data) {
+                // Có thể thêm số trang hoặc footer tại đây
             }
-            doc.addImage(imgData, 'PNG', margin, y, imgWidth, imgHeight);
-            y += imgHeight + 20; 
-            
-        } catch (error) {
-            console.error("Loi khi tao hinh anh bang chi tiet cho PDF:", error); 
-            alert("Da xay ra loi khi tao hinh anh bang chi tiet PDF. Vui long thu lai sau."); 
-        } 
+        });
+
+        y = doc.autoTable.previous.finalY + 20; 
+
+        // Bảng Lịch trình Thanh toán
+        doc.setFontSize(14); 
+        doc.text(removeAccents("BANG LICH TRINH THANH TOAN"), margin, y); 
+        y += lineHeight + 10; 
+
+        const paymentScheduleData = lastCalculatedData.calculationResult.paymentSchedule;
+        const paymentTableHeaders = [['Dot', 'Noi dung', 'Ty le', 'So tien (VND)']];
+        const paymentTableBody = [];
+
+        paymentScheduleData.forEach(item => {
+            paymentTableBody.push([
+                removeAccents(item.phase),
+                removeAccents(item.task),
+                `${(item.rate * 100).toFixed(0)}%`,
+                `${formatCurrency(item.amount)} VNĐ`
+            ]);
+        });
+
+        doc.autoTable({
+            startY: y,
+            head: paymentTableHeaders,
+            body: paymentTableBody,
+            theme: 'grid',
+            styles: {
+                font: 'helvetica',
+                fontSize: 10,
+                cellPadding: 5,
+                lineColor: '#e0e0e0',
+                lineWidth: 0.5
+            },
+            headStyles: {
+                fillColor: '#FBBF24',
+                textColor: '#1F2937',
+                fontStyle: 'bold',
+                halign: 'center'
+            },
+            bodyStyles: {
+                textColor: '#1F2937',
+                valign: 'top'
+            },
+            columnStyles: {
+                0: { cellWidth: 60 },
+                1: { cellWidth: 220 },
+                2: { cellWidth: 60, halign: 'right' },
+                3: { cellWidth: 120, halign: 'right' }
+            },
+            didDrawPage: function(data) {
+                // Có thể thêm số trang hoặc footer tại đây
+            }
+        });
+
+        y = doc.autoTable.previous.finalY + 20;
 
 
         // Tổng chi phí ước tính
