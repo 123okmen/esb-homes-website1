@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const costErrorEl = document.getElementById('costError');
     const emailNotificationEl = document.getElementById('emailNotification');
     
-    // Đã đổi từ sendEmailBtn thành sendEmailLink
     const sendEmailLink = document.getElementById('sendEmailLink'); 
     
-    // Các biến cho PDF
     const downloadPdfBtn = document.getElementById('downloadPdfBtn');
     const pdfLoadingSpinner = document.getElementById('pdfLoadingSpinner');
 
@@ -83,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const sectionTitleEl = section.querySelector('h2, h3');
             if (sectionId && sectionTitleEl) {
                 const sectionTitle = sectionTitleEl.textContent.trim();
-                // Sử dụng class 'nav-link' để quản lý trạng thái active, đảm bảo nó là 'block'
                 navHTML += `<li><a href="#${sectionId}" class="nav-link block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">${sectionTitle}</a></li>`;
             }
         });
@@ -102,7 +99,8 @@ document.addEventListener('DOMContentLoaded', function () {
         hamburgerMenuButton.addEventListener('click', openSideMenu); 
         closeSideMenuButton.addEventListener('click', closeSideMenu); 
         sideMenuOverlay.addEventListener('click', closeSideMenu); 
-        document.querySelectorAll('#side-menu a').forEach(link => {
+        // Đóng side menu khi nhấp vào một liên kết trong menu
+        document.querySelectorAll('#side-menu a.nav-link').forEach(link => { // Thêm .nav-link để chỉ chọn các liên kết điều hướng
             link.addEventListener('click', closeSideMenu); 
         });
     }
@@ -124,8 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!validateInputs(inputs)) {
             setLoadingState(false);
             // Vô hiệu hóa nút email và pdf nếu validate thất bại
-            sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Sửa lỗi cú pháp .add
-            downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Sửa lỗi cú pháp .add
+            sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
+            downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
             return;
         }
 
@@ -337,11 +335,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- XỬ LÝ GỬI EMAIL (Mailto Link) --- //
     function handleSendEmailLink(event) {
         if (sendEmailLink.getAttribute('href') === '#') {
-            event.preventDefault(); // Ngăn chặn nếu href chưa được set
+            event.preventDefault(); 
             showError("Vui lòng thực hiện tính toán trước khi gửi email.");
             return;
         }
-        // Để mailto hoạt động bình thường, không cần preventDefault nếu href đã được set
     }
 
     function updateMailtoLink() {
@@ -355,7 +352,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const subject = encodeURIComponent('Yêu cầu báo giá xây dựng nhà phố trọn gói từ website');
 
         const inputs = lastCalculatedData.inputs;
-        // const result = lastCalculatedData.calculationResult; // Không cần dùng trực tiếp ở đây nữa
 
         const body = encodeURIComponent(
             `Kính gửi ESB Homes,\n\n` +
@@ -391,153 +387,143 @@ document.addEventListener('DOMContentLoaded', function () {
         downloadPdfBtn.disabled = true;
         downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
 
-        // Sửa cách gọi jsPDF
-        const { jsPDF } = window.jspdf; // jsPDF UMD module exports default as jspdf, but common usage is { jsPDF }
+        const { jsPDF } = window.jspdf; // Cách gọi jsPDF đúng
         const doc = new jsPDF('p', 'pt', 'a4'); 
 
-        // Khởi tạo font tiếng Việt (cần phải tải font file .ttf lên host và điều chỉnh đường dẫn)
-        // Đây là bước quan trọng nhất để hiển thị tiếng Việt có dấu trong PDF.
-        // Nếu không có font tiếng Việt, các chữ có dấu sẽ bị lỗi.
-        // Bạn cần tải một font hỗ trợ tiếng Việt (ví dụ: Noto Sans, Roboto)
-        // và nhúng nó vào jsPDF. Ví dụ:
-        /*
-        doc.addFont('path/to/your/vietnamese-font.ttf', 'VietnameseFont', 'normal');
-        doc.setFont('VietnameseFont');
-        */
-        // Hoặc sử dụng jsPDF-AutoTable with fonts if using tables
-        // For simple text, you might be able to use:
-        // doc.setFont('Helvetica'); // Or 'Times-Roman' which is usually embedded
-        // doc.text can sometimes handle basic ASCII, but for full Vietnamese, custom fonts are critical.
+        // Lưu ý: Để hỗ trợ tiếng Việt đầy đủ (có dấu) trong PDF, bạn cần nhúng một font TTF hỗ trợ tiếng Việt.
+        // Ví dụ: doc.addFont('path/to/your/vietnamese-font.ttf', 'VietnameseFont', 'normal');
+        // doc.setFont('VietnameseFont'); // Sau đó sử dụng font này cho các text.
+        // Hiện tại, các ký tự có dấu có thể không hiển thị đúng nếu không có font được nhúng.
 
         const margin = 40;
         let y = margin;
+        const lineHeight = 14; // Khoảng cách dòng mặc định
         const pageWidth = doc.internal.pageSize.getWidth();
 
-        // Tiêu đề
+        // Logo hoặc tên công ty
         doc.setFontSize(22);
-        doc.text("Báo Giá Xây Dựng Nhà Phố Trọn Gói (Ước Tính)", margin, y);
-        y += 30;
-
+        doc.text("ESB Homes", margin, y);
         doc.setFontSize(10);
-        doc.setTextColor(100);
-        doc.text(`Ngày: ${new Date().toLocaleDateString('vi-VN')}`, pageWidth - margin, y, { align: 'right' });
-        doc.setTextColor(0); 
+        doc.text("Eco-Smart-Build", margin, y + 15);
+        y += 40;
+
+        // Tiêu đề báo giá
+        doc.setFontSize(18);
+        // Sử dụng các ký tự không dấu cho các tiêu đề để tránh lỗi font nếu không nhúng font tiếng Việt
+        doc.text("BAO GIA XAY DUNG NHA PHO (UOC TINH SO BO)", pageWidth / 2, y, { align: 'center' });
+        y += 25;
+        doc.setFontSize(10);
+        doc.text(`Ngay lap: ${new Date().toLocaleDateString('vi-VN')}`, pageWidth - margin, y, { align: 'right' });
         y += 20;
 
         // Thông tin công ty
         doc.setFontSize(12);
-        doc.text("ESB Homes - Eco-Smart-Build", margin, y);
-        y += 14; // lineHeight
-        doc.text("Địa chỉ: 14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh", margin, y);
-        y += 14;
+        doc.text("Cong ty ESB Homes", margin, y);
+        y += lineHeight;
+        doc.text("Dia chi: 14A Duong so 21, Phuong Tan Quy, Quan 7, TP. Ho Chi Minh", margin, y);
+        y += lineHeight;
         doc.text("Hotline: 0899618286", margin, y);
-        y += 14 * 2;
+        y += lineHeight * 2;
 
-
-        // Thông tin khách hàng
-        doc.setFontSize(14);
-        doc.text("Thông tin Khách hàng:", margin, y);
-        y += 14 + 5;
+        // Thông tin khách hàng (từ email đã nhập)
         doc.setFontSize(12);
-        doc.text(`Email: ${lastCalculatedData.inputs.email || 'Chưa cung cấp'}`, margin, y);
-        y += 14 * 2;
+        doc.text("Thong tin lien he:", margin, y);
+        y += lineHeight;
+        doc.text(`Email: ${lastCalculatedData.inputs.email || 'Chua cap nhat'}`, margin, y);
+        y += lineHeight * 2;
 
-        // Thông số ngôi nhà
+
+        // Bảng Chi tiết Hạng mục (Ước tính)
         doc.setFontSize(14);
-        doc.text("Thông số Ngôi nhà:", margin, y);
-        y += 14 + 5;
-        doc.setFontSize(12);
-        // Lấy lại text từ option để có giá trị hiển thị đầy đủ
-        doc.text(`- Diện tích sàn xây dựng: ${lastCalculatedData.inputs.area} m²`, margin, y);
-        y += 14;
-        doc.text(`- Số tầng: ${lastCalculatedData.inputs.floors}`, margin, y);
-        y += 14;
-        doc.text(`- Phong cách thiết kế: ${document.getElementById('style').options[document.getElementById('style').selectedIndex].text}`, margin, y);
-        y += 14;
-        doc.text(`- Mức độ hoàn thiện: ${document.getElementById('finish').options[document.getElementById('finish').selectedIndex].text}`, margin, y);
-        y += 14;
-        doc.text(`- Loại móng: ${document.getElementById('foundation_type').options[document.getElementById('foundation_type').selectedIndex].text}`, margin, y);
-        y += 14;
-        doc.text(`- Có tầng lửng: ${document.getElementById('mezzanine_option').options[document.getElementById('mezzanine_option').selectedIndex].text}`, margin, y);
-        y += 14;
-        doc.text(`- Có sân thượng: ${document.getElementById('rooftop_option').options[document.getElementById('rooftop_option').selectedIndex].text}`, margin, y);
-        y += 14;
-        doc.text(`- Loại mái: ${document.getElementById('roof_type').options[document.getElementById('roof_type').selectedIndex].text}`, margin, y);
-        y += 14 * 2;
+        doc.text("BANG CHI TIET HANG MUC (UOC TINH)", margin, y);
+        y += lineHeight + 10;
 
-        // Tổng chi phí ước tính
+        const headers = [['Hang muc chinh', 'Hang muc chi tiet', 'Chi phi (VND)']];
+        const data = [];
+
+        const detailedData = lastCalculatedData.calculationResult.detailedBreakdown;
+        const mainCategories = {
+            'Phan Tho': ['Chi phi mong', 'Chi phi ket cau & xay tho', 'Chi phi mai'],
+            'Hoan Thien': ['Chi phi hoan thien'],
+            'Chi phi khac': ['Chi phi thiet ke & quan ly']
+        };
+
+        for (const mainCategory in mainCategories) {
+            const subItems = mainCategories[mainCategory];
+            subItems.forEach((item, index) => {
+                const cost = detailedData[item] || 0;
+                data.push([
+                    index === 0 ? mainCategory : '', 
+                    item, 
+                    `${formatCurrency(cost)} VND` 
+                ]);
+            });
+        }
+        
+        doc.autoTable({
+            startY: y,
+            head: headers,
+            body: data,
+            theme: 'grid', 
+            styles: {
+                font: 'helvetica', 
+                fontSize: 10,
+                cellPadding: 5,
+                lineColor: '#e0e0e0', 
+                lineWidth: 0.5
+            },
+            headStyles: {
+                fillColor: '#FBBF24', 
+                textColor: '#1F2937', 
+                fontStyle: 'bold',
+                halign: 'center'
+            },
+            bodyStyles: {
+                textColor: '#1F2937',
+                valign: 'top' 
+            },
+            columnStyles: {
+                0: { cellWidth: 100 }, 
+                1: { cellWidth: 180 }, 
+                2: { cellWidth: 120, halign: 'right' } 
+            },
+            didDrawPage: function(data) {
+                // Có thể thêm số trang hoặc footer tại đây
+            }
+        });
+
+        y = doc.autoTable.previous.finalY + 20; // Cập nhật vị trí Y sau bảng
+
+        // Tổng chi phí ước tính (lặp lại cho rõ)
         doc.setFontSize(16);
         doc.setTextColor('#D97706'); 
-        doc.text("TỔNG CHI PHÍ ƯỚC TÍNH TRỌN GÓI:", margin, y);
-        y += 14 + 5;
+        doc.text("TONG CHI PHI UOC TINH SO BO:", margin, y);
+        y += lineHeight + 5;
         doc.setFontSize(20);
-        doc.text(formatCurrency(currentEstimatedCost) + " VNĐ", margin, y);
+        doc.text(formatCurrency(currentEstimatedCost) + " VND", margin, y);
         doc.setTextColor(0); 
-        y += 14 * 2;
+        y += lineHeight * 2;
 
+        // Thông tin liên hệ để báo giá chính xác
+        doc.setFontSize(14);
+        doc.text("De nhan bao gia chinh xac nhat va tu van chi tiet hon,", margin, y, { maxWidth: pageWidth - 2 * margin });
+        y += lineHeight + 5;
+        doc.setFontSize(12);
+        doc.text("vui long lien he ESB Homes qua:", margin, y, { maxWidth: pageWidth - 2 * margin });
+        y += lineHeight * 2;
+        doc.setFontSize(14);
+        doc.setTextColor('#FBBF24'); 
+        doc.text("Hotline: 0899618286", margin, y);
+        y += lineHeight;
+        doc.text("Email: esb.homes.company@gmail.com", margin, y);
+        y += lineHeight;
+        doc.text("Zalo: 0772 634 611", margin, y);
+        doc.setTextColor(0); 
+        y += lineHeight * 2;
+        
         doc.setFontSize(10);
-        doc.text("(*Đây là ước tính sơ bộ dựa trên thông tin bạn cung cấp. Chi phí thực tế có thể thay đổi tùy thuộc vào chi tiết thiết kế, vật liệu cụ thể, điều kiện thi công và thời điểm xây dựng.)", margin, y, { maxWidth: pageWidth - 2 * margin });
-        y += 14 * 3;
+        doc.text("(*Bao gia nay chi mang tinh chat tham khao. Chi phi thuc te co the thay doi tuy thuoc vao yeu cau cu the.)", margin, y, { maxWidth: pageWidth - 2 * margin });
 
-        // --- Chụp các bảng từ HTML và thêm vào PDF dưới dạng hình ảnh ---
-        const sectionsToCapture = [
-            document.getElementById('costBreakdownChart').closest('.mt-12'), 
-            document.getElementById('detailedBreakdownSection'), 
-            document.getElementById('paymentScheduleSection') 
-        ];
-
-        // Tạm thời ẩn các nút để không xuất hiện trong PDF
-        const buttonsDiv = document.querySelector('.flex-col.sm\\:flex-row'); 
-        let originalButtonsDisplay = '';
-        if (buttonsDiv) {
-            originalButtonsDisplay = buttonsDiv.style.display;
-            buttonsDiv.style.display = 'none'; 
-        }
-
-        // Tạm thời ẩn các element cố định khác có thể bị chụp
-        const tempHideElements = [
-            document.getElementById('hamburger-menu-button'),
-            document.getElementById('side-menu'),
-            document.getElementById('side-menu-overlay'),
-            // floating-toc-menu đã ẩn bằng CSS
-        ];
-        tempHideElements.forEach(el => el && (el.style.display = 'none'));
-
-        for (const el of sectionsToCapture) {
-            if (!el) continue;
-
-            const originalOverflow = el.style.overflow;
-            el.style.overflow = 'visible';
-            
-            // Tăng scale để chất lượng ảnh tốt hơn trong PDF
-            const canvas = await html2canvas(el, {
-                scale: 2, 
-                useCORS: true,
-                logging: false, // Tắt logging để console không bị tràn
-                ignoreElements: (element) => {
-                    return element.classList.contains('loading-spinner');
-                }
-            });
-
-            el.style.overflow = originalOverflow; 
-
-            const imgData = canvas.toDataURL('image/png');
-            const imgWidth = pageWidth - 2 * margin; 
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-            if (y + imgHeight > doc.internal.pageSize.getHeight() - margin) {
-                doc.addPage();
-                y = margin; 
-            }
-            doc.addImage(imgData, 'PNG', margin, y, imgWidth, imgHeight);
-            y += imgHeight + 20; 
-        }
-
-        // Hiện lại các nút và element đã ẩn
-        if (buttonsDiv) {
-            buttonsDiv.style.display = originalButtonsDisplay;
-        }
-        tempHideElements.forEach(el => el && (el.style.display = ''));
 
         // Tắt spinner và kích hoạt nút lại
         pdfLoadingSpinner.classList.add('hidden');
@@ -545,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function () {
         downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
 
         // Lưu file PDF
-        doc.save(`bao-gia-esbhomes-${lastCalculatedData.inputs.area}m2-${lastCalculatedData.inputs.floors}tang.pdf`);
+        doc.save(`bao-gia-esbhomes-uoc-tinh-${lastCalculatedData.inputs.area}m2-${lastCalculatedData.inputs.floors}tang.pdf`);
     }
 
     // --- XỬ LÝ THANH ĐIỀU HƯỚNG VÀ CUỘN --- //
