@@ -1,613 +1,620 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi phí Xây dựng Nhà phố Trọn Gói - ESB Homes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ước tính Chi phí Xây dựng Nhà phố Trọn gói - ESB Homes</title>
+    <meta name="description" content="Công cụ ước tính chi phí xây dựng nhà phố trọn gói của ESB Homes. Nhận báo giá sơ bộ nhanh chóng, hiểu rõ các yếu tố ảnh hưởng và liên hệ để được tư vấn chi tiết.">
+    <meta name="keywords" content="ước tính chi phí xây dựng, báo giá nhà phố trọn gói, chi phí xây nhà, xây nhà trọn gói, ESB Homes, nhà thông minh, nhà thân thiện môi trường">
+    <meta name="author" content="ESB Homes">
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
-<body class="flex flex-col min-h-screen bg-[#F8F9FA] text-[#1F2937]">
+<body class="bg-gray-100 text-gray-800">
 
-    <div class="fixed top-4 left-4 z-50">
-        <div class="bg-[#0A192F] rounded-md px-3 py-1 shadow-lg h-14 md:h-16 flex items-center justify-center">
-             <span class="text-xl md:text-2xl font-extrabold text-[#FBBF24]">ESB</span>
-             <span class="text-md md:text-lg font-bold text-white ml-1.5">Homes</span>
+    <header class="bg-gray-800 text-white p-4 fixed w-full top-0 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-xl font-bold text-[#FBBF24]">ESB Homes</div>
+            <nav id="main-nav-bar" class="hidden lg:block">
+                <ul class="flex space-x-4">
+                    <li><a href="#introduction" class="hover:text-[#FBBF24] transition-colors duration-200">Giới thiệu</a></li>
+                    <li><a href="#about-us" class="hover:text-[#FBBF24] transition-colors duration-200">Về chúng tôi</a></li>
+                    <li><a href="#cost-factors" class="hover:text-[#FBBF24] transition-colors duration-200">Yếu tố ảnh hưởng</a></li>
+                    <li><a href="#quotation" class="hover:text-[#FBBF24] transition-colors duration-200">Báo giá</a></li>
+                    <li><a href="#packages" class="hover:text-[#FBBF24] transition-colors duration-200">Các gói xây dựng</a></li>
+                    <li><a href="#important-notes" class="hover:text-[#FBBF24] transition-colors duration-200">Lưu ý quan trọng</a></li>
+                    <li><a href="#contact" class="hover:text-[#FBBF24] transition-colors duration-200">Liên hệ</a></li>
+                </ul>
+            </nav>
+            <button id="hamburger-menu-button" class="lg:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
         </div>
-    </div>
-    <nav id="main-nav-bar" class="fixed top-0 left-0 right-0 z-40 bg-[#1F2937] text-white py-4 shadow-lg hidden lg:block">
-        <div class="max-w-7xl mx-auto px-4">
-            <ul class="flex justify-center space-x-8">
-                <li><a href="#gioi-thieu" class="text-lg font-semibold hover:text-[#FBBF24] transition-colors duration-200">Giới thiệu</a></li>
-                <li><a href="#ve-chung-toi" class="text-lg font-semibold hover:text-[#FBBF24] transition-colors duration-200">Về chúng tôi</a></li>
-                <li><a href="#yeu-to-anh-huong" class="text-lg font-semibold hover:text-[#FBBF24] transition-colors duration-200">Yếu tố ảnh hưởng</a></li>
-                <li><a href="#bao-gia" class="text-lg font-semibold hover:text-[#FBBF24] transition-colors duration-200">Báo giá</a></li>
-                <li><a href="#cac-goi-xay-dung" class="text-lg font-semibold hover:text-[#FBBF24] transition-colors duration-200">Các gói xây dựng</a></li>
-                <li><a href="#luu-y-quan-trong" class="text-lg font-semibold hover:text-[#FBBF24] transition-colors duration-200">Lưu ý quan trọng</a></li>
-                <li><a href="#lien-he" class="text-lg font-semibold hover:text-[#FBBF24] transition-colors duration-200">Liên hệ</a></li>
-            </ul>
-        </div>
-    </nav>
+    </header>
 
-    <button id="hamburger-menu-button" class="fixed top-6 right-6 z-[60] p-2 bg-[#FBBF24] text-[#1F2937] rounded-md shadow-lg lg:hidden hover:bg-[#FCD34D] transition-colors duration-200">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-    </button>
-
-   <div id="side-menu" class="fixed top-0 right-0 h-full w-64 bg-[#1F2937] shadow-lg z-[55] transform translate-x-full transition-transform duration-300 ease-in-out">
-        <div class="p-6 h-full flex flex-col">
-            <button id="close-side-menu" class="absolute top-4 right-6 text-[#E0E7FF] hover:text-[#FBBF24] transition-colors duration-200">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <div id="side-menu-overlay" class="fixed inset-0 bg-black z-40 hidden opacity-0 transition-opacity duration-300"></div>
+    <div id="side-menu" class="fixed inset-y-0 right-0 w-64 bg-gray-900 text-white p-6 transform translate-x-full transition-transform duration-300 z-50 shadow-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-[#FBBF24]">Menu Điều hướng</h2>
+            <button id="close-side-menu" class="text-gray-400 hover:text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <h1 class="text-xl font-bold text-[#FBBF24] mb-8 mt-12 text-center">Menu Điều hướng</h1>
-            <ul class="flex flex-col space-y-4 flex-grow overflow-y-auto" id="side-nav-list">
-                <li><a href="#gioi-thieu" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Giới thiệu</a></li>
-                <li><a href="#ve-chung-toi" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Về chúng tôi</a></li>
-                <li><a href="#yeu-to-anh-huong" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Yếu tố ảnh hưởng</a></li>
-                <li><a href="#bao-gia" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Báo giá</a></li>
-                <li><a href="#cac-goi-xay-dung" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Các gói xây dựng</a></li>
-                <li><a href="#luu-y-quan-trong" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Lưu ý quan trọng</a></li>
-                <li><a href="#lien-he" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Liên hệ</a></li>
+        </div>
+        <nav>
+            <ul id="side-nav-list">
                 </ul>
-            </div>
-    </div>
-    
-        
-    <div id="side-menu-overlay" class="fixed inset-0 bg-black opacity-0 z-[50] hidden transition-opacity duration-300 ease-in-out"></div>
-
-
-    <div id="floating-toc-menu" class="fixed right-4 top-1/2 -translate-y-1/2 bg-[#1F2937] p-3 rounded-lg shadow-xl z-50 hidden border border-gray-700">
-        <h4 class="text-base font-bold text-[#FBBF24] mb-3 text-center">Mục lục</h4>
-        <ul class="space-y-2" id="floating-nav-list">
-            </ul>
+        </nav>
     </div>
 
-    <main class="flex-1 p-4 sm:p-6 md:p-10 pb-24 lg:pb-24">
-        <div class="pt-20 md:pt-24"> 
-            <div class="max-w-7xl mx-auto">
-           
-                <section id="gioi-thieu" class="py-12 min-h-screen flex flex-col justify-center">
-                    <h2 class="text-4xl font-extrabold mb-6 text-[#D97706] text-center">Giới thiệu</h2>
-                    <p class="mb-8 text-lg text-center leading-relaxed">
-                        Việc xây dựng một ngôi nhà phố trọn gói đòi hỏi sự hiểu biết rõ ràng về các yếu tố chi phí. Công cụ này được thiết kế để cung cấp cho bạn một ước tính sơ bộ về tổng chi phí xây dựng dựa trên các thông số cơ bản như diện tích, số tầng, phong cách thiết kế và mức độ hoàn thiện. Hãy khám phá để có cái nhìn tổng quan về ngân sách cần thiết cho ngôi nhà mơ ước của bạn.
-                    </p>
+    <main class="container mx-auto px-4 py-8 pt-20 md:pt-24 lg:grid lg:grid-cols-3 lg:gap-8">
+        <aside id="floating-toc-menu" class="hidden lg:block sticky top-24 h-full p-4 bg-gray-800 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4 text-[#FBBF24]">Mục lục</h3>
+            <ul id="floating-nav-list">
+                </ul>
+        </aside>
 
-                    <div class="mb-10 w-full max-w-4xl mx-auto">
-                        <img src="images/welcome_hero.jpg" alt="Ngôi nhà phố hiện đại với thiết kế mở" class="w-full h-auto object-cover rounded-xl shadow-2xl border-4 border-white">
-                    </div>
+        <div class="lg:col-span-2 space-y-10">
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto w-full">
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937] flex items-center">
-                                <svg class="w-7 h-7 mr-3 text-[#FBBF24]" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>
-                                Ước tính nhanh chóng
-                            </h3>
-                            <p class="text-base leading-relaxed text-gray-700">Nhận ngay ước tính chi phí dựa trên các thông số bạn cung cấp, giúp bạn lập kế hoạch tài chính hiệu quả chỉ trong vài giây.</p>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937] flex items-center">
-                                <svg class="w-7 h-7 mr-3 text-[#FBBF24]" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z"></path></svg>
-                                Hiểu rõ các yếu tố
-                            </h3>
-                            <p class="text-base leading-relaxed text-gray-700">Tìm hiểu sâu hơn về những yếu tố chính ảnh hưởng đến tổng chi phí xây dựng nhà phố trọn gói, từ vật liệu đến phong cách thiết kế.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="ve-chung-toi" class="py-12 pt-24 min-h-screen">
-                    <h2 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Về ESB Homes</h2>
-                    <p class="mb-8 text-lg text-center leading-relaxed max-w-3xl mx-auto">
-                        Tại ESB Homes, chúng tôi cam kết mang đến những giải pháp xây dựng nhà phố trọn gói chất lượng cao, bền vững và thông minh. Với kinh nghiệm dày dặn và đội ngũ chuyên gia tận tâm, chúng tôi tự hào là đối tác đáng tin cậy, biến ước mơ về ngôi nhà hoàn hảo của bạn thành hiện thực.
-                    </p>
-                    <div class="content-card p-8 mb-8 bg-white rounded-lg shadow-lg border-l-4 border-[#D97706]">
-                        <h3 class="text-2xl font-bold mb-4 text-[#1F2937]">Slogan: Eco-Smart-Build</h3>
-                        <p class="mb-4 text-base leading-relaxed text-gray-700">
-                            Chúng tôi hướng đến việc xây dựng những công trình không chỉ đẹp về kiến trúc, tối ưu về công năng mà còn thân thiện với môi trường và tích hợp công nghệ thông minh.
+            <section id="introduction" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">Giới thiệu</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                    Việc xây dựng một ngôi nhà phố trọn gói đòi hỏi sự hiểu biết rõ ràng về các yếu tố chi phí. Công cụ này được thiết kế để cung cấp cho bạn một ước tính sơ bộ về tổng chi phí xây dựng dựa trên các thông số cơ bản như diện tích, số tầng, phong cách thiết kế và mức độ hoàn thiện. Hãy khám phá để có cái nhìn tổng quan về ngân sách cần thiết cho ngôi nhà mơ ước của bạn.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-yellow-50 p-5 rounded-lg border border-yellow-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Ước tính nhanh chóng</h3>
+                        <p class="text-gray-600">
+                            Nhận ngay ước tính chi phí dựa trên các thông số bạn cung cấp, giúp bạn lập kế hoạch tài chính hiệu quả chỉ trong vài giây.
                         </p>
-                        <ul class="list-disc list-inside space-y-2 text-base text-gray-700">
-                            <li><strong>Eco (Thân thiện môi trường):</strong> Sử dụng vật liệu bền vững, tối ưu hóa năng lượng, giảm thiểu tác động đến môi trường.</li>
-                            <li><strong>Smart (Thông minh):</strong> Ứng dụng công nghệ nhà thông minh, thiết kế tối ưu không gian và tiện ích.</li>
-                            <li><strong>Build (Xây dựng):</strong> Quy trình thi công chuyên nghiệp, đảm bảo chất lượng và tiến độ.</li>
+                    </div>
+                    <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Hiểu rõ các yếu tố</h3>
+                        <p class="text-gray-600">
+                            Tìm hiểu sâu hơn về những yếu tố chính ảnh hưởng đến tổng chi phí xây dựng nhà phố trọn gói, từ vật liệu đến phong cách thiết kế.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about-us" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">Về ESB Homes</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                    Tại ESB Homes, chúng tôi cam kết mang đến những giải pháp xây dựng nhà phố trọn gói chất lượng cao, bền vững và thông minh. Với kinh nghiệm dày dặn và đội ngũ chuyên gia tận tâm, chúng tôi tự hào là đối tác đáng tin cậy, biến ước mơ về ngôi nhà hoàn hảo của bạn thành hiện thực.
+                </p>
+                <h3 class="text-2xl font-bold text-[#FBBF24] mb-3 text-center">Slogan: Eco-Smart-Build</h3>
+                <p class="text-md text-gray-600 leading-relaxed mb-4">
+                    Chúng tôi hướng đến việc xây dựng những công trình không chỉ đẹp về kiến trúc, tối ưu về công năng mà còn thân thiện với môi trường và tích hợp công nghệ thông minh.
+                </p>
+                <ul class="list-disc list-inside text-gray-600 space-y-2 mb-6">
+                    <li><strong class="text-gray-800">Eco (Thân thiện môi trường):</strong> Sử dụng vật liệu bền vững, tối ưu hóa năng lượng, giảm thiểu tác động đến môi trường.</li>
+                    <li><strong class="text-gray-800">Smart (Thông minh):</strong> Ứng dụng công nghệ nhà thông minh, thiết kế tối ưu không gian và tiện ích.</li>
+                    <li><strong class="text-gray-800">Build (Xây dựng):</strong> Quy trình thi công chuyên nghiệp, đảm bảo chất lượng và tiến độ.</li>
+                </ul>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Địa chỉ Văn phòng</h3>
+                    <p class="text-gray-600">
+                        14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh
+                    </p>
+                    <p class="text-gray-500 text-sm mt-1">
+                        (Vui lòng liên hệ trước khi đến để được đón tiếp tốt nhất.)
+                    </p>
+                </div>
+            </section>
+
+            <section id="cost-factors" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Các Yếu tố Ảnh hưởng đến Chi phí Xây dựng</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Chi phí xây dựng một ngôi nhà phố trọn gói không chỉ phụ thuộc vào diện tích mà còn bị chi phối bởi nhiều yếu tố khác. Việc hiểu rõ những yếu tố này sẽ giúp bạn đưa ra quyết định sáng suốt và tối ưu hóa ngân sách của mình.
+                </p>
+
+                <div id="factors-container" class="space-y-4">
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            1. Diện tích và Quy mô
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            2. Phong cách Thiết kế
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            3. Mức độ Hoàn thiện và Vật liệu
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            4. Công năng và Tiện ích
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            5. Vị trí và Điều kiện Thi công
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            6. Loại Móng
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            7. Tầng Lửng
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            8. Sân Thượng
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content-card bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <button class="w-full text-left font-semibold text-gray-700 flex justify-between items-center py-2 focus:outline-none">
+                            9. Loại Mái
+                            <span class="text-xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="collapsible-content">
+                            <p class="text-gray-600">
+                                Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quotation" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Báo Giá Xây Dựng</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Chọn loại báo giá bạn muốn xem hoặc sử dụng công cụ ước tính chi phí của chúng tôi để nhận báo giá trọn gói.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-green-50 p-5 rounded-lg border border-green-200 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Báo Giá Xây Dựng Trọn Gói</h3>
+                            <p class="text-gray-600">
+                                Ước tính chi phí xây dựng nhà phố trọn gói theo thông số bạn cung cấp.
+                            </p>
+                        </div>
+                        <a href="#cost-estimator-tool" class="mt-4 inline-block bg-[#FBBF24] text-gray-900 font-bold py-2 px-4 rounded-md hover:bg-yellow-400 transition-colors duration-200 text-center">
+                            Sử dụng công cụ
+                        </a>
+                    </div>
+                    <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Báo Giá Thiết Kế Kiến Trúc</h3>
+                        <p class="text-gray-600 mb-4">
+                            Tham khảo chi phí cho dịch vụ thiết kế kiến trúc chuyên nghiệp.
+                        </p>
+                        <a href="#design-quotation" class="inline-block bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                            Xem chi tiết
+                        </a>
+                    </div>
+                    <div class="bg-purple-50 p-5 rounded-lg border border-purple-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Báo Giá Xây Dựng Phần Thô</h3>
+                        <p class="text-gray-600 mb-4">
+                            Tìm hiểu chi phí xây dựng phần thô (kết cấu) của công trình.
+                        </p>
+                        <a href="#rough-quotation" class="inline-block bg-purple-600 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-200">
+                            Xem chi tiết
+                        </a>
+                    </div>
+                    <div class="bg-teal-50 p-5 rounded-lg border border-teal-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Báo Giá Xây Dựng Phần Hoàn Thiện</h3>
+                        <p class="text-gray-600 mb-4">
+                            Chi tiết chi phí cho các hạng mục hoàn thiện nội thất và ngoại thất.
+                        </p>
+                        <a href="#finishing-quotation" class="inline-block bg-teal-600 text-white font-bold py-2 px-4 rounded-md hover:bg-teal-700 transition-colors duration-200">
+                            Xem chi tiết
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cost-estimator-tool" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Công cụ tính Chi phí Xây dựng Trọn Gói</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Sử dụng công cụ dưới đây để nhận ước tính sơ bộ và gửi yêu cầu báo giá chi tiết qua email của bạn.
+                </p>
+
+                <form id="estimatorForm" class="space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Nhập thông tin ngôi nhà của bạn</h3>
+                    
+                    <div>
+                        <label for="area" class="block text-gray-700 text-sm font-bold mb-2">Diện tích sàn xây dựng (m²):</label>
+                        <input type="number" id="area" name="area" min="1" step="0.1" required
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+
+                    <div>
+                        <label for="floors" class="block text-gray-700 text-sm font-bold mb-2">Số tầng:</label>
+                        <input type="number" id="floors" name="floors" min="1" required
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+
+                    <div>
+                        <label for="style" class="block text-gray-700 text-sm font-bold mb-2">Phong cách thiết kế:</label>
+                        <select id="style" name="style"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                            <option value="modern">Hiện đại</option>
+                            <option value="neoclassical">Tân cổ điển</option>
+                            <option value="minimalist">Tối giản</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="finish" class="block text-gray-700 text-sm font-bold mb-2">Mức độ hoàn thiện:</label>
+                        <select id="finish" name="finish"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                            <option value="basic">Cơ bản</option>
+                            <option value="standard">Trung bình</option>
+                            <option value="premium">Cao cấp</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="foundation_type" class="block text-gray-700 text-sm font-bold mb-2">Loại móng:</label>
+                        <select id="foundation_type" name="foundation_type"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                            <option value="simple">Móng đơn</option>
+                            <option value="strip">Móng băng</option>
+                            <option value="pile">Móng cọc</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="mezzanine_option" class="block text-gray-700 text-sm font-bold mb-2">Có tầng lửng không?</label>
+                        <select id="mezzanine_option" name="mezzanine_option"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                            <option value="no">Không</option>
+                            <option value="yes">Có</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="rooftop_option" class="block text-gray-700 text-sm font-bold mb-2">Có sân thượng không?</label>
+                        <select id="rooftop_option" name="rooftop_option"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                            <option value="no">Không</option>
+                            <option value="yes">Có</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="roof_type" class="block text-gray-700 text-sm font-bold mb-2">Loại mái:</label>
+                        <select id="roof_type" name="roof_type"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                            <option value="flat">Mái bằng</option>
+                            <option value="thai">Mái Thái</option>
+                            <option value="japanese">Mái Nhật</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email của bạn (để nhận báo giá):</label>
+                        <input type="email" id="email" name="email" placeholder="email@example.com" required
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Số điện thoại của bạn (để nhận báo giá):</label>
+                        <input type="tel" id="phone" name="phone" placeholder="VD: 0901234567" required
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <p id="phoneError" class="text-red-500 text-xs italic hidden mt-2">Vui lòng nhập một số điện thoại hợp lệ.</p>
+                    </div>
+
+                    <div id="costError" class="text-red-500 text-sm italic hidden mb-4"></div>
+                    <div id="emailNotification" class="text-sm p-3 rounded-md hidden mb-4" role="alert"></div>
+
+                    <div class="flex items-center justify-center sm:flex-row flex-col sm:space-x-4 sm:space-y-0 space-y-4">
+                        <button type="submit" id="calculateBtn"
+                            class="calculate-button bg-[#FBBF24] hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline text-lg flex items-center justify-center transition-all duration-200 w-full sm:w-auto">
+                            <span class="mr-2">Ước tính Chi phí</span>
+                            <div id="costLoadingSpinner" class="loading-spinner hidden"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <div id="resultsSection" class="bg-gray-50 p-6 rounded-lg mt-8 shadow-inner hidden opacity-0 transition-opacity duration-300">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Tổng Chi phí Ước tính Trọn gói:</h3>
+                    <p id="estimatedCost" class="text-5xl font-extrabold text-[#D97706] text-center mb-6 animate-pulse">
+                        -- VNĐ
+                    </p>
+                    <p class="text-gray-600 text-sm text-center mb-6">
+                        (*Đây là ước tính sơ bộ dựa trên thông tin bạn cung cấp. Chi phí thực tế có thể thay đổi tùy thuộc vào chi tiết thiết kế, vật liệu cụ thể, điều kiện thi công và thời điểm xây dựng.)
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                        <a href="#" id="sendEmailLink"
+                            class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto">
+                            Gửi Yêu cầu Báo giá qua Email
+                        </a>
+                        <button id="downloadPdfBtn"
+                            class="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto">
+                            <span class="mr-2">Tải Báo giá PDF</span>
+                            <div id="pdfLoadingSpinner" class="loading-spinner hidden"></div>
+                        </button>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-800 mt-10 mb-4 text-center">Phân bổ Chi phí Ước tính</h3>
+                    <div class="chart-container mb-8">
+                        <canvas id="costBreakdownChart"></canvas>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Bảng Chi tiết Hạng mục (Ước tính)</h3>
+                    <div class="overflow-x-auto mb-8">
+                        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                            <thead class="bg-[#FBBF24] text-gray-900">
+                                <tr>
+                                    <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Hạng mục chính</th>
+                                    <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Hạng mục chi tiết</th>
+                                    <th class="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wider">Chi phí (VNĐ)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailedBreakdownTableBody" class="divide-y divide-gray-200">
+                                </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Lịch Trình Thanh toán (Gợi ý)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                            <thead class="bg-[#FBBF24] text-gray-900">
+                                <tr>
+                                    <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Đợt</th>
+                                    <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Nội dung công việc</th>
+                                    <th class="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wider">Tỷ lệ</th>
+                                    <th class="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wider">Thanh toán (VNĐ)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentScheduleTableBody" class="divide-y divide-gray-200">
+                                </tbody>
+                        </table>
+                    </div>
+                    <p class="text-gray-600 text-sm text-center mt-4">
+                        (*Lịch trình thanh toán là gợi ý, có thể được điều chỉnh theo thỏa thuận hợp đồng thực tế.)
+                    </p>
+                </div>
+            </section>
+
+            <section id="design-quotation" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">Báo Giá Thiết Kế Kiến Trúc</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                    Chi phí thiết kế kiến trúc thường được tính dựa trên diện tích sàn hoặc theo gói. Giá tham khảo:
+                </p>
+                <ul class="list-disc list-inside text-gray-600 space-y-2 mb-6">
+                    <li>Thiết kế cơ bản: 100.000 - 150.000 VNĐ/m²</li>
+                    <li>Thiết kế nâng cao: 150.000 - 250.000 VNĐ/m²</li>
+                    <li>Thiết kế biệt thự, phức tạp: Từ 250.000 VNĐ/m² trở lên</li>
+                </ul>
+                <p class="text-gray-500 text-sm italic">
+                    *Lưu ý: Giá trên chỉ là tham khảo. Vui lòng liên hệ ESB Homes để được tư vấn chi tiết và báo giá chính xác theo yêu cầu riêng của bạn.
+                </p>
+            </section>
+
+            <section id="rough-quotation" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">Báo Giá Xây Dựng Phần Thô</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                    Báo giá phần thô bao gồm các công việc từ móng đến mái, hoàn thiện phần kết cấu chính của công trình. Giá tham khảo:
+                </p>
+                <ul class="list-disc list-inside text-gray-600 space-y-2 mb-6">
+                    <li>Gói cơ bản: 3.200.000 - 3.800.000 VNĐ/m²</li>
+                    <li>Gói tiêu chuẩn: 3.800.000 - 4.500.000 VNĐ/m²</li>
+                    <li>Gói cao cấp: Từ 4.500.000 VNĐ/m² trở lên</li>
+                </ul>
+                <p class="text-gray-500 text-sm italic">
+                    *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc vào loại vật tư chính, địa chất công trình và điều kiện thi công thực tế.
+                </p>
+            </section>
+
+            <section id="finishing-quotation" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">Báo Giá Xây Dựng Phần Hoàn Thiện</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                    Báo giá phần hoàn thiện bao gồm các hạng mục như ốp lát sàn, tường, sơn nước, trần thạch cao, lắp đặt cửa, thiết bị vệ sinh, hệ thống đèn chiếu sáng cơ bản... Giá tham khảo:
+                </p>
+                <ul class="list-disc list-inside text-gray-600 space-y-2 mb-6">
+                    <li>Gói cơ bản: 1.800.000 - 2.500.000 VNĐ/m²</li>
+                    <li>Gói tiêu chuẩn: 2.500.000 - 3.500.000 VNĐ/m²</li>
+                    <li>Gói cao cấp: Từ 3.500.000 VNĐ/m² trở lên</li>
+                </ul>
+                <p class="text-gray-500 text-sm italic">
+                    *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc rất nhiều vào chủng loại vật liệu, thương hiệu và mẫu mã bạn lựa chọn.
+                </p>
+            </section>
+
+            <section id="packages" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Các Gói Xây dựng Trọn Gói Phổ biến</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Để giúp bạn dễ dàng lựa chọn, dưới đây là mô tả các gói xây dựng trọn gói phổ biến của chúng tôi với các mức chi phí và tiêu chuẩn vật liệu khác nhau.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-lg border-2 border-gray-200 text-center shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Gói Cơ bản</h3>
+                        <p class="text-gray-600 mb-4">
+                            Phù hợp với ngân sách tiết kiệm, sử dụng vật liệu phổ thông nhưng vẫn đảm bảo chất lượng và công năng cơ bản.
+                        </p>
+                        <ul class="list-disc list-inside text-left text-gray-600 space-y-2">
+                            <li>Vật liệu thô tiêu chuẩn, đảm bảo kết cấu</li>
+                            <li>Vật liệu hoàn thiện phổ thông (gạch men, sơn nội thất cơ bản, thiết bị vệ sinh thông dụng)</li>
+                            <li>Thiết kế đơn giản, tập trung tối ưu công năng sử dụng</li>
                         </ul>
                     </div>
-                    <div class="content-card p-8 bg-white rounded-lg shadow-lg border-l-4 border-[#D97706]">
-                        <h3 class="text-2xl font-bold mb-4 text-[#1F2937]">Địa chỉ Văn phòng</h3>
-                        <p class="text-lg font-semibold text-[#D97706]">
-                            14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh
+
+                    <div class="bg-blue-50 p-6 rounded-lg border-2 border-blue-300 text-center shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-3">Gói Tiêu chuẩn</h3>
+                        <p class="text-gray-600 mb-4">
+                            Chất lượng tốt, sử dụng vật liệu trung cấp, thiết kế đa dạng hơn, đáp ứng nhu cầu sống tiện nghi và thẩm mỹ.
                         </p>
-                        <p class="mt-3 text-sm text-gray-600">
-                            (Vui lòng liên hệ trước khi đến để được đón tiếp tốt nhất.)
+                        <ul class="list-disc list-inside text-left text-gray-600 space-y-2">
+                            <li>Vật liệu thô chất lượng tốt, bền vững theo thời gian</li>
+                            <li>Vật liệu hoàn thiện trung cấp (gạch đồng chất, sơn cao cấp, thiết bị vệ sinh thương hiệu phổ biến)</li>
+                            <li>Thiết kế linh hoạt, tối ưu không gian, có tính thẩm mỹ cao</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-400 text-center shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h3 class="text-2xl font-bold text-yellow-800 mb-3">Gói Cao cấp</h3>
+                        <p class="text-gray-600 mb-4">
+                            Sử dụng vật liệu cao cấp, thiết kế độc đáo, tiện ích hiện đại, mang đến không gian sống sang trọng và đẳng cấp.
+                        </p>
+                        <ul class="list-disc list-inside text-left text-gray-600 space-y-2">
+                            <li>Vật liệu thô cao cấp, đảm bảo tính bền vững vượt trội</li>
+                            <li>Vật liệu hoàn thiện nhập khẩu, từ các thương hiệu nổi tiếng (đá tự nhiên, gỗ tự nhiên, thiết bị vệ sinh cao cấp)</li>
+                            <li>Thiết kế độc quyền, tích hợp công nghệ nhà thông minh, cá nhân hóa tối đa</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="important-notes" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Lưu ý Quan trọng</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Công cụ này cung cấp ước tính sơ bộ. Để có báo giá chính xác nhất và đảm bảo dự án thành công, bạn cần lưu ý các điểm sau:
+                </p>
+
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Tham khảo Chuyên gia</h3>
+                        <p class="text-gray-600">
+                            Luôn liên hệ với các kiến trúc sư và nhà thầu uy tín như ESB Homes để có bản vẽ chi tiết, báo giá chính xác dựa trên khảo sát thực tế công trình và các quy định pháp lý hiện hành.
                         </p>
                     </div>
-                </section>
-
-                <section id="yeu-to-anh-huong" class="py-12 pt-24 min-h-screen">
-                    <h2 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Các Yếu tố Ảnh hưởng đến Chi phí Xây dựng</h2>
-                    <p class="mb-10 text-lg text-center leading-relaxed max-w-3xl mx-auto">
-                        Chi phí xây dựng một ngôi nhà phố trọn gói không chỉ phụ thuộc vào diện tích mà còn bị chi phối bởi nhiều yếu tố khác. Việc hiểu rõ những yếu tố này sẽ giúp bạn đưa ra quyết định sáng suốt và tối ưu hóa ngân sách của mình.
-                    </p>
-                    <div id="factors-container" class="space-y-6">
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">1. Diện tích và Quy mô</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_area.jpg" alt="Minh họa diện tích và quy mô xây dựng nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">2. Phong cách Thiết kế</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_style.jpg" alt="Minh họa các phong cách thiết kế nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">3. Mức độ Hoàn thiện và Vật liệu</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_finish.jpg" alt="Minh họa mức độ hoàn thiện và vật liệu xây dựng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">4. Công năng và Tiện ích</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_features.jpg" alt="Minh họa công năng và tiện ích trong nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">5. Vị trí và Điều kiện Thi công</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_location.jpg" alt="Minh họa vị trí và điều kiện thi công" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">6. Loại Móng</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_foundation.jpg" alt="Minh họa các loại móng nhà" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">7. Tầng Lửng</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_mezzanine.jpg" alt="Minh họa thiết kế tầng lửng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">8. Sân Thượng</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_rooftop.jpg" alt="Minh họa thiết kế sân thượng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">9. Loại Mái</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_roof_type.jpg" alt="Minh họa các loại mái nhà" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="bao-gia" class="py-12 pt-24 min-h-screen">
-                    <h2 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Báo Giá Xây Dựng</h2>
-                    <p class="mb-10 text-lg text-center leading-relaxed max-w-3xl mx-auto">
-                        Chọn loại báo giá bạn muốn xem hoặc sử dụng công cụ ước tính chi phí của chúng tôi để nhận báo giá trọn gói.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
-                            <a href="#bao-gia-xd-tron-goi" class="block">
-                                <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Xây Dựng Trọn Gói</h3>
-                                <p class="text-base text-gray-700">Ước tính chi phí xây dựng nhà phố trọn gói theo thông số bạn cung cấp.</p>
-                            </a>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
-                            <a href="#bao-gia-thiet-ke-kien-truc" class="block">
-                                <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Thiết Kế Kiến Trúc</h3>
-                                <p class="text-base text-gray-700">Tham khảo chi phí cho dịch vụ thiết kế kiến trúc chuyên nghiệp.</p>
-                            </a>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
-                            <a href="#bao-gia-xd-phan-tho" class="block">
-                                <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Xây Dựng Phần Thô</h3>
-                                <p class="text-base text-gray-700">Tìm hiểu chi phí xây dựng phần thô (kết cấu) của công trình.</p>
-                            </a>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
-                            <a href="#bao-gia-xd-phan-hoan-thien" class="block">
-                                <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Xây Dựng Phần Hoàn Thiện</h3>
-                                <p class="text-base text-gray-700">Chi tiết chi phí cho các hạng mục hoàn thiện nội thất và ngoại thất.</p>
-                            </a>
-                        </div>
-                    </div>
-
-                    <section id="bao-gia-xd-tron-goi" class="py-12 pt-24">
-                        <h3 class="text-3xl font-bold mb-8 text-[#D97706] text-center">Công cụ tính Chi phí Xây dựng Trọn Gói</h3>
-                        <p class="mb-10 text-lg text-center leading-relaxed max-w-3xl mx-auto">
-                            Sử dụng công cụ dưới đây để nhận ước tính sơ bộ và gửi yêu cầu báo giá chi tiết qua email của bạn.
+                    <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Chi phí Phát sinh</h3>
+                        <p class="text-gray-600">
+                            Hãy dự trù một khoản ngân sách dự phòng (khoảng 10-15% tổng chi phí ước tính) cho các chi phí phát sinh không lường trước hoặc những thay đổi nhỏ trong quá trình thi công.
                         </p>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-xl mb-12 border-t-4 border-[#D97706]">
-                            <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Nhập thông tin ngôi nhà của bạn</h4>
-                            <form id="estimatorForm" class="space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="area" class="block text-base font-medium text-gray-700 mb-2">Diện tích sàn xây dựng (m²):</label>
-                                        <input type="number" id="area" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg" placeholder="Ví dụ: 80" min="20" max="500" required>
-                                    </div>
-                                    <div>
-                                        <label for="floors" class="block text-base font-medium text-gray-700 mb-2">Số tầng:</label>
-                                        <input type="number" id="floors" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg" placeholder="Ví dụ: 3" min="1" max="7" required>
-                                    </div>
-                                    <div>
-                                        <label for="style" class="block text-base font-medium text-gray-700 mb-2">Phong cách thiết kế:</label>
-                                        <select id="style" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
-                                            <option value="modern">Hiện đại</option>
-                                            <option value="neoclassical">Tân cổ điển</option>
-                                            <option value="minimalist">Tối giản</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="finish" class="block text-base font-medium text-gray-700 mb-2">Mức độ hoàn thiện:</label>
-                                        <select id="finish" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
-                                            <option value="basic">Cơ bản</option>
-                                            <option value="standard">Trung bình</option>
-                                            <option value="premium">Cao cấp</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="foundation_type" class="block text-base font-medium text-gray-700 mb-2">Loại móng:</label>
-                                        <select id="foundation_type" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
-                                            <option value="simple">Móng đơn</option>
-                                            <option value="strip">Móng băng</option>
-                                            <option value="pile">Móng cọc</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="mezzanine_option" class="block text-base font-medium text-gray-700 mb-2">Có tầng lửng không?</label>
-                                        <select id="mezzanine_option" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
-                                            <option value="no">Không</option>
-                                            <option value="yes">Có</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="rooftop_option" class="block text-base font-medium text-gray-700 mb-2">Có sân thượng không?</label>
-                                        <select id="rooftop_option" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
-                                            <option value="no">Không</option>
-                                            <option value="yes">Có</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="roof_type" class="block text-base font-medium text-gray-700 mb-2">Loại mái:</label>
-                                        <select id="roof_type" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
-                                            <option value="flat">Mái bằng</option>
-                                            <option value="thai">Mái Thái</option>
-                                            <option value="japanese">Mái Nhật</option>
-                                        </select>
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label for="email" class="block text-base font-medium text-gray-700 mb-2">Email của bạn (để nhận báo giá):</label>
-                                        <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg" placeholder="vidu@email.com" required>
-                                    </div>
-                                </div>
-                                
-                                <button type="submit" id="calculateBtn" class="w-full bg-[#FBBF24] text-[#1F2937] font-bold py-4 px-6 rounded-md hover:bg-[#FCD34D] transition-colors duration-300 flex items-center justify-center space-x-3 text-xl shadow-md">
-                                    <span>Ước tính Chi phí</span>
-                                    <div id="costLoadingSpinner" class="loading-spinner"></div>
-                                </button>
-                            </form>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Hợp đồng Minh bạch</h3>
+                        <p class="text-gray-600">
+                            Đảm bảo hợp đồng xây dựng rõ ràng, chi tiết về chủng loại vật tư, tiến độ thi công, và các điều khoản thanh toán để tránh mọi tranh chấp không đáng có sau này.
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-                            <div id="costError" class="text-red-600 text-sm mt-4 hidden text-center p-3 border border-red-400 bg-red-50 rounded-md"></div>
-                            <div id="emailNotification" class="text-sm mt-4 hidden text-center p-3 rounded-md font-medium"></div>
-                                
-                                <div id="resultsSection" class="hidden mt-8 transition-opacity duration-500 ease-in-out opacity-0">
-    <div class="mt-8 p-6 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
-        <h4 class="text-xl font-bold mb-3 text-center text-[#1F2937]">Tổng Chi phí Ước tính Trọn gói:</h4>
-        <p id="estimatedCost" class="text-4xl font-extrabold text-[#D97706] text-center animate-pulse">-- VNĐ</p>
-        <p class="text-sm text-gray-600 text-center mt-3 leading-relaxed">(*Đây là ước tính sơ bộ dựa trên thông tin bạn cung cấp. Chi phí thực tế có thể thay đổi tùy thuộc vào chi tiết thiết kế, vật liệu cụ thể, điều kiện thi công và thời điểm xây dựng.)</p>
-    </div>
-    
-    <div class="mt-8 text-center flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-        <a id="sendEmailLink" href="#" class="inline-block bg-green-600 text-white font-bold py-3 px-8 rounded-md hover:bg-green-700 transition-colors duration-300 text-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-center">
-            <span>Gửi Yêu cầu Báo giá qua Email</span>
-        </a>
-        <button id="downloadPdfBtn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-700 transition-colors duration-300 text-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
-            <span>Tải Báo giá PDF</span>
-            <div id="pdfLoadingSpinner" class="loading-spinner hidden ml-2"></div>
-        </button>
-    </div>
+            <section id="contact" class="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Liên Hệ Với Chúng Tôi</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Chúng tôi luôn sẵn lòng lắng nghe và hỗ trợ bạn. Đừng ngần ngại liên hệ với ESB Homes qua các kênh dưới đây để nhận được tư vấn chi tiết và báo giá chính xác nhất cho dự án của bạn.
+                </p>
 
-    <div class="mt-12">
-        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Phân bổ Chi phí Ước tính</h4>
-        <div class="chart-container">
-            <canvas id="costBreakdownChart"></canvas>
-        </div>
-    </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gray-50 p-5 rounded-lg text-center border border-gray-200 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Hotline Tư vấn</h3>
+                        <p class="text-2xl font-bold text-[#FBBF24] mb-3">0899618286</p>
+                        <a href="tel:+84899618286" class="inline-block bg-[#FBBF24] text-gray-900 font-bold py-2 px-4 rounded-md hover:bg-yellow-400 transition-colors duration-200">
+                            Gọi ngay
+                        </a>
+                    </div>
+                    <div class="bg-gray-50 p-5 rounded-lg text-center border border-gray-200 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Liên hệ qua Zalo</h3>
+                        <p class="text-2xl font-bold text-blue-600 mb-3">0772 634 611</p>
+                        <a href="https://zalo.me/0772634611" target="_blank" class="inline-block bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200">
+                            Nhắn Zalo
+                        </a>
+                    </div>
+                    <div class="bg-gray-50 p-5 rounded-lg text-center border border-gray-200 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Email</h3>
+                        <p class="text-xl font-bold text-gray-800 mb-3">esb.homes.company@gmail.com</p>
+                        <a href="mailto:esb.homes.company@gmail.com" class="inline-block bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition-colors duration-200">
+                            Gửi Email
+                        </a>
+                    </div>
+                </div>
 
-    <div id="detailedBreakdownSection" class="mt-16">
-        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Bảng Chi tiết Hạng mục (Ước tính)</h4>
-        <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
-            <table class="w-full table-auto text-base">
-                <thead class="bg-gray-100 border-b border-gray-200">
-                    <tr>
-                        <th class="px-5 py-3 text-left text-gray-700">Hạng mục chính</th>
-                        <th class="px-5 py-3 text-left text-gray-700">Hạng mục chi tiết</th>
-                        <th class="px-5 py-3 text-right text-gray-700">Chi phí (VNĐ)</th>
-                    </tr>
-                </thead>
-                <tbody id="detailedBreakdownTableBody">
-                    </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="paymentScheduleSection" class="mt-16">
-        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Lịch Trình Thanh toán (Gợi ý)</h4>
-        <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
-            <table class="w-full table-auto text-base">
-                <thead class="bg-gray-100 border-b border-gray-200">
-                    <tr>
-                        <th class="px-5 py-3 text-left text-gray-700">Đợt</th>
-                        <th class="px-5 py-3 text-left text-gray-700">Nội dung công việc</th>
-                        <th class="px-5 py-3 text-right text-gray-700">Tỷ lệ</th>
-                        <th class="px-5 py-3 text-right text-gray-700">Thanh toán (VNĐ)</th>
-                    </tr>
-                </thead>
-                <tbody id="paymentScheduleTableBody">
-                    </tbody>
-            </table>
-        </div>
-        <p class="text-sm text-gray-600 text-center mt-4">(*Lịch trình thanh toán là gợi ý, có thể được điều chỉnh theo thỏa thuận hợp đồng thực tế.)</p>
-    </div>
-</div>
-                    </section>
-
-                    <section id="bao-gia-thiet-ke-kien-truc" class="py-12 pt-24">
-                        <h3 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Báo Giá Thiết Kế Kiến Trúc</h3>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
-                            <p class="mb-4 text-base leading-relaxed text-gray-700">
-                                Chi phí thiết kế kiến trúc thường được tính dựa trên diện tích sàn hoặc theo gói. Giá tham khảo:
-                            </p>
-                            <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
-                                <li>Thiết kế cơ bản: <span class="font-bold text-[#D97706]">100.000 - 150.000 VNĐ/m²</span></li>
-                                <li>Thiết kế nâng cao: <span class="font-bold text-[#D97706]">150.000 - 250.000 VNĐ/m²</span></li>
-                                <li>Thiết kế biệt thự, phức tạp: <span class="font-bold text-[#D97706]">Từ 250.000 VNĐ/m²</span> trở lên</li>
-                            </ul>
-                            <p class="mt-6 text-base text-gray-600 italic">
-                                *Lưu ý: Giá trên chỉ là tham khảo. Vui lòng liên hệ ESB Homes để được tư vấn chi tiết và báo giá chính xác theo yêu cầu riêng của bạn.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section id="bao-gia-xd-phan-tho" class="py-12 pt-24">
-                        <h3 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Báo Giá Xây Dựng Phần Thô</h3>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
-                            <p class="mb-4 text-base leading-relaxed text-gray-700">
-                                Báo giá phần thô bao gồm các công việc từ móng đến mái, hoàn thiện phần kết cấu chính của công trình. Giá tham khảo:
-                            </p>
-                            <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
-                                <li>Gói cơ bản: <span class="font-bold text-[#D97706]">3.200.000 - 3.800.000 VNĐ/m²</span></li>
-                                <li>Gói tiêu chuẩn: <span class="font-bold text-[#D97706]">3.800.000 - 4.500.000 VNĐ/m²</span></li>
-                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">Từ 4.500.000 VNĐ/m²</span> trở lên</li>
-                            </ul>
-                            <p class="mt-6 text-base text-gray-600 italic">
-                                *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc vào loại vật tư chính, địa chất công trình và điều kiện thi công thực tế.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section id="bao-gia-xd-phan-hoan-thien" class="py-12 pt-24">
-                        <h3 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Báo Giá Xây Dựng Phần Hoàn Thiện</h3>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
-                            <p class="mb-4 text-base leading-relaxed text-gray-700">
-                                Báo giá phần hoàn thiện bao gồm các hạng mục như ốp lát sàn, tường, sơn nước, trần thạch cao, lắp đặt cửa, thiết bị vệ sinh, hệ thống đèn chiếu sáng cơ bản... Giá tham khảo:
-                            </p>
-                            <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
-                                <li>Gói cơ bản: <span class="font-bold text-[#D97706]">1.800.000 - 2.500.000 VNĐ/m²</span></li>
-                                <li>Gói tiêu chuẩn: <span class="font-bold text-[#D97706]">2.500.000 - 3.500.000 VNĐ/m²</span></li>
-                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">Từ 3.500.000 VNĐ/m²</span> trở lên</li>
-                            </ul>
-                            <p class="mt-6 text-base text-gray-600 italic">
-                                *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc rất nhiều vào chủng loại vật liệu, thương hiệu và mẫu mã bạn lựa chọn.
-                            </p>
-                        </div>
-                    </section>
-                </section>
-
-                <section id="cac-goi-xay-dung" class="py-12 pt-24 min-h-screen">
-                    <h2 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Các Gói Xây dựng Trọn Gói Phổ biến</h2>
-                    <p class="mb-10 text-lg text-center leading-relaxed max-w-3xl mx-auto">
-                        Để giúp bạn dễ dàng lựa chọn, dưới đây là mô tả các gói xây dựng trọn gói phổ biến của chúng tôi với các mức chi phí và tiêu chuẩn vật liệu khác nhau.
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Địa chỉ Công ty trên Bản đồ</h3>
+                    <p class="text-gray-600 mb-3">
+                        Bạn có thể tìm chúng tôi tại:
                     </p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#D97706] hover:shadow-xl transition-shadow duration-300">
-                            <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Gói Cơ bản</h3>
-                            <p class="mb-5 text-base text-gray-700">Phù hợp với ngân sách tiết kiệm, sử dụng vật liệu phổ thông nhưng vẫn đảm bảo chất lượng và công năng cơ bản.</p>
-                            <ul class="list-disc list-inside text-left space-y-2 text-base text-gray-700 pl-4">
-                                <li>Vật liệu thô tiêu chuẩn, đảm bảo kết cấu</li>
-                                <li>Vật liệu hoàn thiện phổ thông (gạch men, sơn nội thất cơ bản, thiết bị vệ sinh thông dụng)</li>
-                                <li>Thiết kế đơn giản, tập trung tối ưu công năng sử dụng</li>
-                            </li>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#D97706] hover:shadow-xl transition-shadow duration-300">
-                            <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Gói Tiêu chuẩn</h3>
-                            <p class="mb-5 text-base text-gray-700">Chất lượng tốt, sử dụng vật liệu trung cấp, thiết kế đa dạng hơn, đáp ứng nhu cầu sống tiện nghi và thẩm mỹ.</p>
-                            <ul class="list-disc list-inside text-left space-y-2 text-base text-gray-700 pl-4">
-                                <li>Vật liệu thô chất lượng tốt, bền vững theo thời gian</li>
-                                <li>Vật liệu hoàn thiện trung cấp (gạch đồng chất, sơn cao cấp, thiết bị vệ sinh thương hiệu phổ biến)</li>
-                                <li>Thiết kế linh hoạt, tối ưu không gian, có tính thẩm mỹ cao</li>
-                            </ul>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#D97706] hover:shadow-xl transition-shadow duration-300">
-                            <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Gói Cao cấp</h3>
-                            <p class="mb-5 text-base text-gray-700">Sử dụng vật liệu cao cấp, thiết kế độc đáo, tiện ích hiện đại, mang đến không gian sống sang trọng và đẳng cấp.</p>
-                            <ul class="list-disc list-inside text-left space-y-2 text-base text-gray-700 pl-4">
-                                <li>Vật liệu thô cao cấp, đảm bảo tính bền vững vượt trội</li>
-                                <li>Vật liệu hoàn thiện nhập khẩu, từ các thương hiệu nổi tiếng (đá tự nhiên, gỗ tự nhiên, thiết bị vệ sinh cao cấp)</li>
-                                <li>Thiết kế độc quyền, tích hợp công nghệ nhà thông minh, cá nhân hóa tối đa</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="luu-y-quan-trong" class="py-12 pt-24 min-h-screen">
-                    <h2 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Lưu ý Quan trọng</h2>
-                    <p class="mb-10 text-lg text-center leading-relaxed max-w-3xl mx-auto">
-                        Công cụ này cung cấp ước tính sơ bộ. Để có báo giá chính xác nhất và đảm bảo dự án thành công, bạn cần lưu ý các điểm sau:
+                    <p class="text-lg font-medium text-gray-700 mb-4">
+                        14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh
                     </p>
-                    <div class="space-y-6">
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-l-4 border-blue-500">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937] flex items-center">
-                                <svg class="w-7 h-7 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.2 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.48 0-6.64-1.35-9-3.55V8c3.48 0 6.64 1.35 9 3.55 2.36-2.2 5.52-3.55 9-3.55v11c-3.48 0-6.64 1.35-9 3.55z"></path></svg>
-                                Tham khảo Chuyên gia
-                            </h3>
-                            <p class="text-base leading-relaxed text-gray-700">Luôn liên hệ với các kiến trúc sư và nhà thầu uy tín như ESB Homes để có bản vẽ chi tiết, báo giá chính xác dựa trên khảo sát thực tế công trình và các quy định pháp lý hiện hành.</p>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-l-4 border-red-500">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937] flex items-center">
-                                <svg class="w-7 h-7 mr-3 text-red-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>
-                                Chi phí Phát sinh
-                            </h3>
-                            <p class="text-base leading-relaxed text-gray-700">Hãy dự trù một khoản ngân sách dự phòng (khoảng 10-15% tổng chi phí ước tính) cho các chi phí phát sinh không lường trước hoặc những thay đổi nhỏ trong quá trình thi công.</p>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-l-4 border-green-500">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937] flex items-center">
-                                <svg class="w-7 h-7 mr-3 text-green-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8.59l-9 9z"></path></svg>
-                                Hợp đồng Minh bạch
-                            </h3>
-                            <p class="text-base leading-relaxed text-gray-700">Đảm bảo hợp đồng xây dựng rõ ràng, chi tiết về chủng loại vật tư, tiến độ thi công, và các điều khoản thanh toán để tránh mọi tranh chấp không đáng có sau này.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="lien-he" class="py-12 pt-24 min-h-screen flex flex-col justify-center">
-                    <h2 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Liên Hệ Với Chúng Tôi</h2>
-                    <p class="mb-10 text-lg text-center leading-relaxed max-w-3xl mx-auto">
-                        Chúng tôi luôn sẵn lòng lắng nghe và hỗ trợ bạn. Đừng ngần ngại liên hệ với ESB Homes qua các kênh dưới đây để nhận được tư vấn chi tiết và báo giá chính xác nhất cho dự án của bạn.
+                    <a href="https://maps.app.goo.gl/YourGoogleMapsLinkHere" target="_blank"
+                        class="inline-block bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                        Xem trên Google Maps
+                    </a>
+                    <p class="text-gray-500 text-sm mt-3">
+                        (Vui lòng liên hệ trước khi đến để được đón tiếp tốt nhất.)
                     </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto w-full">
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24]">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937]">Hotline Tư vấn</h3>
-                            <p class="mb-5 text-4xl font-extrabold text-[#D97706]">0899618286</p>
-                            <a href="tel:+84899618286" class="inline-block bg-[#FBBF24] text-[#1F2937] font-bold py-3 px-8 rounded-md hover:bg-[#FCD34D] transition-colors duration-300 text-lg shadow-md">
-                                <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.46.57 3.57.11.35.03.74-.25 1.02L6.62 10.79z"></path></svg>
-                                Gọi ngay
-                            </a>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24]">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937]">Liên hệ qua Zalo</h3>
-                            <p class="mb-5 text-4xl font-extrabold text-[#D97706]">0772 634 611</p>
-                            <a href="https://zalo.me/0772634611" target="_blank" rel="noopener noreferrer" class="inline-block bg-[#008CFF] text-white font-bold py-3 px-8 rounded-md hover:bg-[#007BFF] transition-colors duration-300 text-lg shadow-md">
-                                <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2.5 15c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm2.5-7.5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path></svg>
-                                Nhắn Zalo
-                            </a>
-                        </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center md:col-span-2 border-t-4 border-[#FBBF24]">
-                            <h3 class="text-2xl font-bold mb-4 text-[#1F2937]">Email</h3>
-                            <p class="mb-5 text-xl font-bold text-[#D97706]">esb.homes.company@gmail.com</p>
-                            <a href="mailto:esb.homes.company@gmail.com" class="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-700 transition-colors duration-300 text-lg shadow-md">
-                                <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
-                                Gửi Email
-                            </a>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="map-location" class="py-12 pt-24 bg-gray-50 rounded-lg shadow-inner">
-                    <div class="container mx-auto px-4">
-                        <h2 class="text-3xl font-bold mb-8 text-center text-[#FBBF24]">Địa chỉ Công ty trên Bản đồ</h2>
-                        <div class="bg-white p-8 rounded-lg shadow-xl text-center border border-gray-200">
-                            <p class="text-lg font-semibold mb-4 text-gray-800">
-                                Bạn có thể tìm chúng tôi tại:
-                            </p>
-                            <p class="text-xl font-bold text-[#D97706] mb-5">
-                                14A Đường số 21, Phường Tân Quy, Quận 7, TP. Hồ Chí Minh
-                            </p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=14A+Đường+số+21,+Phường+Tân+Quy,+Quận+7,+TP.+Hồ+Chí+Minh" target="_blank" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 ease-in-out text-lg shadow-md">
-                                <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"></path></svg>
-                                Xem trên Google Maps
-                            </a>
-                            <p class="text-sm text-gray-600 mt-4">
-                                (Vui lòng liên hệ trước khi đến để được đón tiếp tốt nhất.)
-                            </p>
-                            <div class="mt-8 rounded-lg overflow-hidden border border-gray-300 shadow-inner">
-                                <iframe
-                                    src="https://maps.google.com/maps?q=14A%20Đường%20số%2021,%20Phường%20Tân%20Quy,%20Quận%207,%20TP.%20Hồ%20Chí%20Minh&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                                    width="100%"
-                                    height="450"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade">
-                                </iframe>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-            </div>
-        </div> 
-        <footer class="text-center pt-16 pb-8 text-sm text-gray-400 bg-[#0A192F] mt-auto">
-            © 2025 ESB Homes. All rights reserved.
-        </footer>
+                </div>
+            </section>
+        </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
-    <script src="script.js"></script>
+    <footer class="bg-gray-800 text-white p-6 text-center mt-10">
+        <div class="container mx-auto">
+            <p>© 2025 ESB Homes. All rights reserved.</p>
+        </div>
+    </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

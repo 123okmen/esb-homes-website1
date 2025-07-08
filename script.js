@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+Document.addEventListener('DOMContentLoaded', function () {
     // --- KHAI BÁO BIẾN --- //
     const form = document.getElementById('estimatorForm');
     const calculateBtn = document.getElementById('calculateBtn');
@@ -25,11 +25,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeSideMenuButton = document.getElementById('close-side-menu');
     
     const emailInput = document.getElementById('email'); 
+    const phoneInput = document.getElementById('phone'); // Thêm biến cho input số điện thoại
+    const phoneErrorEl = document.getElementById('phoneError'); // Thêm biến cho lỗi số điện thoại
 
     let costBreakdownChart = null;
     let lastCalculatedData = null; 
     let currentEstimatedCost = 0; 
     let customerEmail = ''; 
+    let customerPhone = ''; // Thêm biến để lưu số điện thoại
 
     // --- CÁC HẰNG SỐ VÀ TỶ LỆ TÍNH TOÁN --- //
     const COST_FACTORS = {
@@ -119,11 +122,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         hideError();
         hideNotification();
+        hidePhoneError(); // Ẩn lỗi số điện thoại
         resultsSection.classList.add('hidden', 'opacity-0'); 
         setLoadingState(true);
 
         const inputs = getFormInputs();
         customerEmail = inputs.email; 
+        customerPhone = inputs.phone; // Lấy số điện thoại từ input
 
         if (!validateInputs(inputs)) {
             setLoadingState(false);
@@ -144,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
             sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
             downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Kích hoạt nút tải PDF
 
-            // await handleDownloadPdf(); // Tắt tự động tải PDF, giờ người dùng tự bấm nút
+            await handleDownloadPdf(); // Đã bỏ comment dòng này để tự động tải PDF
             
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
 
@@ -161,20 +166,39 @@ document.addEventListener('DOMContentLoaded', function () {
             mezzanineOption: document.getElementById('mezzanine_option').value,
             rooftopOption: document.getElementById('rooftop_option').value,
             roofType: document.getElementById('roof_type').value,
-            email: document.getElementById('email').value.trim()
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim() // Lấy giá trị số điện thoại
         };
     }
 
     function validateInputs(inputs) {
+        let isValid = true;
         if (isNaN(inputs.area) || inputs.area <= 0 || isNaN(inputs.floors) || inputs.floors <= 0) {
             showError('Vui lòng nhập diện tích và số tầng hợp lệ.'); 
-            return false;
+            isValid = false;
+        } else {
+            hideError();
         }
+
+        // Kiểm tra email
         if (!inputs.email || !/^\S+@\S+\.\S+$/.test(inputs.email)) {
-             showError('Vui lòng nhập một địa chỉ email hợp lệ.'); 
-            return false;
+            showError('Vui lòng nhập một địa chỉ email hợp lệ.'); 
+            isValid = false;
+        } else {
+            if (isValid) hideError(); // Chỉ ẩn nếu không có lỗi khác
         }
-        return true;
+
+        // Validate phone number (simple check for now: not empty and contains only digits, adjust regex as needed)
+        // Regex này kiểm tra số điện thoại có thể bắt đầu bằng 0, và có 7-15 chữ số. 
+        // Bạn có thể tùy chỉnh regex cho phù hợp với định dạng số điện thoại mong muốn ở Việt Nam.
+        if (!inputs.phone || !/^[0-9]{7,15}$/.test(inputs.phone)) {
+            showPhoneError('Vui lòng nhập một số điện thoại hợp lệ (chỉ gồm số, 7-15 chữ số).');
+            isValid = false;
+        } else {
+            if (isValid) hidePhoneError(); // Chỉ ẩn nếu không có lỗi khác
+        }
+
+        return isValid;
     }
 
     function setLoadingState(isLoading) {
@@ -347,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateMailtoLink() {
-        if (!lastCalculatedData || currentEstimatedCost === 0 || !customerEmail) {
+        if (!lastCalculatedData || currentEstimatedCost === 0 || !customerEmail || !customerPhone) { // Kiểm tra cả số điện thoại
             sendEmailLink.setAttribute('href', '#');
             sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
             return;
@@ -369,7 +393,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const body = encodeURIComponent(
             `Kính gửi ESB Homes,\n\n` + 
             `Tôi tên là [Vui lòng điền tên của bạn],\n` + 
-            `Email: ${inputs.email}\n\n` + 
+            `Email: ${inputs.email}\n` + 
+            `Số điện thoại: ${inputs.phone}\n\n` + // Thêm số điện thoại vào nội dung email
             `Tôi muốn yêu cầu báo giá chi tiết cho dự án xây dựng nhà phố với các thông tin sau:\n\n` + 
             `- Diện tích sàn xây dựng: ${inputs.area} m²\n` + 
             `- Số tầng: ${inputs.floors}\n` + 
@@ -440,6 +465,8 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.text(removeAccents("Thong tin lien he:"), margin, y); 
         y += lineHeight; 
         doc.text(removeAccents(`Email: ${lastCalculatedData.inputs.email || 'Chua cung cap'}`), margin, y); 
+        y += lineHeight; // Di chuyển xuống một dòng
+        doc.text(removeAccents(`So dien thoai: ${lastCalculatedData.inputs.phone || 'Chua cung cap'}`), margin, y); // Thêm số điện thoại vào PDF
         y += lineHeight * 2; 
 
         // Bảng Chi tiết Hạng mục (Ước tính)
@@ -449,9 +476,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const detailedData = lastCalculatedData.calculationResult.detailedBreakdown; 
         const mainCategoriesForPdf = { 
-            'Phần Thô': ['Chi phí móng', 'Chi phí kết cấu & xây thô', 'Chi phí mái'], 
-            'Hoàn Thiện': ['Chi phí hoàn thiện'], 
-            'Chi phí khác': ['Chi phí thiết kế & quản lý'] 
+            'Phan Tho': ['Chi phi mong', 'Chi phi ket cau & xay tho', 'Chi phi mai'], // Đã bỏ dấu
+            'Hoan Thien': ['Chi phi hoan thien'], // Đã bỏ dấu
+            'Chi phi khac': ['Chi phi thiet ke & quan ly'] // Đã bỏ dấu
         };
 
         const detailedTableHeaders = [[removeAccents('Hang muc chinh'), removeAccents('Hang muc chi tiet'), removeAccents('Chi phi (VND)')]]; 
@@ -573,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function () {
         y += lineHeight * 2;
 
 
-        // Thông tin liên hệ để báo giá chính xác
+        // Thong tin lien he de bao gia chinh xac
         doc.setFontSize(14); 
         doc.text(removeAccents("De nhan bao gia chinh xac nhat va tu van chi tiet hon,"), margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight + 5; 
@@ -679,13 +706,27 @@ document.addEventListener('DOMContentLoaded', function () {
         return new Intl.NumberFormat('vi-VN').format(Math.round(number));
     }
 
+    // Cập nhật hàm showError để chỉ hiển thị một loại lỗi mỗi lần
     function showError(message) {
+        hidePhoneError(); // Đảm bảo ẩn lỗi điện thoại khi hiển thị lỗi khác
         costErrorEl.textContent = message;
         costErrorEl.classList.remove('hidden');
     }
 
     function hideError() {
         costErrorEl.classList.add('hidden');
+    }
+
+    // Hàm mới để hiển thị lỗi số điện thoại
+    function showPhoneError(message) {
+        hideError(); // Đảm bảo ẩn lỗi chung khi hiển thị lỗi điện thoại
+        phoneErrorEl.textContent = message;
+        phoneErrorEl.classList.remove('hidden');
+    }
+
+    // Hàm mới để ẩn lỗi số điện thoại
+    function hidePhoneError() {
+        phoneErrorEl.classList.add('hidden');
     }
 
     function showNotification(message, type = 'success') {
