@@ -378,120 +378,118 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- XỬ LÝ TẢI PDF --- //
     async function handleDownloadPdf() {
-    console.log("Nút PDF đã được bấm!"); // Thêm dòng này
-    console.log("lastCalculatedData:", lastCalculatedData); // Thêm dòng này
-    console.log("currentEstimatedCost:", currentEstimatedCost); // Thêm dòng này
+        console.log("Nút PDF đã được bấm!"); //
+        console.log("lastCalculatedData:", lastCalculatedData); //
+        console.log("currentEstimatedCost:", currentEstimatedCost); //
 
-    if (!lastCalculatedData || currentEstimatedCost === 0) {
-        alert('Vui lòng ước tính chi phí trước khi tải báo giá PDF.');
-        return;
-    }
-    // ... phần còn lại của hàm ...
-}
-   
-        pdfLoadingSpinner.classList.remove('hidden');
-        downloadPdfBtn.disabled = true;
-        downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
+        if (!lastCalculatedData || currentEstimatedCost === 0) {
+            alert('Vui lòng ước tính chi phí trước khi tải báo giá PDF.'); //
+            return; //
+        }
+
+        pdfLoadingSpinner.classList.remove('hidden'); //
+        downloadPdfBtn.disabled = true; //
+        downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); //
 
         const { jsPDF } = window.jspdf; // Cách gọi jsPDF đúng
-        const doc = new jsPDF('p', 'pt', 'a4'); 
+        const doc = new jsPDF('p', 'pt', 'a4'); //
 
         // Lưu ý: Để hỗ trợ tiếng Việt đầy đủ (có dấu) trong PDF, bạn cần nhúng một font TTF hỗ trợ tiếng Việt.
         // Ví dụ: doc.addFont('path/to/your/vietnamese-font.ttf', 'VietnameseFont', 'normal');
         // doc.setFont('VietnameseFont'); // Sau đó sử dụng font này cho các text.
         // Hiện tại, các ký tự có dấu có thể không hiển thị đúng nếu không có font được nhúng.
 
-        const margin = 40;
-        let y = margin;
+        const margin = 40; //
+        let y = margin; //
         const lineHeight = 14; // Khoảng cách dòng mặc định
-        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageWidth = doc.internal.pageSize.getWidth(); //
 
         // Logo hoặc tên công ty
-        doc.setFontSize(22);
-        doc.text("ESB Homes", margin, y);
-        doc.setFontSize(10);
-        doc.text("Eco-Smart-Build", margin, y + 15);
-        y += 40;
+        doc.setFontSize(22); //
+        doc.text("ESB Homes", margin, y); //
+        doc.setFontSize(10); //
+        doc.text("Eco-Smart-Build", margin, y + 15); //
+        y += 40; //
 
         // Tiêu đề báo giá
-        doc.setFontSize(18);
+        doc.setFontSize(18); //
         // Sử dụng các ký tự không dấu cho các tiêu đề để tránh lỗi font nếu không nhúng font tiếng Việt
-        doc.text("BAO GIA XAY DUNG NHA PHO (UOC TINH SO BO)", pageWidth / 2, y, { align: 'center' });
-        y += 25;
-        doc.setFontSize(10);
-        doc.text(`Ngay lap: ${new Date().toLocaleDateString('vi-VN')}`, pageWidth - margin, y, { align: 'right' });
-        y += 20;
+        doc.text("BAO GIA XAY DUNG NHA PHO (UOC TINH SO BO)", pageWidth / 2, y, { align: 'center' }); //
+        y += 25; //
+        doc.setFontSize(10); //
+        doc.text(`Ngay lap: ${new Date().toLocaleDateString('vi-VN')}`, pageWidth - margin, y, { align: 'right' }); //
+        y += 20; //
 
         // Thông tin công ty
-        doc.setFontSize(12);
-        doc.text("Cong ty ESB Homes", margin, y);
-        y += lineHeight;
-        doc.text("Dia chi: 14A Duong so 21, Phuong Tan Quy, Quan 7, TP. Ho Chi Minh", margin, y);
-        y += lineHeight;
-        doc.text("Hotline: 0899618286", margin, y);
-        y += lineHeight * 2;
+        doc.setFontSize(12); //
+        doc.text("Cong ty ESB Homes", margin, y); //
+        y += lineHeight; //
+        doc.text("Dia chi: 14A Duong so 21, Phuong Tan Quy, Quan 7, TP. Ho Chi Minh", margin, y); //
+        y += lineHeight; //
+        doc.text("Hotline: 0899618286", margin, y); //
+        y += lineHeight * 2; //
 
         // Thông tin khách hàng (từ email đã nhập)
-        doc.setFontSize(12);
-        doc.text("Thong tin lien he:", margin, y);
-        y += lineHeight;
-        doc.text(`Email: ${lastCalculatedData.inputs.email || 'Chua cap nhat'}`, margin, y);
-        y += lineHeight * 2;
+        doc.setFontSize(12); //
+        doc.text("Thong tin lien he:", margin, y); //
+        y += lineHeight; //
+        doc.text(`Email: ${lastCalculatedData.inputs.email || 'Chua cap nhat'}`, margin, y); //
+        y += lineHeight * 2; //
 
 
         // Bảng Chi tiết Hạng mục (Ước tính)
-        doc.setFontSize(14);
-        doc.text("BANG CHI TIET HANG MUC (UOC TINH)", margin, y);
-        y += lineHeight + 10;
+        doc.setFontSize(14); //
+        doc.text("BANG CHI TIET HANG MUC (UOC TINH)", margin, y); //
+        y += lineHeight + 10; //
 
-        const headers = [['Hang muc chinh', 'Hang muc chi tiet', 'Chi phi (VND)']];
-        const data = [];
+        const headers = [['Hang muc chinh', 'Hang muc chi tiet', 'Chi phi (VND)']]; //
+        const data = []; //
 
-        const detailedData = lastCalculatedData.calculationResult.detailedBreakdown;
+        const detailedData = lastCalculatedData.calculationResult.detailedBreakdown; //
         const mainCategories = {
-            'Phan Tho': ['Chi phi mong', 'Chi phi ket cau & xay tho', 'Chi phi mai'],
-            'Hoan Thien': ['Chi phi hoan thien'],
-            'Chi phi khac': ['Chi phi thiet ke & quan ly']
+            'Phan Tho': ['Chi phi mong', 'Chi phi ket cau & xay tho', 'Chi phi mai'], //
+            'Hoan Thien': ['Chi phi hoan thien'], //
+            'Chi phi khac': ['Chi phi thiet ke & quan ly'] //
         };
 
-        for (const mainCategory in mainCategories) {
-            const subItems = mainCategories[mainCategory];
-            subItems.forEach((item, index) => {
-                const cost = detailedData[item] || 0;
+        for (const mainCategory in mainCategories) { //
+            const subItems = mainCategories[mainCategory]; //
+            subItems.forEach((item, index) => { //
+                const cost = detailedData[item] || 0; //
                 data.push([
-                    index === 0 ? mainCategory : '', 
-                    item, 
-                    `${formatCurrency(cost)} VND` 
+                    index === 0 ? mainCategory : '', //
+                    item, //
+                    `${formatCurrency(cost)} VND` //
                 ]);
             });
         }
         
         doc.autoTable({
-            startY: y,
-            head: headers,
-            body: data,
-            theme: 'grid', 
+            startY: y, //
+            head: headers, //
+            body: data, //
+            theme: 'grid', //
             styles: {
-                font: 'helvetica', 
-                fontSize: 10,
-                cellPadding: 5,
-                lineColor: '#e0e0e0', 
-                lineWidth: 0.5
+                font: 'helvetica', //
+                fontSize: 10, //
+                cellPadding: 5, //
+                lineColor: '#e0e0e0', //
+                lineWidth: 0.5 //
             },
             headStyles: {
-                fillColor: '#FBBF24', 
-                textColor: '#1F2937', 
-                fontStyle: 'bold',
-                halign: 'center'
+                fillColor: '#FBBF24', //
+                textColor: '#1F2937', //
+                fontStyle: 'bold', //
+                halign: 'center' //
             },
             bodyStyles: {
-                textColor: '#1F2937',
-                valign: 'top' 
+                textColor: '#1F2937', //
+                valign: 'top' //
             },
             columnStyles: {
-                0: { cellWidth: 100 }, 
-                1: { cellWidth: 180 }, 
-                2: { cellWidth: 120, halign: 'right' } 
+                0: { cellWidth: 100 }, //
+                1: { cellWidth: 180 }, //
+                2: { cellWidth: 120, halign: 'right' } //
             },
             didDrawPage: function(data) {
                 // Có thể thêm số trang hoặc footer tại đây
@@ -501,43 +499,44 @@ document.addEventListener('DOMContentLoaded', function () {
         y = doc.autoTable.previous.finalY + 20; // Cập nhật vị trí Y sau bảng
 
         // Tổng chi phí ước tính (lặp lại cho rõ)
-        doc.setFontSize(16);
-        doc.setTextColor('#D97706'); 
-        doc.text("TONG CHI PHI UOC TINH SO BO:", margin, y);
-        y += lineHeight + 5;
-        doc.setFontSize(20);
-        doc.text(formatCurrency(currentEstimatedCost) + " VND", margin, y);
-        doc.setTextColor(0); 
-        y += lineHeight * 2;
+        doc.setFontSize(16); //
+        doc.setTextColor('#D97706'); //
+        doc.text("TONG CHI PHI UOC TINH SO BO:", margin, y); //
+        y += lineHeight + 5; //
+        doc.setFontSize(20); //
+        doc.text(formatCurrency(currentEstimatedCost) + " VND", margin, y); //
+        doc.setTextColor(0); //
+        y += lineHeight * 2; //
 
         // Thông tin liên hệ để báo giá chính xác
-        doc.setFontSize(14);
-        doc.text("De nhan bao gia chinh xac nhat va tu van chi tiet hon,", margin, y, { maxWidth: pageWidth - 2 * margin });
-        y += lineHeight + 5;
-        doc.setFontSize(12);
-        doc.text("vui long lien he ESB Homes qua:", margin, y, { maxWidth: pageWidth - 2 * margin });
-        y += lineHeight * 2;
-        doc.setFontSize(14);
-        doc.setTextColor('#FBBF24'); 
-        doc.text("Hotline: 0899618286", margin, y);
-        y += lineHeight;
-        doc.text("Email: esb.homes.company@gmail.com", margin, y);
-        y += lineHeight;
-        doc.text("Zalo: 0772 634 611", margin, y);
-        doc.setTextColor(0); 
-        y += lineHeight * 2;
+        doc.setFontSize(14); //
+        doc.text("De nhan bao gia chinh xac nhat va tu van chi tiet hon,", margin, y, { maxWidth: pageWidth - 2 * margin }); //
+        y += lineHeight + 5; //
+        doc.setFontSize(12); //
+        doc.text("vui long lien he ESB Homes qua:", margin, y, { maxWidth: pageWidth - 2 * margin }); //
+        y += lineHeight * 2; //
+        doc.setFontSize(14); //
+        doc.setTextColor('#FBBF24'); //
+        doc.text("Hotline: 0899618286", margin, y); //
+        y += lineHeight; //
+        doc.text("Email: esb.homes.company@gmail.com", margin, y); //
+        y += lineHeight; //
+        doc.text("Zalo: 0772 634 611", margin, y); //
+        doc.setTextColor(0); //
+        y += lineHeight * 2; //
         
-        doc.setFontSize(10);
-        doc.text("(*Bao gia nay chi mang tinh chat tham khao. Chi phi thuc te co the thay doi tuy thuoc vao yeu cau cu the.)", margin, y, { maxWidth: pageWidth - 2 * margin });
+        doc.setFontSize(10); //
+        doc.text("(*Bao gia nay chi mang tinh chat tham khao. Chi phi thuc te co the thay doi tuy thuoc vao yeu cau cu the.)", margin, y, { maxWidth: pageWidth - 2 * margin }); //
 
 
         // Tắt spinner và kích hoạt nút lại
-        pdfLoadingSpinner.classList.add('hidden');
-        downloadPdfBtn.disabled = false;
-        downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
+        pdfLoadingSpinner.classList.add('hidden'); //
+        downloadPdfBtn.disabled = false; //
+        downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); //
 
         // Lưu file PDF
-        doc.save(`bao-gia-esbhomes-uoc-tinh-${lastCalculatedData.inputs.area}m2-${lastCalculatedData.inputs.floors}tang.pdf`);
+        doc.save(`bao-gia-esbhomes-uoc-tinh-${lastCalculatedData.inputs.area}m2-${lastCalculatedData.inputs.floors}tang.pdf`); //
+    } // Đóng đúng hàm handleDownloadPdf ở đây.
 
     // --- XỬ LÝ THANH ĐIỀU HƯỚNG VÀ CUỘN --- //
     function handleScroll() {
