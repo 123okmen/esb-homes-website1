@@ -6,10 +6,6 @@
     <title>Chi phí Xây dựng Nhà phố Trọn Gói - ESB Homes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="flex flex-col min-h-screen bg-[#F8F9FA] text-[#1F2937]">
 
@@ -48,6 +44,13 @@
             </button>
             <h1 class="text-xl font-bold text-[#FBBF24] mb-8 mt-12 text-center">Menu Điều hướng</h1>
             <ul class="flex flex-col space-y-4 flex-grow overflow-y-auto" id="side-nav-list">
+                <li><a href="#gioi-thieu" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Giới thiệu</a></li>
+                <li><a href="#ve-chung-toi" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Về chúng tôi</a></li>
+                <li><a href="#yeu-to-anh-huong" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Yếu tố ảnh hưởng</a></li>
+                <li><a href="#bao-gia" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Báo giá</a></li>
+                <li><a href="#cac-goi-xay-dung" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Các gói xây dựng</a></li>
+                <li><a href="#luu-y-quan-trong" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Lưu ý quan trọng</a></li>
+                <li><a href="#lien-he" class="block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">Liên hệ</a></li>
                 </ul>
             </div>
     </div>
@@ -348,67 +351,66 @@
                             <div id="costError" class="text-red-600 text-sm mt-4 hidden text-center p-3 border border-red-400 bg-red-50 rounded-md"></div>
                             <div id="emailNotification" class="text-sm mt-4 hidden text-center p-3 rounded-md font-medium"></div>
                                 
-                            <div id="resultsSection" class="hidden mt-8 transition-opacity duration-500 ease-in-out opacity-0">
-                                <div class="mt-8 p-6 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
-                                    <h4 class="text-xl font-bold mb-3 text-center text-[#1F2937]">Tổng Chi phí Ước tính Trọn gói:</h4>
-                                    <p id="estimatedCost" class="text-4xl font-extrabold text-[#D97706] text-center animate-pulse">-- VNĐ</p>
-                                    <p class="text-sm text-gray-600 text-center mt-3 leading-relaxed">(*Đây là ước tính sơ bộ dựa trên thông tin bạn cung cấp. Chi phí thực tế có thể thay đổi tùy thuộc vào chi tiết thiết kế, vật liệu cụ thể, điều kiện thi công và thời điểm xây dựng.)</p>
-                                </div>
-                                
-                                <div class="mt-8 text-center flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-    <a id="sendEmailLink" href="#" class="inline-block bg-green-600 text-white font-bold py-3 px-8 rounded-md hover:bg-green-700 transition-colors duration-300 text-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-center">
-        <span>Gửi Yêu cầu Báo giá qua Email</span>
-    </a>
-    <button id="downloadPdfBtn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-700 transition-colors duration-300 text-lg shadow-md hidden">
-        <span>Tải Báo giá PDF</span>
-        <div id="pdfLoadingSpinner" class="loading-spinner hidden ml-2"></div>
-    </button>
+                                <div id="resultsSection" class="hidden mt-8 transition-opacity duration-500 ease-in-out opacity-0">
+    <div class="mt-8 p-6 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
+        <h4 class="text-xl font-bold mb-3 text-center text-[#1F2937]">Tổng Chi phí Ước tính Trọn gói:</h4>
+        <p id="estimatedCost" class="text-4xl font-extrabold text-[#D97706] text-center animate-pulse">-- VNĐ</p>
+        <p class="text-sm text-gray-600 text-center mt-3 leading-relaxed">(*Đây là ước tính sơ bộ dựa trên thông tin bạn cung cấp. Chi phí thực tế có thể thay đổi tùy thuộc vào chi tiết thiết kế, vật liệu cụ thể, điều kiện thi công và thời điểm xây dựng.)</p>
+    </div>
+    
+    <div class="mt-8 text-center flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+        <a id="sendEmailLink" href="#" class="inline-block bg-green-600 text-white font-bold py-3 px-8 rounded-md hover:bg-green-700 transition-colors duration-300 text-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-center">
+            <span>Gửi Yêu cầu Báo giá qua Email</span>
+        </a>
+        <button id="downloadPdfBtn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-700 transition-colors duration-300 text-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+            <span>Tải Báo giá PDF</span>
+            <div id="pdfLoadingSpinner" class="loading-spinner hidden ml-2"></div>
+        </button>
+    </div>
+
+    <div class="mt-12">
+        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Phân bổ Chi phí Ước tính</h4>
+        <div class="chart-container">
+            <canvas id="costBreakdownChart"></canvas>
+        </div>
+    </div>
+
+    <div id="detailedBreakdownSection" class="mt-16">
+        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Bảng Chi tiết Hạng mục (Ước tính)</h4>
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+            <table class="w-full table-auto text-base">
+                <thead class="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                        <th class="px-5 py-3 text-left text-gray-700">Hạng mục chính</th>
+                        <th class="px-5 py-3 text-left text-gray-700">Hạng mục chi tiết</th>
+                        <th class="px-5 py-3 text-right text-gray-700">Chi phí (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody id="detailedBreakdownTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="paymentScheduleSection" class="mt-16">
+        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Lịch Trình Thanh toán (Gợi ý)</h4>
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+            <table class="w-full table-auto text-base">
+                <thead class="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                        <th class="px-5 py-3 text-left text-gray-700">Đợt</th>
+                        <th class="px-5 py-3 text-left text-gray-700">Nội dung công việc</th>
+                        <th class="px-5 py-3 text-right text-gray-700">Tỷ lệ</th>
+                        <th class="px-5 py-3 text-right text-gray-700">Thanh toán (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentScheduleTableBody">
+                    </tbody>
+            </table>
+        </div>
+        <p class="text-sm text-gray-600 text-center mt-4">(*Lịch trình thanh toán là gợi ý, có thể được điều chỉnh theo thỏa thuận hợp đồng thực tế.)</p>
+    </div>
 </div>
-
-                                <div class="mt-12">
-                                    <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Phân bổ Chi phí Ước tính</h4>
-                                    <div class="chart-container">
-                                        <canvas id="costBreakdownChart"></canvas>
-                                    </div>
-                                </div>
-
-                                <div id="detailedBreakdownSection" class="mt-16">
-                                    <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Bảng Chi tiết Hạng mục (Ước tính)</h4>
-                                    <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
-                                        <table class="w-full table-auto text-base">
-                                            <thead class="bg-gray-100 border-b border-gray-200">
-                                                <tr>
-                                                    <th class="px-5 py-3 text-left text-gray-700">Hạng mục chính</th>
-                                                    <th class="px-5 py-3 text-left text-gray-700">Hạng mục chi tiết</th>
-                                                    <th class="px-5 py-3 text-right text-gray-700">Chi phí (VNĐ)</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="detailedBreakdownTableBody">
-                                                </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div id="paymentScheduleSection" class="mt-16">
-                                    <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Lịch Trình Thanh toán (Gợi ý)</h4>
-                                    <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
-                                        <table class="w-full table-auto text-base">
-                                            <thead class="bg-gray-100 border-b border-gray-200">
-                                                <tr>
-                                                    <th class="px-5 py-3 text-left text-gray-700">Đợt</th>
-                                                    <th class="px-5 py-3 text-left text-gray-700">Nội dung công việc</th>
-                                                    <th class="px-5 py-3 text-right text-gray-700">Tỷ lệ</th>
-                                                    <th class="px-5 py-3 text-right text-gray-700">Thanh toán (VNĐ)</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="paymentScheduleTableBody">
-                                                </tbody>
-                                        </table>
-                                    </div>
-                                    <p class="text-sm text-gray-600 text-center mt-4">(*Lịch trình thanh toán là gợi ý, có thể được điều chỉnh theo thỏa thuận hợp đồng thực tế.)</p>
-                                </div>
-                            </div>
-                        </div>
                     </section>
 
                     <section id="bao-gia-thiet-ke-kien-truc" class="py-12 pt-24">
@@ -476,7 +478,7 @@
                                 <li>Vật liệu thô tiêu chuẩn, đảm bảo kết cấu</li>
                                 <li>Vật liệu hoàn thiện phổ thông (gạch men, sơn nội thất cơ bản, thiết bị vệ sinh thông dụng)</li>
                                 <li>Thiết kế đơn giản, tập trung tối ưu công năng sử dụng</li>
-                            </ul>
+                            </li>
                         </div>
                         <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#D97706] hover:shadow-xl transition-shadow duration-300">
                             <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Gói Tiêu chuẩn</h3>
@@ -601,6 +603,10 @@
         </footer>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
     <script src="script.js"></script>
 
 </body>

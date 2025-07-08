@@ -1,143 +1,210 @@
-/* --- Phông chữ Google --- */
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap');
 
-/* --- Biến CSS Toàn cục --- */
-:root {
-    --primary-color: #FBBF24; /* Vàng */
-    --secondary-color: #D97706; /* Vàng đậm */
-    --dark-blue: #1F2937;
-    --light-bg: #F8F9FA;
-    --text-dark: #1F2937;
-    --text-light: #E0E7FF;
-}
-
-/* --- Kiểu dáng Body và HTML --- */
 body {
     font-family: 'Be Vietnam Pro', sans-serif;
-    scroll-behavior: smooth;
 }
 
-/* --- Thanh cuộn tùy chỉnh --- */
+/* Custom scrollbar for Webkit browsers */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #1F2937; /* Dark background for the track */
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 5px;
+    background: #4B5563; /* Grayish thumb */
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-color);
+    background: #6B7280; /* Lighter gray on hover */
 }
 
-/* --- Kiểu dáng Mục lục (TOC) --- */
-#floating-toc-menu ul li a,
-#side-menu ul li a {
-    transition: all 0.3s ease;
+/* Floating Table of Contents */
+#floating-toc-menu {
+    max-height: calc(100vh - 80px); /* Adjust based on header/footer */
+    overflow-y: auto;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #4B5563 #1F2937; /* For Firefox */
+}
+
+#floating-toc-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+#floating-toc-menu a {
+    color: white;
+    text-decoration: none;
     padding: 8px 12px;
-    border-radius: 6px;
     display: block;
-    color: var(--text-light);
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-#floating-toc-menu ul li a:hover,
-#side-menu ul li a:hover {
-    background-color: rgba(251, 191, 36, 0.2);
-    color: var(--primary-color);
+#floating-toc-menu a.active {
+    background-color: #FBBF24;
+    color: #1F2937;
+    font-weight: bold;
 }
 
-#floating-toc-menu ul li a.active,
-#side-menu ul li a.active {
-    background-color: var(--primary-color);
-    color: var(--dark-blue);
-    font-weight: 600;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+#floating-toc-menu a:hover:not(.active) {
+    background-color: #374151;
+    color: #FBBF24;
 }
 
-/* --- Hiệu ứng cho các thẻ nội dung --- */
-.content-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Side Menu (Mobile) */
+#side-menu {
+    transition: transform 0.3s ease-in-out;
 }
 
-.content-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+#side-menu.translate-x-0 {
+    transform: translateX(0);
 }
 
-/* --- Phần có thể thu gọn --- */
+#side-menu.translate-x-full {
+    transform: translateX(100%);
+}
+
+#side-menu-overlay {
+    transition: opacity 0.3s ease-in-out;
+}
+
+#side-menu-overlay.opacity-50 {
+    opacity: 0.5;
+}
+
+#side-menu-overlay.hidden {
+    display: none;
+}
+
+/* Collapsible Content for Factors */
 .collapsible-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease-out, padding 0.5s ease;
-    padding-top: 0;
-    padding-bottom: 0;
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+    padding-top: 0; /* Default to no padding */
+    padding-bottom: 0; /* Default to no padding */
 }
 
 .collapsible-content.open {
-    max-height: 1000px; /* Đặt giá trị đủ lớn */
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    max-height: 500px; /* Adjust as needed, should be large enough to contain content */
+    /* Padding will be set by JS */
 }
 
-/* --- Spinner tải --- */
+/* Loading Spinner for button */
 .loading-spinner {
-    display: none; /* Ẩn theo mặc định */
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
     width: 24px;
     height: 24px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: var(--dark-blue);
-    animation: spin 1s ease-in-out infinite;
+    animation: spin 1s linear infinite;
+    display: none; /* Hidden by default */
 }
 
-#calculateBtn.loading .loading-spinner {
-    display: block;
+.calculate-button.loading .loading-spinner {
+    display: inline-block;
 }
-
-#calculateBtn.loading span {
-    margin-right: 10px;
-}
-
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Additional styling for button loading state */
+.calculate-button.loading {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* Chart container styling */
+.chart-container {
+    position: relative;
+    height: 400px; /* Adjust height as needed */
+    width: 100%;
+    max-width: 600px; /* Max width for chart */
+    margin: 0 auto;
+}
+
+/* Animation for estimated cost */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
     }
 }
 
-/* --- Biểu đồ Chart.js --- */
-.chart-container {
-    position: relative;
-    margin: auto;
-    height: 40vh;
-    width: 80vw;
-    max-width: 500px;
+.animate-pulse {
+    animation: pulse 1.5s infinite ease-in-out;
 }
 
-/* --- Hiệu ứng cho hình ảnh --- */
-section img {
-    transition: transform 0.3s ease, filter 0.3s ease;
+/* Responsive adjustments */
+@media (min-width: 1024px) { /* large screens */
+    #main-nav-bar {
+        display: block;
+    }
+    #hamburger-menu-button {
+        display: none;
+    }
+    #floating-toc-menu {
+        display: block; /* Show floating TOC on larger screens */
+    }
 }
 
-section img:hover {
-    transform: scale(1.03);
-    filter: brightness(1.05);
+@media (max-width: 1023px) { /* tablets and smaller */
+    .pt-20 { /* Adjust padding for content to clear fixed header */
+        padding-top: 6rem; /* Tailwind p-24 is 6rem */
+    }
+    .md\:pt-24 {
+        padding-top: 6rem;
+    }
+    #main-nav-bar {
+        display: none;
+    }
+    #floating-toc-menu {
+        display: none !important; /* Hide floating TOC on smaller screens */
+    }
 }
 
-/* --- Nút Hamburger --- */
-#hamburger-menu-button.active svg .top-bar {
-    transform: rotate(45deg) translate(6px, 6px);
+@media (max-width: 767px) { /* small screens/phones */
+    .p-4 {
+        padding: 1rem;
+    }
+    .sm\:p-6 {
+        padding: 1.5rem;
+    }
+    .md\:p-10 {
+        padding: 2.5rem;
+    }
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+    .md\:col-span-2 {
+        grid-column: span 1 / span 1;
+    }
+    .sm\:flex-row {
+        flex-direction: column;
+    }
+    .sm\:space-x-4 {
+        margin-left: 0;
+        space-x: 0; /* Override for column layout */
+    }
+    .sm\:space-y-0 {
+        space-y: 1rem; /* Add vertical space for buttons */
+    }
 }
 
-#hamburger-menu-button.active svg .middle-bar {
-    opacity: 0;
-}
-
-#hamburger-menu-button.active svg .bottom-bar {
-    transform: rotate(-45deg) translate(6px, -6px);
+/* Fix for main-nav-bar overlapping with content on smaller screens, if active */
+body:not(.lg) #main-nav-bar.fixed + main {
+    padding-top: 5rem; /* Adjust based on actual nav height */
 }

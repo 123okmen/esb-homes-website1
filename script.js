@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function addEventListeners() {
         form.addEventListener('submit', handleFormSubmit);
         sendEmailLink.addEventListener('click', handleSendEmailLink); 
+        downloadPdfBtn.addEventListener('click', handleDownloadPdf); // Thêm event listener cho nút tải PDF
         window.addEventListener('scroll', handleScroll);
         document.querySelectorAll('#factors-container button').forEach(button => {
             button.addEventListener('click', toggleCollapsible);
@@ -141,8 +142,9 @@ document.addEventListener('DOMContentLoaded', function () {
             
             setLoadingState(false);
             sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
+            downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); // Kích hoạt nút tải PDF
 
-            await handleDownloadPdf(); 
+            // await handleDownloadPdf(); // Tắt tự động tải PDF, giờ người dùng tự bấm nút
             
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
 
@@ -492,7 +494,7 @@ document.addEventListener('DOMContentLoaded', function () {
             columnStyles: {
                 0: { cellWidth: 100 }, 
                 1: { cellWidth: 180 }, 
-                2: { cellWidth: 120, halign: 'right' } 
+                2: { cellWidth: 120, halign: 'right' } // Căn phải cho cột chi phí
             },
             didDrawPage: function(data) {
                 // Có thể thêm số trang hoặc footer tại đây
