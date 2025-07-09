@@ -156,9 +156,7 @@ body {
     #hamburger-menu-button {
         display: none;
     }
-    #floating-toc-menu {
-        display: block; /* Show floating TOC on larger screens */
-    }
+   
 }
 
 @media (max-width: 1023px) { /* tablets and smaller */
