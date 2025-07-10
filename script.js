@@ -107,12 +107,8 @@ document.addEventListener('DOMContentLoaded', function () {
         sendEmailLink.addEventListener('click', handleSendEmailLink); 
         downloadPdfBtn.addEventListener('click', handleDownloadPdf); 
         window.addEventListener('scroll', handleScroll);
-        // ĐÃ XÓA: Event listener cho các nút toggle của phần "Yếu tố ảnh hưởng"
-        /*
-        document.querySelectorAll('#factors-container button').forEach(button => {
-            button.addEventListener('click', toggleCollapsible);
-        });
-        */
+        // ĐÃ XÓA: document.querySelectorAll('#factors-container button').forEach(button => { button.addEventListener('click', toggleCollapsible); });
+        
         hamburgerMenuButton.addEventListener('click', openSideMenu); 
         closeSideMenuButton.addEventListener('click', closeSideMenu); 
         sideMenuOverlay.addEventListener('click', closeSideMenu); 
@@ -630,37 +626,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ĐÃ XÓA: Hàm toggleCollapsible vì không còn collapsible content
+    // ĐÃ XÓA: Hàm toggleCollapsible
     /*
     function toggleCollapsible(event) {
-        const button = event.currentTarget;
-        const content = button.nextElementSibling.querySelector('.collapsible-content');
-        const icon = button.querySelector('span');
-        
-        const isOpening = !content.classList.contains('open');
-
-        document.querySelectorAll('.collapsible-content.open').forEach(openContent => {
-            openContent.classList.remove('open');
-            openContent.style.maxHeight = null; 
-            openContent.style.paddingTop = '0'; 
-            openContent.style.paddingBottom = '0'; 
-            const openButton = openContent.closest('.content-card').querySelector('button');
-            if(openButton) {
-                const openIcon = openButton.querySelector('span');
-                openIcon.textContent = '+';
-                openIcon.style.transform = 'rotate(0deg)';
-            }
-        });
-
-        if (isOpening) {
-            content.classList.add('open');
-            void content.offsetWidth; 
-            content.style.maxHeight = content.scrollHeight + 'px'; 
-            icon.textContent = '-'; 
-            icon.style.transform = 'rotate(180deg)'; 
-            content.style.paddingTop = '1.25rem'; 
-            content.style.paddingBottom = '1.25rem';
-        }
+        // ... (hàm này đã được xóa)
     }
     */
 
