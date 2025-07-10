@@ -30,6 +30,7 @@ body {
     overflow-y: auto;
     scrollbar-width: thin; /* For Firefox */
     scrollbar-color: #4B5563 #1F2937; /* For Firefox */
+    display: none; /* Hidden by default, will be toggled by JS button */
 }
 
 #floating-toc-menu ul {
@@ -82,19 +83,20 @@ body {
     display: none;
 }
 
-/* Collapsible Content for Factors */
+/* CÁC QUY TẮC CHO COLLAPSIBLE CONTENT ĐÃ BỊ XÓA */
+/*
 .collapsible-content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-    padding-top: 0; /* Default to no padding */
-    padding-bottom: 0; /* Default to no padding */
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .collapsible-content.open {
-    max-height: 500px; /* Adjust as needed, should be large enough to contain content */
-    /* Padding will be set by JS */
+    max-height: 500px; // This was here before, but JS was setting scrollHeight
 }
+*/
 
 /* Loading Spinner for button */
 .loading-spinner {
@@ -156,7 +158,7 @@ body {
     #hamburger-menu-button {
         display: none;
     }
-   
+    /* Đã XÓA dòng hiển thị floating-toc-menu */
 }
 
 @media (max-width: 1023px) { /* tablets and smaller */
