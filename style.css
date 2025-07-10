@@ -83,7 +83,7 @@ body {
     display: none;
 }
 
-/* CÁC QUY TẮC CHO COLLAPSIBLE CONTENT ĐÃ BỊ XÓA */
+/* Đã XÓA CÁC QUY TẮC CSS DÀNH CHO COLLAPSIBLE CONTENT TRƯỚC ĐÂY */
 /*
 .collapsible-content {
     max-height: 0;
@@ -94,7 +94,7 @@ body {
 }
 
 .collapsible-content.open {
-    max-height: 500px; // This was here before, but JS was setting scrollHeight
+    max-height: 500px;
 }
 */
 
