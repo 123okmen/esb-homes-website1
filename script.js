@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('email'); 
     const phoneInput = document.getElementById('phone'); 
 
-    // THÊM: Các biến mới cho floating TOC
     const toggleFloatingTocButton = document.getElementById('toggle-floating-toc-button');
     const floatingTocMenu = document.getElementById('floating-toc-menu');
 
@@ -108,9 +107,12 @@ document.addEventListener('DOMContentLoaded', function () {
         sendEmailLink.addEventListener('click', handleSendEmailLink); 
         downloadPdfBtn.addEventListener('click', handleDownloadPdf); 
         window.addEventListener('scroll', handleScroll);
+        // ĐÃ XÓA: Event listener cho các nút toggle của phần "Yếu tố ảnh hưởng"
+        /*
         document.querySelectorAll('#factors-container button').forEach(button => {
             button.addEventListener('click', toggleCollapsible);
         });
+        */
         hamburgerMenuButton.addEventListener('click', openSideMenu); 
         closeSideMenuButton.addEventListener('click', closeSideMenu); 
         sideMenuOverlay.addEventListener('click', closeSideMenu); 
@@ -628,7 +630,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // --- XỬ LÝ CÁC MỤC CÓ THỂ THU GỌN --- //
+    // ĐÃ XÓA: Hàm toggleCollapsible vì không còn collapsible content
+    /*
     function toggleCollapsible(event) {
         const button = event.currentTarget;
         const content = button.nextElementSibling.querySelector('.collapsible-content');
@@ -636,7 +639,6 @@ document.addEventListener('DOMContentLoaded', function () {
         
         const isOpening = !content.classList.contains('open');
 
-        // Close all currently open collapsible items
         document.querySelectorAll('.collapsible-content.open').forEach(openContent => {
             openContent.classList.remove('open');
             openContent.style.maxHeight = null; 
@@ -650,11 +652,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Open the clicked item (if it was closed)
         if (isOpening) {
             content.classList.add('open');
-            // Force a reflow/recalculation before getting scrollHeight to ensure it's accurate
-            void content.offsetWidth; // This line forces reflow
+            void content.offsetWidth; 
             content.style.maxHeight = content.scrollHeight + 'px'; 
             icon.textContent = '-'; 
             icon.style.transform = 'rotate(180deg)'; 
@@ -662,6 +662,7 @@ document.addEventListener('DOMContentLoaded', function () {
             content.style.paddingBottom = '1.25rem';
         }
     }
+    */
 
     // --- XỬ LÝ MENU DI ĐỘNG --- //
     function openSideMenu() { 
