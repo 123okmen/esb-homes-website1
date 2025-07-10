@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('email'); 
     const phoneInput = document.getElementById('phone'); 
 
+    // THÊM: Các biến mới cho floating TOC
+    const toggleFloatingTocButton = document.getElementById('toggle-floating-toc-button');
+    const floatingTocMenu = document.getElementById('floating-toc-menu');
+
     let costBreakdownChart = null;
     let lastCalculatedData = null; 
     let currentEstimatedCost = 0; 
@@ -46,31 +50,29 @@ document.addEventListener('DOMContentLoaded', function () {
             minimalist: 0.95   
         },
         FOUNDATION_PERCENTAGES: { 
-            simple: 0.40, // Tỷ lệ chi phí móng so với tổng chi phí xây dựng thô
+            simple: 0.40, 
             strip: 0.60,   
             pile: 0.50     
         },
-        // CẬP NHẬT: Đơn giá MÁI bao gồm cả vật liệu và nhân công (trung bình của khoảng giá)
         ROOF_PER_M2: {
-            flat: (1400000 + 1950000) / 2 + (100000 + 150000) / 2, // Vật liệu (1.675.000) + Nhân công (125.000) = 1.800.000
-            thai: (350000 + 450000) / 2 + (150000 + 200000) / 2, // Vật liệu (400.000) + Nhân công (175.000) = 575.000
-            japanese: (650000 + 1000000) / 2 + (150000 + 200000) / 2 // Vật liệu (825.000) + Nhân công (175.000) = 1.000.000
+            flat: (1400000 + 1950000) / 2 + (100000 + 150000) / 2, 
+            thai: (350000 + 450000) / 2 + (150000 + 200000) / 2, 
+            japanese: (650000 + 1000000) / 2 + (150000 + 200000) / 2 
         },
         AREA_MULTIPLIER: {
-            MEZZANINE: 0.5, // Diện tích tầng lửng tính 50% diện tích sàn
-            ROOFTOP: 0.3    // Diện tích sân thượng tính 30% diện tích sàn
+            MEZZANINE: 0.5, 
+            ROOFTOP: 0.3     
         },
         COST_BREAKDOWN_RATIO: {
-            ROUGH_PART: 0.6,        // Tỷ lệ phần thô so với tổng chi phí xây dựng (không bao gồm móng, mái)
-            FINISHING_PART: 0.4,    // Tỷ lệ phần hoàn thiện so với tổng chi phí xây dựng (không bao gồm móng, mái)
-            DESIGN_MANAGEMENT_PERCENTAGE: 0.1 // Tỷ lệ chi phí thiết kế và quản lý so với tổng (thô + hoàn thiện + móng + mái)
+            ROUGH_PART: 0.6,        
+            FINISHING_PART: 0.4,    
+            DESIGN_MANAGEMENT_PERCENTAGE: 0.1 
         }
     };
 
     // --- KHỞI TẠO --- //
     createTableOfContents();
     addEventListeners();
-    // Initially disable PDF download and email link until a calculation is made
     downloadPdfBtn.disabled = true;
     downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
     sendEmailLink.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
@@ -96,8 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 navHTML += `<li><a href="#${sectionId}" class="nav-link block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">${sectionTitle}</a></li>`;
             }
         });
-        floatingNavList.innerHTML = navHTML; // Also populate floating nav
-        sideNavList.innerHTML = navHTML; // Populate side nav
+        floatingNavList.innerHTML = navHTML; 
+        sideNavList.innerHTML = navHTML; 
     }
 
     // --- HÀM THÊM CÁC EVENT LISTENER --- //
@@ -115,6 +117,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('#side-menu a.nav-link').forEach(link => { 
             link.addEventListener('click', closeSideMenu); 
         });
+        if (toggleFloatingTocButton) {
+            toggleFloatingTocButton.addEventListener('click', toggleFloatingToc);
+        }
     }
 
     // --- XỬ LÝ FORM --- //
@@ -124,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         hideError();
         hideNotification();
-        // Hide results immediately before new calculation
         resultsSection.classList.add('hidden', 'opacity-0'); 
         setLoadingState(true);
 
@@ -148,14 +152,10 @@ document.addEventListener('DOMContentLoaded', function () {
             updateMailtoLink(); 
             
             setLoadingState(false);
-            // Enable PDF download and email link after successful calculation
             sendEmailLink.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
             downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
 
-            // Automatically trigger PDF download after calculation
             await handleDownloadPdf(); 
-            
-            // Scroll to results section after calculation and PDF trigger
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
 
         }, 1500); 
@@ -227,7 +227,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const foundationCost = coreBuildingCost * COST_FACTORS.FOUNDATION_PERCENTAGES[foundationType];
 
-        // CẬP NHẬT: Chi phí mái được lấy trực tiếp từ ROOF_PER_M2 đã được tính tổng vật liệu + nhân công
         const roofCost = area * COST_FACTORS.ROOF_PER_M2[roofType];
         
         const roughPartCore = coreBuildingCost * COST_FACTORS.COST_BREAKDOWN_RATIO.ROUGH_PART;
@@ -356,7 +355,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- XỬ LÝ GỬI EMAIL (Mailto Link) --- //
     function handleSendEmailLink(event) {
-        // Prevent default navigation if the link is disabled
         if (sendEmailLink.classList.contains('disabled:opacity-50')) {
             event.preventDefault(); 
             showError("Vui lòng ước tính chi phí trước khi gửi email."); 
@@ -415,7 +413,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return; 
         }
 
-        // Disable button and show spinner during PDF generation
         pdfLoadingSpinner.classList.remove('hidden'); 
         downloadPdfBtn.disabled = true; 
         downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
@@ -428,14 +425,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const lineHeight = 14; 
         const pageWidth = doc.internal.pageSize.getWidth(); 
 
-        // Logo hoặc tên công ty
         doc.setFontSize(22); 
         doc.text("ESB Homes", margin, y); 
         doc.setFontSize(10); 
         doc.text("Eco-Smart-Build", margin, y + 15); 
         y += 40; 
 
-        // Tiêu đề báo giá
         doc.setFontSize(18); 
         doc.text(removeAccents("BAO GIA XAY DUNG NHA PHO (UOC TINH SO BO)"), pageWidth / 2, y, { align: 'center' }); 
         y += 25; 
@@ -443,7 +438,6 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.text(removeAccents(`Ngay lap: ${new Date().toLocaleDateString('vi-VN')}`), pageWidth - margin, y, { align: 'right' }); 
         y += 20; 
 
-        // Thông tin công ty
         doc.setFontSize(12); 
         doc.text(removeAccents("Cong ty ESB Homes"), margin, y); 
         y += lineHeight; 
@@ -452,7 +446,6 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.text(removeAccents("Hotline: 0899618286"), margin, y); 
         y += lineHeight * 2; 
 
-        // Thông tin khách hàng (từ email đã nhập)
         doc.setFontSize(12); 
         doc.text(removeAccents("Thong tin lien he:"), margin, y); 
         y += lineHeight; 
@@ -461,7 +454,6 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.text(removeAccents(`So dien thoai: ${lastCalculatedData.inputs.phone || 'Chua cung cap'}`), margin, y); 
         y += lineHeight * 2; 
 
-        // Bảng Chi tiết Hạng mục (Ước tính)
         doc.setFontSize(14); 
         doc.text(removeAccents("BANG CHI TIET HANG MUC (UOC TINH)"), margin, y); 
         y += lineHeight + 10; 
@@ -522,7 +514,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         y = doc.autoTable.previous.finalY + 20; 
 
-        // Bảng Lịch trình Thanh toán
         doc.setFontSize(14); 
         doc.text(removeAccents("BANG LICH TRINH THANH TOAN"), margin, y); 
         y += lineHeight + 10; 
@@ -575,7 +566,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         y = doc.autoTable.previous.finalY + 20;
 
-        // Tổng chi phí ước tính
         doc.setFontSize(16); 
         doc.setTextColor('#D97706'); 
         doc.text(removeAccents("TONG CHI PHI UOC TINH SO BO:"), margin, y); 
@@ -585,13 +575,11 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.setTextColor(0); 
         y += lineHeight * 2; 
         
-        // Contact line
         doc.setFontSize(12);
         doc.text(removeAccents("Vui long lien he qua hotline va Zalo cua cong ty de biet them chi tiet."), margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight * 2;
 
 
-        // Contact info for accurate quote
         doc.setFontSize(14); 
         doc.text(removeAccents("De nhan bao gia chinh xac nhat va tu van chi tiet hon,"), margin, y, { maxWidth: pageWidth - 2 * margin }); 
         y += lineHeight + 5; 
@@ -611,19 +599,16 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.setFontSize(10); 
         doc.text(removeAccents("(*Bao gia nay chi mang tinh chat tham khao. Chi phi thuc te co the thay doi tuy thuoc vao yeu cau cu the.)"), margin, y, { maxWidth: pageWidth - 2 * margin }); 
 
-        // Reset button and hide spinner
         pdfLoadingSpinner.classList.add('hidden'); 
         downloadPdfBtn.disabled = false; 
         downloadPdfBtn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed'); 
 
-        // Save the PDF file
         doc.save(removeAccents(`bao-gia-esbhomes-uoc-tinh-${lastCalculatedData.inputs.area}m2-${lastCalculatedData.inputs.floors}tang.pdf`)); 
     } 
 
     // --- XỬ LÝ THANH ĐIỀU HƯỚNG VÀ CUỘN --- //
     function handleScroll() {
         let currentSectionId = '';
-        // Adjust the offset for active link highlighting. 0.3 means 30% from the top of the viewport.
         const scrollPosition = window.scrollY + window.innerHeight * 0.3; 
 
         sections.forEach(section => {
@@ -646,7 +631,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- XỬ LÝ CÁC MỤC CÓ THỂ THU GỌN --- //
     function toggleCollapsible(event) {
         const button = event.currentTarget;
-        // The content to collapse/expand is inside the div immediately after the button
         const content = button.nextElementSibling.querySelector('.collapsible-content');
         const icon = button.querySelector('span');
         
@@ -655,9 +639,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Close all currently open collapsible items
         document.querySelectorAll('.collapsible-content.open').forEach(openContent => {
             openContent.classList.remove('open');
-            openContent.style.maxHeight = null; // Reset max-height
-            openContent.style.paddingTop = '0'; // Reset padding
-            openContent.style.paddingBottom = '0'; // Reset padding
+            openContent.style.maxHeight = null; 
+            openContent.style.paddingTop = '0'; 
+            openContent.style.paddingBottom = '0'; 
             const openButton = openContent.closest('.content-card').querySelector('button');
             if(openButton) {
                 const openIcon = openButton.querySelector('span');
@@ -669,12 +653,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Open the clicked item (if it was closed)
         if (isOpening) {
             content.classList.add('open');
-            // Set max-height to scrollHeight to allow smooth transition
-            content.style.maxHeight = content.scrollHeight + 'px';
-            icon.textContent = '-'; // Change icon to minus
-            icon.style.transform = 'rotate(180deg)'; // Rotate icon
-            content.style.paddingTop = '1.25rem'; // Re-apply padding after open
-            content.style.paddingBottom = '1.25rem'; // Re-apply padding after open
+            // Force a reflow/recalculation before getting scrollHeight to ensure it's accurate
+            void content.offsetWidth; // This line forces reflow
+            content.style.maxHeight = content.scrollHeight + 'px'; 
+            icon.textContent = '-'; 
+            icon.style.transform = 'rotate(180deg)'; 
+            content.style.paddingTop = '1.25rem'; 
+            content.style.paddingBottom = '1.25rem';
         }
     }
 
@@ -684,15 +669,15 @@ document.addEventListener('DOMContentLoaded', function () {
         sideMenu.classList.add('translate-x-0');
         sideMenuOverlay.classList.remove('hidden');
         setTimeout(() => sideMenuOverlay.classList.add('opacity-50'), 10);
-        document.body.style.overflow = 'hidden'; // Prevent scrolling body when menu is open
+        document.body.style.overflow = 'hidden'; 
     }
 
     function closeSideMenu() { 
         sideMenu.classList.remove('translate-x-0');
         sideMenu.classList.add('translate-x-full');
         sideMenuOverlay.classList.remove('opacity-50');
-        setTimeout(() => sideMenuOverlay.classList.add('hidden'), 300); // Delay hiding overlay to match transition
-        document.body.style.overflow = ''; // Restore body scrolling
+        setTimeout(() => sideMenuOverlay.classList.add('hidden'), 300); 
+        document.body.style.overflow = ''; 
     }
 
     // --- CÁC HÀM TIỆN ÍCH --- //
