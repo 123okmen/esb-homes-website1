@@ -15,6 +15,12 @@
              <span class="text-md md:text-lg font-bold text-white ml-1.5">Homes</span>
         </div>
     </div>
+    <button id="toggle-floating-toc-button" class="fixed top-4 left-28 md:left-32 z-50 p-2 bg-[#FBBF24] text-[#1F2937] rounded-md shadow-lg hover:bg-[#FCD34D] transition-colors duration-200">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
     <nav id="main-nav-bar" class="fixed top-0 left-0 right-0 z-40 bg-[#1F2937] text-white py-4 shadow-lg hidden lg:block">
         <div class="max-w-7xl mx-auto px-4">
             <ul class="flex justify-center space-x-8">
@@ -129,112 +135,64 @@
                         Chi phí xây dựng một ngôi nhà phố trọn gói không chỉ phụ thuộc vào diện tích mà còn bị chi phối bởi nhiều yếu tố khác. Việc hiểu rõ những yếu tố này sẽ giúp bạn đưa ra quyết định sáng suốt và tối ưu hóa ngân sách của mình.
                     </p>
                     <div id="factors-container" class="space-y-6">
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">1. Diện tích và Quy mô</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_area.jpg" alt="Minh họa diện tích và quy mô xây dựng nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5"> <h3 class="text-xl font-bold text-[#D97706] mb-4">1. Diện tích và Quy mô</h3> <img src="images/factor_area.jpg" alt="Minh họa diện tích và quy mô xây dựng nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed"> <p>Tổng diện tích sàn xây dựng và số tầng là yếu tố cơ bản nhất. Diện tích càng lớn, số tầng càng nhiều thì chi phí càng tăng. Tuy nhiên, chi phí trên mỗi mét vuông có thể giảm khi quy mô lớn hơn do hiệu quả kinh tế theo quy mô.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">2. Phong cách Thiết kế</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_style.jpg" alt="Minh họa các phong cách thiết kế nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">2. Phong cách Thiết kế</h3>
+                            <img src="images/factor_style.jpg" alt="Minh họa các phong cách thiết kế nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Phong cách hiện đại thường có chi phí thấp hơn so với phong cách tân cổ điển, cổ điển do yêu cầu về chi tiết kiến trúc, hoa văn, vật liệu trang trí phức tạp hơn.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">3. Mức độ Hoàn thiện và Vật liệu</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_finish.jpg" alt="Minh họa mức độ hoàn thiện và vật liệu xây dựng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">3. Mức độ Hoàn thiện và Vật liệu</h3>
+                            <img src="images/factor_finish.jpg" alt="Minh họa mức độ hoàn thiện và vật liệu xây dựng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Đây là yếu tố có ảnh hưởng lớn nhất đến chi phí. Việc lựa chọn vật liệu hoàn thiện (gạch ốp lát, sơn, thiết bị vệ sinh, nội thất) từ bình dân đến cao cấp sẽ tạo ra sự khác biệt đáng kể về giá.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">4. Công năng và Tiện ích</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_features.jpg" alt="Minh họa công năng và tiện ích trong nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">4. Công năng và Tiện ích</h3>
+                            <img src="images/factor_features.jpg" alt="Minh họa công năng và tiện ích trong nhà phố" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Các yêu cầu đặc biệt về công năng như thang máy, hồ bơi nhỏ, hệ thống nhà thông minh, hoặc các không gian phức tạp (ví dụ: giếng trời lớn, sân vườn trên mái) sẽ làm tăng chi phí.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">5. Vị trí và Điều kiện Thi công</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_location.jpg" alt="Minh họa vị trí và điều kiện thi công" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">5. Vị trí và Điều kiện Thi công</h3>
+                            <img src="images/factor_location.jpg" alt="Minh họa vị trí và điều kiện thi công" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Địa chất yếu, hẻm nhỏ, khu vực khó vận chuyển vật liệu, hoặc yêu cầu về giấy phép xây dựng phức tạp có thể làm tăng chi phí phát sinh.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">6. Loại Móng</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_foundation.jpg" alt="Minh họa các loại móng nhà" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">6. Loại Móng</h3>
+                            <img src="images/factor_foundation.jpg" alt="Minh họa các loại móng nhà" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Loại móng (đơn, băng, cọc) phụ thuộc vào địa chất và tải trọng công trình. Móng cọc thường có chi phí cao nhất do yêu cầu kỹ thuật và vật liệu phức tạp hơn.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">7. Tầng Lửng</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_mezzanine.jpg" alt="Minh họa thiết kế tầng lửng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">7. Tầng Lửng</h3>
+                            <img src="images/factor_mezzanine.jpg" alt="Minh họa thiết kế tầng lửng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Việc có tầng lửng sẽ tăng diện tích sử dụng nhưng cũng làm tăng chi phí kết cấu và hoàn thiện cho phần không gian này.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer border-b border-gray-200">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">8. Sân Thượng</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_rooftop.jpg" alt="Minh họa thiết kế sân thượng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">8. Sân Thượng</h3>
+                            <img src="images/factor_rooftop.jpg" alt="Minh họa thiết kế sân thượng" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Thiết kế sân thượng có thể bao gồm chi phí chống thấm, ốp lát, lan can, và các tiện ích khác như cây xanh, khu vực thư giãn.</p>
                             </div>
                         </div>
-                        <div class="content-card overflow-hidden bg-white rounded-lg shadow-md">
-                            <button class="w-full text-left p-5 bg-gray-50 hover:bg-gray-100 flex justify-between items-center cursor-pointer">
-                                <h3 class="text-xl font-bold text-[#D97706] flex-grow">9. Loại Mái</h3>
-                                <span class="transform transition-transform duration-300 text-3xl text-[#FBBF24] leading-none">+</span>
-                            </button>
-                            <div class="p-5 pt-0">
-                                <img src="images/factor_roof_type.jpg" alt="Minh họa các loại mái nhà" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
-                                <div class="collapsible-content text-base text-gray-700 leading-relaxed">
-                                    <p>Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.</p>
-                                </div>
+                        <div class="content-card bg-white rounded-lg shadow-md p-5">
+                            <h3 class="text-xl font-bold text-[#D97706] mb-4">9. Loại Mái</h3>
+                            <img src="images/factor_roof_type.jpg" alt="Minh họa các loại mái nhà" class="w-full h-auto object-cover rounded-md mb-4 mt-4 shadow-sm">
+                            <div class="content-body text-base text-gray-700 leading-relaxed">
+                                <p>Mái bằng thường tiết kiệm hơn so với mái dốc (mái Thái, mái Nhật) do cấu trúc đơn giản hơn. Mái dốc yêu cầu hệ khung kèo và vật liệu lợp phức tạp hơn.</p>
                             </div>
                         </div>
                     </div>
@@ -442,7 +400,7 @@
                             <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
                                 <li>Gói cơ bản: <span class="font-bold text-[#D97706]">3.200.000 - 3.800.000 VNĐ/m²</span></li>
                                 <li>Gói tiêu chuẩn: <span class="font-bold text-[#D97706]">3.800.000 - 4.500.000 VNĐ/m²</span></li>
-                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">Từ 4.500.000 VNĐ/m²</span> trở lên</li>
+                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">From 4.500.000 VNĐ/m²</span> trở lên</li>
                             </ul>
                             <p class="mt-6 text-base text-gray-600 italic">
                                 *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc vào loại vật tư chính, địa chất công trình và điều kiện thi công thực tế.
@@ -459,7 +417,7 @@
                             <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
                                 <li>Gói cơ bản: <span class="font-bold text-[#D97706]">1.800.000 - 2.500.000 VNĐ/m²</span></li>
                                 <li>Gói tiêu chuẩn: <span class="font-bold text-[#D97706]">2.500.000 - 3.500.000 VNĐ/m²</span></li>
-                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">Từ 3.500.000 VNĐ/m²</span> trở lên</li>
+                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">From 3.500.000 VNĐ/m²</span> trở lên</li>
                             </ul>
                             <p class="mt-6 text-base text-gray-600 italic">
                                 *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc rất nhiều vào chủng loại vật liệu, thương hiệu và mẫu mã bạn lựa chọn.
@@ -550,8 +508,8 @@
                         </div>
                         <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24]">
                             <h3 class="text-2xl font-bold mb-4 text-[#1F2937]">Liên hệ qua Zalo</h3>
-                            <p class="mb-5 text-4xl font-extrabold text-[#D97706]">0899618286</p>
-                            <a href="https://zalo.me/0899618286" target="_blank" rel="noopener noreferrer" class="inline-block bg-[#008CFF] text-white font-bold py-3 px-8 rounded-md hover:bg-[#007BFF] transition-colors duration-300 text-lg shadow-md">
+                            <p class="mb-5 text-4xl font-extrabold text-[#D97706]">0772 634 611</p>
+                            <a href="https://zalo.me/0772634611" target="_blank" rel="noopener noreferrer" class="inline-block bg-[#008CFF] text-white font-bold py-3 px-8 rounded-md hover:bg-[#007BFF] transition-colors duration-300 text-lg shadow-md">
                                 <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2.5 15c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm2.5-7.5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path></svg>
                                 Nhắn Zalo
                             </a>
