@@ -16,10 +16,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const paymentScheduleTableBody = document.getElementById('paymentScheduleTableBody');
 
     const sections = document.querySelectorAll('section[id]');
-    const floatingNavList = document.getElementById('floating-nav-list');
+    // ĐÃ XÓA: const floatingNavList = document.getElementById('floating-nav-list');
     const sideNavList = document.getElementById('side-nav-list'); 
 
-    const hamburgerMenuButton = document.getElementById('hamburger-menu-button');
+    // Nút hamburger góc phải - được giữ nguyên
+    const hamburgerMenuButton = document.getElementById('hamburger-menu-button'); 
+    // Side menu và các biến liên quan - được giữ nguyên
     const sideMenu = document.getElementById('side-menu');
     const sideMenuOverlay = document.getElementById('side-menu-overlay');
     const closeSideMenuButton = document.getElementById('close-side-menu');
@@ -27,8 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('email'); 
     const phoneInput = document.getElementById('phone'); 
 
-    const toggleFloatingTocButton = document.getElementById('toggle-floating-toc-button');
-    const floatingTocMenu = document.getElementById('floating-toc-menu');
+    // ĐÃ XÓA: Các biến cho mục lục nổi
+    // const toggleFloatingTocButton = document.getElementById('toggle-floating-toc-button');
+    // const floatingTocMenu = document.getElementById('floating-toc-menu');
 
     let costBreakdownChart = null;
     let lastCalculatedData = null; 
@@ -70,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // --- KHỞI TẠO --- //
-    createTableOfContents();
+    createTableOfContents(); // Hàm này vẫn gọi floatingNavList và sideNavList. Sẽ cần điều chỉnh hoặc bỏ floatingNavList
     addEventListeners();
     downloadPdfBtn.disabled = true;
     downloadPdfBtn.classList.add('disabled:opacity-50', 'disabled:cursor-not-allowed');
@@ -97,7 +100,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 navHTML += `<li><a href="#${sectionId}" class="nav-link block py-2 px-4 text-white hover:text-[#FBBF24] hover:bg-gray-700 rounded-md transition-colors duration-200">${sectionTitle}</a></li>`;
             }
         });
-        floatingNavList.innerHTML = navHTML; 
+        // Đã xóa #floating-toc-menu, nên dòng này sẽ gây lỗi nếu floatingNavList không tồn tại
+        // floatingNavList.innerHTML = navHTML; 
+        
+        // Chỉ cập nhật sideNavList
         sideNavList.innerHTML = navHTML; 
     }
 
@@ -107,17 +113,21 @@ document.addEventListener('DOMContentLoaded', function () {
         sendEmailLink.addEventListener('click', handleSendEmailLink); 
         downloadPdfBtn.addEventListener('click', handleDownloadPdf); 
         window.addEventListener('scroll', handleScroll);
-        // ĐÃ XÓA: document.querySelectorAll('#factors-container button').forEach(button => { button.addEventListener('click', toggleCollapsible); });
         
+        // Nút hamburger góc phải - event listener được giữ nguyên
         hamburgerMenuButton.addEventListener('click', openSideMenu); 
+        
+        // Event listeners cho side menu - được giữ nguyên
         closeSideMenuButton.addEventListener('click', closeSideMenu); 
         sideMenuOverlay.addEventListener('click', closeSideMenu); 
         document.querySelectorAll('#side-menu a.nav-link').forEach(link => { 
             link.addEventListener('click', closeSideMenu); 
         });
-        if (toggleFloatingTocButton) {
-            toggleFloatingTocButton.addEventListener('click', toggleFloatingToc);
-        }
+
+        // ĐÃ XÓA: Event listener cho nút mục lục nổi
+        // if (toggleFloatingTocButton) {
+        //     toggleFloatingTocButton.addEventListener('click', toggleFloatingToc);
+        // }
     }
 
     // --- XỬ LÝ FORM --- //
@@ -626,14 +636,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ĐÃ XÓA: Hàm toggleCollapsible
-    /*
-    function toggleCollapsible(event) {
-        // ... (hàm này đã được xóa)
-    }
-    */
-
-    // --- XỬ LÝ MENU DI ĐỘNG --- //
+    // --- XỬ LÝ MENU DI ĐỘNG (Vẫn giữ các hàm này cho hamburger góc phải) --- //
     function openSideMenu() { 
         sideMenu.classList.remove('translate-x-full');
         sideMenu.classList.add('translate-x-0');
