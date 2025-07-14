@@ -4,6 +4,46 @@ body {
     font-family: 'Be Vietnam Pro', sans-serif;
 }
 
+/* Ẩn nút hamburger menu bên trái (nếu có trong HTML) */
+#toggle-floating-toc-button {
+    display: none !important;
+}
+
+/* Điều chỉnh logo cho vừa khít thanh bar */
+/* Áp dụng cho container của logo */
+.fixed.top-4.left-4.z-50 {
+    top: 0; /* Đặt lại top về 0 để không có khoảng cách phía trên */
+    left: 0; /* Đặt lại left về 0 để không có khoảng cách bên trái */
+    /* Có thể cần điều chỉnh chiều cao của container này nếu nó cố định */
+}
+
+/* Điều chỉnh phần tử chứa nội dung logo (nền xanh đậm) */
+.fixed.top-4.left-4.z-50 .bg-[#0A192F] {
+    height: 4rem; /* Chiều cao cố định, có thể là 64px, tương ứng với py-4 của nav bar (2.5rem = 40px) + padding */
+    /* Kiểm tra chiều cao thực tế của nav bar: py-4 => 1rem (16px) top/bottom padding. Total height: 16+16 + font-size => around 3rem (48px) to 4rem (64px)
+       nav bar có py-4 (16px top/bottom), nếu nav bar cao 4rem (64px), logo cũng nên là 4rem. */
+    /* Bỏ các padding Tailwind mặc định h-14 md:h-16 px-3 py-1 */
+    padding-top: 0.5rem; /* Điều chỉnh padding top */
+    padding-bottom: 0.5rem; /* Điều chỉnh padding bottom */
+    border-radius: 0; /* Loại bỏ bo góc nếu muốn vừa khít tuyệt đối */
+}
+
+/* Điều chỉnh kích thước font của chữ ESB và Homes để vừa hơn */
+.fixed.top-4.left-4.z-50 .text-xl { /* Cho chữ ESB mặc định */
+    font-size: 1.25rem; /* text-xl = 20px */
+}
+.fixed.top-4.left-4.z-50 .md\:text-2xl { /* Cho chữ ESB trên md+ */
+    font-size: 1.5rem; /* text-2xl = 24px */
+}
+
+.fixed.top-4.left-4.z-50 .text-md { /* Cho chữ Homes mặc định */
+    font-size: 1rem; /* text-md = 16px */
+}
+.fixed.top-4.left-4.z-50 .md\:text-lg { /* Cho chữ Homes trên md+ */
+    font-size: 1.125rem; /* text-lg = 18px */
+}
+
+
 /* Custom scrollbar for Webkit browsers */
 ::-webkit-scrollbar {
     width: 8px;
@@ -24,7 +64,7 @@ body {
     background: #6B7280; /* Lighter gray on hover */
 }
 
-/* Floating Table of Contents */
+/* Floating Table of Contents (các quy tắc này không còn áp dụng vì #floating-toc-menu đã bị xóa khỏi HTML) */
 #floating-toc-menu {
     max-height: calc(100vh - 80px); /* Adjust based on header/footer */
     overflow-y: auto;
@@ -83,21 +123,6 @@ body {
     display: none;
 }
 
-/* Đã XÓA CÁC QUY TẮC CSS DÀNH CHO COLLAPSIBLE CONTENT TRƯỚC ĐÂY */
-/*
-.collapsible-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-.collapsible-content.open {
-    max-height: 500px;
-}
-*/
-
 /* Loading Spinner for button */
 .loading-spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
@@ -151,14 +176,16 @@ body {
 }
 
 /* Responsive adjustments */
+/* Đảm bảo nút hamburger góc phải chỉ hiển thị trên màn hình nhỏ */
+#hamburger-menu-button {
+    display: none; /* Ẩn theo mặc định trên mọi màn hình */
+}
+
 @media (min-width: 1024px) { /* large screens */
     #main-nav-bar {
         display: block;
     }
-    #hamburger-menu-button {
-        display: none;
-    }
-    /* Đã XÓA dòng hiển thị floating-toc-menu */
+    /* #hamburger-menu-button vẫn bị ẩn do quy tắc chung display: none; */
 }
 
 @media (max-width: 1023px) { /* tablets and smaller */
@@ -171,8 +198,13 @@ body {
     #main-nav-bar {
         display: none;
     }
+    /* #floating-toc-menu đã bị xóa, nên quy tắc này không còn tác dụng */
     #floating-toc-menu {
         display: none !important; /* Hide floating TOC on smaller screens */
+    }
+    /* HIỂN THỊ NÚT HAMBURGER GÓC PHẢI TRÊN MÀN HÌNH NHỎ */
+    #hamburger-menu-button {
+        display: block;
     }
 }
 
