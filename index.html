@@ -194,28 +194,223 @@
                         Chọn loại báo giá bạn muốn xem hoặc sử dụng công cụ ước tính chi phí của chúng tôi để nhận báo giá trọn gói.
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
+                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24]">
                             <a href="#bao-gia-xd-tron-goi" class="block">
                                 <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Xây Dựng Trọn Gói</h3>
                                 <p class="text-base text-gray-700">Ước tính chi phí xây dựng nhà phố trọn gói theo thông số bạn cung cấp.</p>
                             </a>
                         </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
+                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24]">
                             <a href="#bao-gia-thiet-ke-kien-truc" class="block">
                                 <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Thiết Kế Kiến Trúc</h3>
                                 <p class="text-base text-gray-700">Tham khảo chi phí cho dịch vụ thiết kế kiến trúc chuyên nghiệp.</p>
                             </a>
                         </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
+                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24]">
                             <a href="#bao-gia-xd-phan-tho" class="block">
                                 <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Xây Dựng Phần Thô</h3>
                                 <p class="text-base text-gray-700">Tìm hiểu chi phí xây dựng phần thô (kết cấu) của công trình.</p>
                             </a>
                         </div>
-                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24] hover:shadow-xl transition-shadow duration-300">
+                        <div class="content-card p-8 bg-white rounded-lg shadow-lg text-center border-t-4 border-[#FBBF24]">
                             <a href="#bao-gia-xd-phan-hoan-thien" class="block">
                                 <h3 class="text-2xl font-bold mb-3 text-[#1F2937]">Báo Giá Xây Dựng Phần Hoàn Thiện</h3>
                                 <p class="text-base text-gray-700">Chi tiết chi phí cho các hạng mục hoàn thiện nội thất và ngoại thất.</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <section id="bao-gia-xd-tron-goi" class="py-12 pt-24">
+                        <h3 class="text-3xl font-bold mb-8 text-[#D97706] text-center">Công cụ tính Chi phí Xây dựng Trọn Gói</h3>
+                        <p class="mb-10 text-lg text-center leading-relaxed max-w-3xl mx-auto">
+                            Sử dụng công cụ dưới đây để nhận ước tính sơ bộ và gửi yêu cầu báo giá chi tiết qua email của bạn.
+                        </p>
+                        <div class="content-card p-8 bg-white rounded-lg shadow-xl mb-12 border-t-4 border-[#D97706]">
+                            <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Nhập thông tin ngôi nhà của bạn</h4>
+                            <form id="estimatorForm" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="area" class="block text-base font-medium text-gray-700 mb-2">Diện tích sàn xây dựng (m²):</label>
+                                        <input type="number" id="area" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg" placeholder="Ví dụ: 80" min="20" max="500" required>
+                                    </div>
+                                    <div>
+                                        <label for="floors" class="block text-base font-medium text-gray-700 mb-2">Số tầng:</label>
+                                        <input type="number" id="floors" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg" placeholder="Ví dụ: 3" min="1" max="7" required>
+                                    </div>
+                                    <div>
+                                        <label for="style" class="block text-base font-medium text-gray-700 mb-2">Phong cách thiết kế:</label>
+                                        <select id="style" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
+                                            <option value="modern">Hiện đại</option>
+                                            <option value="neoclassical">Tân cổ điển</option>
+                                            <option value="minimalist">Tối giản</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="finish" class="block text-base font-medium text-gray-700 mb-2">Mức độ hoàn thiện:</label>
+                                        <select id="finish" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
+                                            <option value="basic">Cơ bản</option>
+                                            <option value="standard">Trung bình</option>
+                                            <option value="premium">Cao cấp</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="foundation_type" class="block text-base font-medium text-gray-700 mb-2">Loại móng:</label>
+                                        <select id="foundation_type" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
+                                            <option value="simple">Móng đơn</option>
+                                            <option value="strip">Móng băng</option>
+                                            <option value="pile">Móng cọc</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="mezzanine_option" class="block text-base font-medium text-gray-700 mb-2">Có tầng lửng không?</label>
+                                        <select id="mezzanine_option" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
+                                            <option value="no">Không</option>
+                                            <option value="yes">Có</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="rooftop_option" class="block text-base font-medium text-gray-700 mb-2">Có sân thượng không?</label>
+                                        <select id="rooftop_option" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
+                                            <option value="no">Không</option>
+                                            <option value="yes">Có</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="roof_type" class="block text-base font-medium text-gray-700 mb-2">Loại mái:</label>
+                                        <select id="roof_type" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg">
+                                            <option value="flat">Mái bằng</option>
+                                            <option value="thai">Mái Thái</option>
+                                            <option value="japanese">Mái Nhật</option>
+                                        </select>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label for="email" class="block text-base font-medium text-gray-700 mb-2">Email của bạn (để nhận báo giá):</label>
+                                        <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg" placeholder="vidu@email.com" required>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label for="phone" class="block text-base font-medium text-gray-700 mb-2">Số điện thoại của bạn (để nhận báo giá):</label>
+                                        <input type="tel" id="phone" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FBBF24] focus:border-transparent text-lg" placeholder="Ví dụ: 0901234567" required pattern="[0-9]{10,11}">
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" id="calculateBtn" class="w-full bg-[#FBBF24] text-[#1F2937] font-bold py-4 px-6 rounded-md hover:bg-[#FCD34D] transition-colors duration-300 flex items-center justify-center space-x-3 text-xl shadow-md">
+                                    <span>Ước tính Chi phí</span>
+                                    <div id="costLoadingSpinner" class="loading-spinner"></div>
+                                </button>
+                            </form>
+
+                            <div id="costError" class="text-red-600 text-sm mt-4 hidden text-center p-3 border border-red-400 bg-red-50 rounded-md"></div>
+                            <div id="emailNotification" class="text-sm mt-4 hidden text-center p-3 rounded-md font-medium"></div>
+                                
+                                <div id="resultsSection" class="hidden mt-8 transition-opacity duration-500 ease-in-out opacity-0">
+    <div class="mt-8 p-6 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
+        <h4 class="text-xl font-bold mb-3 text-center text-[#1F2937]">Tổng Chi phí Ước tính Trọn gói:</h4>
+        <p id="estimatedCost" class="text-4xl font-extrabold text-[#D97706] text-center animate-pulse">-- VNĐ</p>
+        <p class="text-sm text-gray-600 text-center mt-3 leading-relaxed">(*Đây là ước tính sơ bộ dựa trên thông tin bạn cung cấp. Chi phí thực tế có thể thay đổi tùy thuộc vào chi tiết thiết kế, vật liệu cụ thể, điều kiện thi công và thời điểm xây dựng.)</p>
+    </div>
+    
+    <div class="mt-8 text-center flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+        <a id="sendEmailLink" href="#" class="inline-block bg-green-600 text-white font-bold py-3 px-8 rounded-md hover:bg-green-700 transition-colors duration-300 text-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-center">
+            <span>Gửi Yêu cầu Báo giá qua Email</span>
+        </a>
+        <button id="downloadPdfBtn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-700 transition-colors duration-300 text-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+            <span>Tải Báo giá PDF</span>
+            <div id="pdfLoadingSpinner" class="loading-spinner hidden ml-2"></div>
+        </button>
+    </div>
+
+    <div class="mt-12">
+        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Phân bổ Chi phí Ước tính</h4>
+        <div class="chart-container">
+            <canvas id="costBreakdownChart"></canvas>
+        </div>
+    </div>
+
+    <div id="detailedBreakdownSection" class="mt-16">
+        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Bảng Chi tiết Hạng mục (Ước tính)</h4>
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+            <table class="w-full table-auto text-base">
+                <thead class="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                        <th class="px-5 py-3 text-left text-gray-700">Hạng mục chính</th>
+                        <th class="px-5 py-3 text-left text-gray-700">Hạng mục chi tiết</th>
+                        <th class="px-5 py-3 text-right text-gray-700">Chi phí (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody id="detailedBreakdownTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="paymentScheduleSection" class="mt-16">
+        <h4 class="text-2xl font-bold mb-6 text-center text-[#1F2937]">Lịch Trình Thanh toán (Gợi ý)</h4>
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+            <table class="w-full table-auto text-base">
+                <thead class="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                        <th class="px-5 py-3 text-left text-gray-700">Đợt</th>
+                        <th class="px-5 py-3 text-left text-gray-700">Nội dung công việc</th>
+                        <th class="px-5 py-3 text-right text-gray-700">Tỷ lệ</th>
+                        <th class="px-5 py-3 text-right text-gray-700">Thanh toán (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentScheduleTableBody">
+                    </tbody>
+            </table>
+        </div>
+        <p class="text-sm text-gray-600 text-center mt-4">(*Lịch trình thanh toán là gợi ý, có thể được điều chỉnh theo thỏa thuận hợp đồng thực tế.)</p>
+    </div>
+</div>
+                    </section>
+
+                    <section id="bao-gia-thiet-ke-kien-truc" class="py-12 pt-24">
+                        <h3 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Báo Giá Thiết Kế Kiến Trúc</h3>
+                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
+                            <p class="mb-4 text-base leading-relaxed text-gray-700">
+                                Chi phí thiết kế kiến trúc thường được tính dựa trên diện tích sàn hoặc theo gói. Giá tham khảo:
+                            </p>
+                            <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
+                                <li>Thiết kế cơ bản: <span class="font-bold text-[#D97706]">100.000 - 150.000 VNĐ/m²</span></li>
+                                <li>Thiết kế nâng cao: <span class="font-bold text-[#D97706]">150.000 - 250.000 VNĐ/m²</span></li>
+                                <li>Thiết kế biệt thự, phức tạp: <span class="font-bold text-[#D97706]">Từ 250.000 VNĐ/m²</span> trở lên</li>
+                            </ul>
+                            <p class="mt-6 text-base text-gray-600 italic">
+                                *Lưu ý: Giá trên chỉ là tham khảo. Vui lòng liên hệ ESB Homes để được tư vấn chi tiết và báo giá chính xác theo yêu cầu riêng của bạn.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="bao-gia-xd-phan-tho" class="py-12 pt-24">
+                        <h3 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Báo Giá Xây Dựng Phần Thô</h3>
+                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
+                            <p class="mb-4 text-base leading-relaxed text-gray-700">
+                                Báo giá phần thô bao gồm các công việc từ móng đến mái, hoàn thiện phần kết cấu chính của công trình. Giá tham khảo:
+                            </p>
+                            <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
+                                <li>Gói cơ bản: <span class="font-bold text-[#D97706]">3.200.000 - 3.800.000 VNĐ/m²</span></li>
+                                <li>Gói tiêu chuẩn: <span class="font-bold text-[#D97706]">3.800.000 - 4.500.000 VNĐ/m²</span></li>
+                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">From 4.500.000 VNĐ/m²</span> trở lên</li>
+                            </ul>
+                            <p class="mt-6 text-base text-gray-600 italic">
+                                *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc vào loại vật tư chính, địa chất công trình và điều kiện thi công thực tế.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="bao-gia-xd-phan-hoan-thien" class="py-12 pt-24">
+                        <h3 class="text-3xl font-bold mb-8 text-[#FBBF24] text-center">Báo Giá Xây Dựng Phần Hoàn Thiện</h3>
+                        <div class="content-card p-8 bg-white rounded-lg shadow-lg border-t-4 border-[#FBBF24]">
+                            <p class="mb-4 text-base leading-relaxed text-gray-700">
+                                Báo giá phần hoàn thiện bao gồm các hạng mục như ốp lát sàn, tường, sơn nước, trần thạch cao, lắp đặt cửa, thiết bị vệ sinh, hệ thống đèn chiếu sáng cơ bản... Giá tham khảo:
+                            </p>
+                            <ul class="list-disc list-inside space-y-2 text-base text-gray-700 pl-4">
+                                <li>Gói cơ bản: <span class="font-bold text-[#D97706]">1.800.000 - 2.500.000 VNĐ/m²</span></li>
+                                <li>Gói tiêu chuẩn: <span class="font-bold text-[#D97706]">2.500.000 - 3.500.000 VNĐ/m²</span></li>
+                                <li>Gói cao cấp: <span class="font-bold text-[#D97706]">From 3.500.000 VNĐ/m²</span> trở lên</li>
+                            </ul>
+                            <p class="mt-6 text-base text-gray-600 italic">
+                                *Lưu ý: Giá trên chỉ là tham khảo, phụ thuộc rất nhiều vào chủng loại vật liệu, thương hiệu và mẫu mã bạn lựa chọn.
                             </p>
                         </div>
                     </section>
